@@ -32,3 +32,13 @@ def update_expense(
     db.commit()
     db.refresh(db_expense)
     return db_expense
+
+def delete_expense(db: Session, expense_id: int):
+    # находим запись
+    db_expense = get_expense_by_id(db, expense_id)
+    if not db_expense:
+        return False
+    # удаляем и коммитим
+    db.delete(db_expense)
+    db.commit()
+    return True

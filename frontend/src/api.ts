@@ -16,21 +16,6 @@ export interface Expense {
   datetime: string; // ISO
 }
 
-// // GET /expenses/
-// export const fetchExpenses = () => api.get<Expense[]>("/expenses/");
-
-// // POST /expenses/
-// export const createExpense = (expense: Omit<Expense, "id">) =>
-//   api.post<Expense>("/expenses/", expense);
-
-// export const updateExpense = async (
-//   id: number,
-//   updated: Omit<Expense, "id">
-// ) => {
-//   const res = await axios.put(`/expenses/${id}`, updated);
-//   return res.data;
-// };
-
 // GET /expenses/
 export const fetchExpenses = () => api.get<Expense[]>(`${API_BASE}/expenses`);
 
@@ -45,3 +30,6 @@ export const updateExpense = async (
   const res = await axios.put(`${API_BASE}/expenses/${id}`, updated);
   return res.data;
 };
+
+export const deleteExpense = (id: number) =>
+  axios.delete<void>(`${API_BASE}/expenses/${id}`);

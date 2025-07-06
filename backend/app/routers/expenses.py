@@ -36,3 +36,21 @@ def update_expense(
             detail=f"Expense {expense_id} not found"
         )
     return crud.update_expense(db, db_expense, expense_in)
+
+@router.delete(
+    "/{expense_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Удалить расход по ID"
+)
+def remove_expense(
+    expense_id: int,
+    db: Session = Depends(get_db)
+):
+    success = crud.delete_expense(db, expense_id)
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Expense {expense_id} not found"
+        )
+    # При 204 FastAPI не возвращает тело
+    return
