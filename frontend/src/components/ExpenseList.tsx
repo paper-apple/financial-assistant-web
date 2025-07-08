@@ -22,18 +22,17 @@ export const ExpenseList = ({
 }: Props) => {
   return (
     <ul className="space-y-2">
-  {expenses.map((e) => (
-    <ExpenseCard
-      key={e.id}
-      expense={e}
-      onEdit={onEdit}
-      onLongPress={onLongPress}
-      onSelect={onSelect}
-      selectionMode={selectionMode}
-      selected={selectedIds.includes(e.id)}
-    />
-    ))}
-  </ul>
+      {expenses.map((e) => (
+        <ExpenseCard
+          key={e.id}
+          expense={e}
+          onEdit={onEdit}
+          onLongPress={onLongPress}
+          onSelect={onSelect}
+          selectionMode={selectionMode}
+          selected={selectedIds.includes(e.id)}
+      />))}
+    </ul>
 
   );
 };

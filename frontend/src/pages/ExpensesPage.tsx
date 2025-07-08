@@ -59,6 +59,17 @@ export const ExpensesPage = () => {
     setSelectedIds([]);
   };
 
+  // Новый хендлер «Выделить всё / Снять всё»
+  const handleSelectAll = () => {
+    if (selectedIds.length === expenses.length) {
+      // Если уже всё выбрано → сбросить
+      setSelectedIds([]);
+    } else {
+      // Иначе выбрать все IDs
+      setSelectedIds(expenses.map((e) => e.id));
+    }
+  };
+
   return (
     <section className="relative max-w-md mx-auto px-2">
       {/* ТОП-бар в режиме выбора */}
@@ -66,6 +77,12 @@ export const ExpensesPage = () => {
         <div className="flex justify-between items-center p-2 bg-gray-100 mb-2 rounded">
           <span>{selectedIds.length} выбрано</span>
           <div className="space-x-2">
+            <button
+              onClick={handleSelectAll}
+              className="px-3 py-1 bg-blue-500 text-white rounded"
+              >
+              {selectedIds.length === expenses.length ? "Снять всё" : "Выделить всё"}
+            </button>
             <button
               onClick={handleDeleteSelected}
               className="px-3 py-1 bg-red-500 text-white rounded"

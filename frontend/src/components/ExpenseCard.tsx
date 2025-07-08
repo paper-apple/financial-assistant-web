@@ -25,7 +25,7 @@ export const ExpenseCard = ({
     if (!onLongPress) return;
     timerRef.current = window.setTimeout(() => {
       onLongPress(expense.id);
-    }, 1000);
+    }, 400);
   };
 
   const cancelPress = () => {
@@ -60,7 +60,7 @@ export const ExpenseCard = ({
         <span className="absolute top-1 right-1 text-blue-600">✔️</span>
       )}
       <div className="font-semibold">{expense.title}</div>
-      <div className="text-sm text-gray-600">{expense.category}</div>
+      <div className="text-sm text-blue-600">{expense.category}</div>
       {/* … другие поля */}
     </li>
   );
