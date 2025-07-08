@@ -141,8 +141,10 @@ export const ExpensesPage = () => {
           </h3>
           <ExpenseForm
             initialData={editingExpense}
-            onCreated={() => {
-              load();
+            onCreated={(updated) => {
+              if (updated) {
+                setExpenses(prev => prev.map(e => (e.id === updated.id ? updated : e)));
+              }
               setEditingExpense(null);
             }}
           />

@@ -20,8 +20,12 @@ export interface Expense {
 export const fetchExpenses = () => api.get<Expense[]>(`${API_BASE}/expenses`);
 
 // POST /expenses/
-export const createExpense = (expense: Omit<Expense, "id">) =>
-  api.post<Expense>(`${API_BASE}/expenses`, expense);
+export const createExpense = async (
+  data: Omit<Expense, "id">
+): Promise<Expense> => {
+  const res = await axios.post(`${API_BASE}/expenses`, data);
+  return res.data; // ✅ теперь вернётся Expense, не AxiosResponse
+};
 
 export const updateExpense = async (
   id: number,

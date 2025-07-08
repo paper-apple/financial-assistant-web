@@ -5,8 +5,7 @@ import { createExpense, updateExpense, type Expense } from "../api";
 
 type Props = {
   initialData?: Expense;
-  onCreated: () => void;
-};
+  onCreated: (updated: Expense | null) => void;};
 
 export const ExpenseForm = ({ initialData, onCreated }: Props) => {
   const [form, setForm] = useState({
@@ -23,16 +22,17 @@ export const ExpenseForm = ({ initialData, onCreated }: Props) => {
 
   // 3. Отправка формы
   const handleSubmit = async () => {
-    if (!form.title || !form.category || !form.location || !form.datetime) return;
     try {
       if (initialData) {
-        await updateExpense(initialData.id, { ...form, price: +form.price });
+        const updated = await updateExpense(initialData.id, { ...form, price: +form.price });
+        onCreated(updated); // теперь всё ок
       } else {
-        await createExpense({ ...form, price: +form.price });
+        const created = await createExpense({ ...form, price: +form.price });
+        onCreated(created); // если нужно — либо передаём, либо null
       }
-      console.log("Редактирование");
-      onCreated();
-    } catch (err) {console.error("Ошибка при сохранении:", err);}
+    } catch (err) {
+      console.error("Ошибка при сохранении:", err);
+    }
   };
 
   // 4. JSX c Tailwind-классами
