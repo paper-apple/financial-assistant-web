@@ -6,10 +6,10 @@ import { Modal } from "../components/Modal";
 
 export const ExpensesPage = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   const load = async () => {
     const res = await fetchExpenses();
@@ -20,13 +20,22 @@ export const ExpensesPage = () => {
     load();
   }, []);
 
-  const handleAddComplete = () => {
-    load();
-    setIsOpen(false);
-  };
-
   const handleEditClick = (expense: Expense) => {
     setEditingExpense(expense);
+  };
+
+  // При обновлении — заменяем в массиве
+  const handleUpdated = (updated: Expense) => {
+    setExpenses(prev =>
+      prev.map(e => (e.id === updated.id ? updated : e))
+    );
+    setEditingExpense(null);
+  };
+
+  // При создании — добавляем в конец
+  const handleCreated = (created: Expense) => {
+    setExpenses(prev => [...prev, created]);
+    setIsAddOpen(false);
   };
 
   // Запуск режима выбора и отметка первой карточки
@@ -113,40 +122,32 @@ export const ExpensesPage = () => {
 
       {/* Floating Button */}
       <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white
-                   font-bold py-3 px-4 rounded-full shadow-lg"
+        onClick={() => setIsAddOpen(true)}
+        className="fixed bottonm-4 right-4 bg-blue-600 hover:bg-blue-700 text-black
+        font-bold py-3 px-4 rounded-full shadow-lg border-transparent hover:border-transparent"
       >
         +
       </button>
 
       {/* Modal для добавления */}
-      {isOpen && (
-        <Modal isOpen={true} onClose={() => setIsOpen(false)}>
+      {isAddOpen && (
+        <Modal isOpen onClose={() => setIsAddOpen(false)}>
           <h3 className="text-lg font-semibold mb-3 text-center">
             Добавить расход
           </h3>
-          <ExpenseForm onCreated={handleAddComplete} />
+          <ExpenseForm onCreated={handleCreated} />
         </Modal>
       )}
 
       {/* Modal для редактирования */}
       {editingExpense && (
-        <Modal
-          isOpen={true}
-          onClose={() => setEditingExpense(null)}
-        >
+        <Modal isOpen onClose={() => setEditingExpense(null)}>
           <h3 className="text-lg font-semibold mb-3 text-center">
             Редактировать расход
           </h3>
           <ExpenseForm
             initialData={editingExpense}
-            onCreated={(updated) => {
-              if (updated) {
-                setExpenses(prev => prev.map(e => (e.id === updated.id ? updated : e)));
-              }
-              setEditingExpense(null);
-            }}
+            onUpdated={handleUpdated}
           />
         </Modal>
       )}

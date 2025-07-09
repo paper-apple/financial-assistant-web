@@ -5,9 +5,15 @@ import { createExpense, updateExpense, type Expense } from "../api";
 
 type Props = {
   initialData?: Expense;
-  onCreated: (updated: Expense | null) => void;};
+  onCreated?: (created: Expense) => void;
+  onUpdated?: (updated: Expense) => void;
+};
 
-export const ExpenseForm = ({ initialData, onCreated }: Props) => {
+export const ExpenseForm = ({
+  initialData,
+  onCreated,
+  onUpdated,
+}: Props) => {
   const [form, setForm] = useState({
     title: initialData?.title || "",
     category: initialData?.category || "",
@@ -22,13 +28,20 @@ export const ExpenseForm = ({ initialData, onCreated }: Props) => {
 
   // 3. Отправка формы
   const handleSubmit = async () => {
+    if (!form.title) return; // простая валидация
+
     try {
-      if (initialData) {
-        const updated = await updateExpense(initialData.id, { ...form, price: +form.price });
-        onCreated(updated); // теперь всё ок
-      } else {
-        const created = await createExpense({ ...form, price: +form.price });
-        onCreated(created); // если нужно — либо передаём, либо null
+      if (initialData && onUpdated) {
+        const updated = await updateExpense(
+          initialData.id,
+          { ...form, price: +form.price }
+        );
+        onUpdated(updated);
+      } else if (!initialData && onCreated) {
+        const created = await createExpense(
+          { ...form, price: +form.price }
+        );
+        onCreated(created);
       }
     } catch (err) {
       console.error("Ошибка при сохранении:", err);
@@ -42,9 +55,9 @@ export const ExpenseForm = ({ initialData, onCreated }: Props) => {
       <h3 className="text-lg font-medium mb-3">
       {initialData ? "Редактировать расход" : "Новый расход"}
       </h3>
-      <div className="bg-red-500 p-4 text-white">
-  Тест Tailwind - должен быть красный блок
-</div>
+      <div className="bg-red-500 p-0 text-white">
+        Тест Tailwind - должен быть красный блок
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <input
           name="title"
