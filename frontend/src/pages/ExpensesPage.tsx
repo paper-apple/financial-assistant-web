@@ -10,6 +10,7 @@ export const ExpensesPage = () => {
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
 
   const load = async () => {
     const res = await fetchExpenses();
@@ -20,6 +21,13 @@ export const ExpensesPage = () => {
     load();
   }, []);
 
+  useEffect(() => {
+  if (lastUpdatedId !== null) {
+    const timer = setTimeout(() => setLastUpdatedId(null), 2000);
+    return () => clearTimeout(timer);
+  }
+  }, [lastUpdatedId]);
+
   const handleEditClick = (expense: Expense) => {
     setEditingExpense(expense);
   };
@@ -29,6 +37,7 @@ export const ExpensesPage = () => {
     setExpenses(prev =>
       prev.map(e => (e.id === updated.id ? updated : e))
     );
+    setLastUpdatedId(updated.id);    // запоминаем ID
     setEditingExpense(null);
   };
 
@@ -80,7 +89,7 @@ export const ExpensesPage = () => {
   };
 
   return (
-    <section className="relative max-w-md mx-auto px-2">
+    <section>
       {/* ТОП-бар в режиме выбора */}
       {selectionMode && (
         <div className="flex justify-between items-center p-2 bg-gray-100 mb-2 rounded">
@@ -109,22 +118,25 @@ export const ExpensesPage = () => {
       )}
 
       <div className="mt-6">
-        <h2 className="text-xl font-semibold mb-2">Ваши расходы</h2>
-        <ExpenseList
-          expenses={expenses}
-          onEdit={handleEditClick}
-          onLongPress={handleLongPress}
-          onSelect={handleSelect}
-          selectionMode={selectionMode}
-          selectedIds={selectedIds}
-        />
+        <h2 className="text-xl font-semibold">Ваши расходы</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <ExpenseList
+            expenses={expenses}
+            onEdit={handleEditClick}
+            onLongPress={handleLongPress}
+            onSelect={handleSelect}
+            selectionMode={selectionMode}
+            selectedIds={selectedIds}
+            lastUpdatedId={lastUpdatedId}
+          />
+        </div>  
       </div>
 
       {/* Floating Button */}
       <button
         onClick={() => setIsAddOpen(true)}
-        className="fixed bottonm-4 right-4 bg-blue-600 hover:bg-blue-700 text-black
-        font-bold py-3 px-4 rounded-full shadow-lg border-transparent hover:border-transparent"
+        className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white
+        font-bold py-3 px-4 rounded-full opacity-100 z-50"
       >
         +
       </button>

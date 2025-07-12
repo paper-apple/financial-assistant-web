@@ -10,6 +10,7 @@ type Props = {
   onSelect?: (id: number) => void;
   selectionMode?: boolean;
   selectedIds?: number[];
+  lastUpdatedId: number | null;
 };
 
 export const ExpenseList = ({
@@ -19,9 +20,10 @@ export const ExpenseList = ({
   onSelect,
   selectionMode = false,
   selectedIds = [],
+  lastUpdatedId,
 }: Props) => {
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-2 w-full">
       {expenses.map((e) => (
         <ExpenseCard
           key={e.id}
@@ -31,8 +33,8 @@ export const ExpenseList = ({
           onSelect={onSelect}
           selectionMode={selectionMode}
           selected={selectedIds.includes(e.id)}
+          highlight={e.id === lastUpdatedId}
       />))}
     </ul>
-
   );
 };
