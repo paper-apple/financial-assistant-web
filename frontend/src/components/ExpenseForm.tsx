@@ -1,6 +1,10 @@
 // src/components/ExpenseForm.tsx
 import { useState } from "react";
+import { forwardRef } from "react";
 import { createExpense, updateExpense, type Expense } from "../api";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ru } from "date-fns/locale";
 
 
 type Props = {
@@ -48,10 +52,21 @@ export const ExpenseForm = ({
     }
   };
 
+  const CustomInput = forwardRef<HTMLInputElement, any>(({ value, onClick, placeholder }, ref) => (
+  <input
+    type="text"
+    readOnly
+    onClick={onClick}
+    ref={ref}
+    value={value}
+    placeholder={placeholder}
+    className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
+  />
+  ));
+
   // 4. JSX c Tailwind-классами
   return (
     <div className="bg-white p-4 rounded shadow-md">
-      {/* <h3 className="text-lg font-medium mb-3">Новый расход</h3> */}
       <h3 className="text-lg font-medium mb-3">
       {initialData ? "Редактировать расход" : "Новый расход"}
       </h3>
@@ -88,13 +103,18 @@ export const ExpenseForm = ({
           placeholder="Место"
           className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
         />
-        <input
-          name="datetime"
-          type="datetime-local"
-          value={form.datetime}
-          onChange={handleChange}
-          className="col-span-1 sm:col-span-2 border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
-        />
+      <DatePicker
+        selected={form.datetime ? new Date(form.datetime) : null}
+        onChange={(date) =>
+          setForm((f) => ({ ...f, datetime: date?.toISOString() || "" }))
+        }
+        showTimeSelect
+        dateFormat="dd.MM.yyyy HH:mm"
+        locale={ru}
+        placeholderText="Выберите дату и время"
+        customInput={<CustomInput placeholder="Дата и время" />}
+      />
+
       </div>
       <button
         onClick={handleSubmit}

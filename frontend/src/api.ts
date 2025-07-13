@@ -5,7 +5,7 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
 });
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "http://192.168.100.4:8000";
 
 export interface Expense {
   id: number;

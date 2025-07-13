@@ -89,33 +89,36 @@ export const ExpensesPage = () => {
   };
 
   return (
-    <section>
+    <section >
       {/* ТОП-бар в режиме выбора */}
       {selectionMode && (
-        <div className="flex justify-between items-center p-2 bg-gray-100 mb-2 rounded">
-          <span>{selectedIds.length} выбрано</span>
-          <div className="space-x-2">
-            <button
-              onClick={handleSelectAll}
-              className="px-3 py-1 bg-blue-500 text-white rounded"
+        <div className="fixed top-0 left-0 right-0 z-40 p-2 bg-gray-100 shadow-md border-b">
+          <div className="flex justify-between items-center">
+            <span>{selectedIds.length} выбрано</span>
+            <div className="space-x-2">
+              <button
+                onClick={handleSelectAll}
+                className="px-3 py-1 bg-blue-500 text-white rounded"
               >
-              {selectedIds.length === expenses.length ? "Снять всё" : "Выделить всё"}
-            </button>
-            <button
-              onClick={handleDeleteSelected}
-              className="px-3 py-1 bg-red-500 text-white rounded"
-            >
-              Удалить
-            </button>
-            <button
-              onClick={handleCancelSelection}
-              className="px-3 py-1 bg-gray-300 rounded"
-            >
-              Отмена
-            </button>
+                {selectedIds.length === expenses.length ? "Снять всё" : "Выделить всё"}
+              </button>
+              <button
+                onClick={handleDeleteSelected}
+                className="px-3 py-1 bg-red-500 text-white rounded"
+              >
+                Удалить
+              </button>
+              <button
+                onClick={handleCancelSelection}
+                className="px-3 py-1 bg-gray-300 rounded"
+              >
+                Отмена
+              </button>
+            </div>
           </div>
         </div>
       )}
+
 
       <div className="mt-6">
         <h2 className="text-xl font-semibold">Ваши расходы</h2>

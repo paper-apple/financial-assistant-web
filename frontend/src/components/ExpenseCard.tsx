@@ -22,11 +22,15 @@ export const ExpenseCard = ({
   highlight?: boolean;
 }) => {
   const timerRef = useRef<number | null>(null);
+  const movedRef = useRef(false);
 
   const startPress = () => {
     if (!onLongPress) return;
+    movedRef.current = false;
     timerRef.current = window.setTimeout(() => {
-      onLongPress(expense.id);
+      if (!movedRef.current) {
+        onLongPress(expense.id);
+      }
     }, 400);
   };
 
@@ -45,17 +49,23 @@ export const ExpenseCard = ({
     }
   };
 
+  const handleTouchMove = () => {
+    movedRef.current = true;
+    cancelPress();
+  };
+
   return (
     <li
       key={expense.id}
       className={`relative cursor-pointer p-4 rounded-lg border overflow-hidden
-      shadow-md hover:shadow-lg transition-shadow duration-300
+      shadow-md hover:shadow-lg transition-shadow duration-300 select-none
       ${selected ? "bg-blue-50 border-blue-500" : "bg-white border-gray-200"}`}
       onMouseDown={startPress}
       onTouchStart={startPress}
       onMouseUp={cancelPress}
       onMouseLeave={cancelPress}
       onTouchEnd={cancelPress}
+      onTouchMove={handleTouchMove}
       onClick={handleClick}
     >
       {/* Подсветка обновления */}
