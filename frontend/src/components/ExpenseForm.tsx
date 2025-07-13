@@ -23,7 +23,7 @@ export const ExpenseForm = ({
     category: initialData?.category || "",
     price: String(initialData?.price || ""),
     location: initialData?.location || "",
-    datetime: initialData?.datetime || "",
+    datetime: initialData?.datetime || new Date().toISOString(),
   });
 
   // 2. Универсальный onChange для всех input
@@ -67,12 +67,6 @@ export const ExpenseForm = ({
   // 4. JSX c Tailwind-классами
   return (
     <div className="bg-white p-4 rounded shadow-md">
-      <h3 className="text-lg font-medium mb-3">
-      {initialData ? "Редактировать расход" : "Новый расход"}
-      </h3>
-      <div className="bg-red-500 p-0 text-white">
-        Тест Tailwind - должен быть красный блок
-      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <input
           name="title"
@@ -103,17 +97,18 @@ export const ExpenseForm = ({
           placeholder="Место"
           className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
         />
-      <DatePicker
-        selected={form.datetime ? new Date(form.datetime) : null}
-        onChange={(date) =>
-          setForm((f) => ({ ...f, datetime: date?.toISOString() || "" }))
-        }
-        showTimeSelect
-        dateFormat="dd.MM.yyyy HH:mm"
-        locale={ru}
-        placeholderText="Выберите дату и время"
-        customInput={<CustomInput placeholder="Дата и время" />}
-      />
+        <DatePicker
+          selected={form.datetime ? new Date(form.datetime) : null}
+          onChange={(date) =>
+            setForm((f) => ({ ...f, datetime: date?.toISOString() || "" }))
+          }
+          showTimeSelect
+          dateFormat="dd.MM.yyyy HH:mm"
+          locale={ru}
+          placeholderText="Выберите дату и время"
+          customInput={<CustomInput placeholder="Дата и время" />}
+          popperPlacement="top"
+        />
 
       </div>
       <button
