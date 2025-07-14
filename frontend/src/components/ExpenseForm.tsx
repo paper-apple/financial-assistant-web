@@ -32,7 +32,9 @@ export const ExpenseForm = ({
 
   // 3. Отправка формы
   const handleSubmit = async () => {
-    if (!form.title) return; // простая валидация
+    setWasSubmitted(true);
+
+    if (!form.title || !form.category || !form.price || !form.location) return; // простая валидация
 
     try {
       if (initialData && onUpdated) {
@@ -51,6 +53,8 @@ export const ExpenseForm = ({
       console.error("Ошибка при сохранении:", err);
     }
   };
+
+  const [wasSubmitted, setWasSubmitted] = useState(false);
 
   const CustomInput = forwardRef<HTMLInputElement, any>(({ value, onClick, placeholder }, ref) => (
   <input
@@ -73,14 +77,19 @@ export const ExpenseForm = ({
           value={form.title}
           onChange={handleChange}
           placeholder="Название"
-          className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
-        />
+          className={`border rounded px-3 py-2 focus:ring-2 ${
+            wasSubmitted && !form.title.trim()
+              ? "border-red-500 ring-red-300"
+              : "focus:ring-blue-400"}`}/>
         <input
           name="category"
           value={form.category}
           onChange={handleChange}
           placeholder="Категория"
-          className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
+          className={`border rounded px-3 py-2 focus:ring-2 ${
+            wasSubmitted && !form.category.trim()
+              ? "border-red-500 ring-red-300"
+              : "focus:ring-blue-400"}`}
         />
         <input
           name="price"
@@ -88,14 +97,20 @@ export const ExpenseForm = ({
           value={form.price}
           onChange={handleChange}
           placeholder="Сумма"
-          className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
+          className={`border rounded px-3 py-2 focus:ring-2 ${
+            wasSubmitted && !form.price.trim()
+              ? "border-red-500 ring-red-300"
+              : "focus:ring-blue-400"}`}
         />
         <input
           name="location"
           value={form.location}
           onChange={handleChange}
           placeholder="Место"
-          className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
+          className={`border rounded px-3 py-2 focus:ring-2 ${
+            wasSubmitted && !form.location.trim()
+              ? "border-red-500 ring-red-300"
+              : "focus:ring-blue-400"}`}
         />
         <DatePicker
           selected={form.datetime ? new Date(form.datetime) : null}
@@ -109,7 +124,11 @@ export const ExpenseForm = ({
           customInput={<CustomInput placeholder="Дата и время" />}
           popperPlacement="top"
         />
-
+      </div>
+      <div className="min-h-[1.25rem] text-sm text-red-500 mt-1">
+        {wasSubmitted && 
+        (!form.title.trim() || !form.category.trim() || !form.price.trim() || !form.location.trim())
+        && "Заполните поля"}
       </div>
       <button
         onClick={handleSubmit}
