@@ -3,6 +3,8 @@ import { deleteExpense, fetchExpenses, type Expense } from "../api";
 import { ExpenseForm } from "../components/ExpenseForm";
 import { ExpenseList } from "../components/ExpenseList";
 import { Modal } from "../components/Modal";
+import  FilterModal from "../components/FilterModal";
+import {type FilterParams} from "../types.tsx"
 
 export const ExpensesPage = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -11,6 +13,28 @@ export const ExpensesPage = () => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState<FilterParams>({
+    startDate: null,
+    endDate: null,
+    minPrice: null,
+    maxPrice: null,
+  });
+
+  const filteredExpenses = expenses.filter((exp) => {
+    const date = new Date(exp.datetime);
+    const price = Number(exp.price);
+
+    const inDateRange =
+      (!filters.startDate || date >= filters.startDate) &&
+      (!filters.endDate || date <= filters.endDate);
+
+    const inPriceRange =
+      (!filters.minPrice || price >= filters.minPrice) &&
+      (!filters.maxPrice || price <= filters.maxPrice);
+
+    return inDateRange && inPriceRange;
+  });
 
   const load = async () => {
     const res = await fetchExpenses();
@@ -143,6 +167,16 @@ export const ExpensesPage = () => {
       >
         +
       </button>
+      
+      {/* Кнопка для фильтрвции */}
+      <button
+        onClick={() => setShowFilters(true)}
+        className="fixed bottom-4 right-20 bg-blue-600 hover:bg-blue-700 text-white
+        font-bold py-2 px-3.5 rounded-full z-50"
+      >
+        Фильтры
+      </button>
+      
 
       {/* Modal для добавления */}
       {isAddOpen && (
@@ -166,6 +200,15 @@ export const ExpensesPage = () => {
           />
         </Modal>
       )}
+
+      {showFilters && (
+        <FilterModal
+          onApply={(newFilters: FilterParams) => setFilters(newFilters)}
+          onClose={() => setShowFilters(false)}
+        />
+      )}
+
+      
     </section>
   );
 };

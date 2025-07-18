@@ -1,6 +1,4 @@
-// components/ExpenseList
 import { type Expense } from "../api";
-// import { useRef } from "react";
 import { ExpenseCard } from "./ExpenseCard";
 
 type Props = {
