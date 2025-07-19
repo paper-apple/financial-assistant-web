@@ -3,16 +3,34 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {type FilterParams} from "../types.tsx"
 
+// type FilterModalProps = {
+//   initialValues: FilterParams;
+//   onApply: (filters: FilterParams) => void;
+//   onClose: () => void;
+// };
+
 type FilterModalProps = {
+  initialValues: FilterParams;
   onApply: (filters: FilterParams) => void;
-  onClose: () => void;
 };
 
-export default function FilterModal({ onApply, onClose }: FilterModalProps) {
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+// export function FilterModal({ initialValues, onApply, onClose }: FilterModalProps) {
+export function FilterForm({ initialValues, onApply }: FilterModalProps) {
+  const [startDate, setStartDate] = useState(initialValues.startDate);
+  const [endDate, setEndDate] = useState(initialValues.endDate);
+  const [minPrice, setMinPrice] = useState(initialValues.minPrice?.toString() ?? "");
+  const [maxPrice, setMaxPrice] = useState(initialValues.maxPrice?.toString() ?? "");
+
+
+  // const handleApply = () => {
+  //   onApply({
+  //     startDate,
+  //     endDate,
+  //     minPrice: minPrice ? Number(minPrice) : null,
+  //     maxPrice: maxPrice ? Number(maxPrice) : null,
+  //   });
+  //   onClose();
+  // };
 
   const handleApply = () => {
     onApply({
@@ -21,7 +39,6 @@ export default function FilterModal({ onApply, onClose }: FilterModalProps) {
       minPrice: minPrice ? Number(minPrice) : null,
       maxPrice: maxPrice ? Number(maxPrice) : null,
     });
-    onClose();
   };
 
   const handleReset = () => {
@@ -39,7 +56,7 @@ export default function FilterModal({ onApply, onClose }: FilterModalProps) {
 
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    // <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
         <h2 className="text-lg font-semibold mb-4">Фильтры</h2>
 
@@ -101,7 +118,7 @@ export default function FilterModal({ onApply, onClose }: FilterModalProps) {
             Применить
           </button>
         </div>
-      </div>
-    </div>
+      </div>  
+    // </div>
   );
 }

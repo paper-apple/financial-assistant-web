@@ -3,7 +3,7 @@ import { deleteExpense, fetchExpenses, type Expense } from "../api";
 import { ExpenseForm } from "../components/ExpenseForm";
 import { ExpenseList } from "../components/ExpenseList";
 import { Modal } from "../components/Modal";
-import  FilterModal from "../components/FilterModal";
+import {FilterForm} from "../components/FilterForm.tsx";
 import {type FilterParams} from "../types.tsx"
 
 export const ExpensesPage = () => {
@@ -69,6 +69,18 @@ export const ExpensesPage = () => {
   const handleCreated = (created: Expense) => {
     setExpenses(prev => [...prev, created]);
     setIsAddOpen(false);
+  };
+
+  const handleFilters = (filters: FilterParams) => {
+    setFilters(filters);
+    setShowFilters(false);
+    // onApply({
+    //   startDate,
+    //   endDate,
+    //   minPrice: minPrice ? Number(minPrice) : null,
+    //   maxPrice: maxPrice ? Number(maxPrice) : null,
+    // });
+    // onClose();
   };
 
   // Запуск режима выбора и отметка первой карточки
@@ -148,7 +160,7 @@ export const ExpensesPage = () => {
         <h2 className="text-xl font-semibold">Ваши расходы</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <ExpenseList
-            expenses={expenses}
+            expenses={filteredExpenses}
             onEdit={handleEditClick}
             onLongPress={handleLongPress}
             onSelect={handleSelect}
@@ -201,14 +213,28 @@ export const ExpensesPage = () => {
         </Modal>
       )}
 
+      {/* Modal для фильтрации */}
       {showFilters && (
+        <Modal isOpen onClose={() => setShowFilters(false)}>
+          <h3 className="text-lg font-semibold mb-3 text-center">
+            Фильтры
+          </h3>
+          <FilterForm
+            initialValues={filters}
+            onApply={handleFilters}
+            // onApply={(newFilters: FilterParams) => setFilters(newFilters)}
+            // onClose={() => setShowFilters(false)}
+          />
+        </Modal>
+      )}
+
+      {/* {showFilters && (
         <FilterModal
+          initialValues={filters}
           onApply={(newFilters: FilterParams) => setFilters(newFilters)}
           onClose={() => setShowFilters(false)}
         />
-      )}
-
-      
+      )} */}
     </section>
   );
 };
