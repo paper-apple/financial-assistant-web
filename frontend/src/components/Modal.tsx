@@ -1,5 +1,5 @@
 // src/components/Modal.tsx
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -8,14 +8,26 @@ type Props = {
 };
 
 export const Modal = ({ isOpen, onClose, children }: Props) => {
-  useEffect(() => {
-    const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onEsc);
-    return () => document.removeEventListener("keydown", onEsc);
-  }, [onClose]);
+  
+  const modalStack = useRef<number>(0);
 
+  useEffect(() => {
+    modalStack.current += 1;
+    const currentLevel = modalStack.current;
+
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && currentLevel === modalStack.current) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("keydown", onEsc);
+      modalStack.current -= 1;
+    };
+  }, []);
+  
   if (!isOpen) return null;
 
   return (

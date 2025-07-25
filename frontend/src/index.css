@@ -10,7 +10,38 @@
   padding-top: 5px;
 }
 
+.ios-calendar {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
 
+.ios-calendar .react-datepicker__header {
+  background: white;
+  border: none;
+  padding-top: 12px;
+}
+
+.ios-calendar .react-datepicker__day {
+  margin: 0.2em;
+  width: 2em;
+  line-height: 2em;
+}
+
+.ios-calendar .react-datepicker__day--selected {
+  background: #007AFF;
+  border-radius: 50%;
+}
+
+/* Стили для времени */
+.react-datepicker__time-container {
+  border-left: 1px solid #f0f0f0;
+}
+
+.react-datepicker__time-box {
+  width: 100px;
+}
 
 /* @layer base {
   :root {
