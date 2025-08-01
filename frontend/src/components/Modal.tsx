@@ -1,5 +1,8 @@
 // src/components/Modal.tsx
-import { type ReactNode, useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useState, useRef } from "react";
+import { addModalToStack, removeModalFromStack, getTopModalId } from "../utils/modalStack";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
+import { getModalStack, nextId } from '../utils/modalStack';
 
 type Props = {
   isOpen: boolean;
@@ -8,44 +11,45 @@ type Props = {
 };
 
 export const Modal = ({ isOpen, onClose, children }: Props) => {
-  
-  const modalStack = useRef<number>(0);
+  useBodyScrollLock(isOpen);
+  const modalIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    modalStack.current += 1;
-    const currentLevel = modalStack.current;
+    if (isOpen && modalIdRef.current === null) {
+      const id = addModalToStack();
+      modalIdRef.current = id;
+    }
 
-    const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && currentLevel === modalStack.current) {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && modalIdRef.current === getTopModalId()) {
         onClose();
       }
     };
 
-    document.addEventListener("keydown", onEsc);
+    document.addEventListener("keydown", handleEsc);
+
     return () => {
-      document.removeEventListener("keydown", onEsc);
-      modalStack.current -= 1;
+      document.removeEventListener("keydown", handleEsc);
+      if (modalIdRef.current !== null) {
+        removeModalFromStack(modalIdRef.current);
+        modalIdRef.current = null;
+      }
     };
-  }, []);
-  
+    
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
     <div
-      className="absolute top-0 left-0 right-0 bottom-0 inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center"
+      className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center"
       onClick={onClose}
     >
       <div
         className="bg-white rounded-lg p-4 w-full max-w-md mx-auto shadow-lg"
-        onClick={(e) => e.stopPropagation()} // предотвращает закрытие при клике внутри
+        onClick={(e) => e.stopPropagation()}
       >
         {children}
-        <button
-          onClick={onClose}
-          className="mt-4 w-full bg-gray-100 hover:bg-gray-200 text-sm py-2 rounded"
-        >
-          Отмена
-        </button>
       </div>
     </div>
   );

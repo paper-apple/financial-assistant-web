@@ -74,22 +74,22 @@ export const ExpenseForm = ({
     }
   };
 
-  const CustomInput = forwardRef<HTMLInputElement, any>(({ value, onClick, placeholder }, ref) => (
-  <input
-    type="text"
-    readOnly
-    onClick={onClick}
-    ref={ref}
-    value={value}
-    placeholder={placeholder}
-    className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
-  />
-  ));
+  // const CustomInput = forwardRef<HTMLInputElement, any>(({ value, onClick, placeholder }, ref) => (
+  // <input
+  //   type="text"
+  //   readOnly
+  //   onClick={onClick}
+  //   ref={ref}
+  //   value={value}
+  //   placeholder={placeholder}
+  //   className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
+  // />
+  // ));
 
-  const handleDateChange = (date: Date) => {
-    setForm((f) => ({ ...f, datetime: date.toISOString() }));
-    setIsOpen(false);
-  };
+  // const handleDateChange = (date: Date) => {
+  //   setForm((f) => ({ ...f, datetime: date.toISOString() }));
+  //   setIsOpen(false);
+  // };
 
   // 4. JSX c Tailwind-классами
   return (
