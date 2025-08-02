@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback  } from "react";
 import { deleteExpense, fetchExpenses, type Expense } from "../api";
 import { ExpenseForm } from "../components/ExpenseForm";
 import { ExpenseList } from "../components/ExpenseList";
@@ -14,12 +14,13 @@ export const ExpensesPage = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState<FilterParams>({
+  const [filters, setFilters]       = useState<FilterParams>({
     startDate: null,
-    endDate: null,
-    minPrice: null,
-    maxPrice: null,
-  });
+    endDate:   null,
+    minPrice:  null,
+    maxPrice:  null,
+    keyword:   "",       // ← инициализируем
+  })
 
   const filteredExpenses = expenses.filter((exp) => {
     const date = new Date(exp.datetime);
@@ -33,7 +34,14 @@ export const ExpensesPage = () => {
       (!filters.minPrice || price >= filters.minPrice) &&
       (!filters.maxPrice || price <= filters.maxPrice);
 
-    return inDateRange && inPriceRange;
+    const term = (filters.keyword ?? "").trim().toLowerCase();    
+    const inKeyword =
+      !term ||
+      exp.title.toLowerCase().includes(term) ||
+      exp.category.toLowerCase().includes(term) ||
+      exp.location.toLowerCase().includes(term)
+
+    return inDateRange && inPriceRange && inKeyword
   });
 
   const load = async () => {
@@ -44,6 +52,11 @@ export const ExpensesPage = () => {
   useEffect(() => {
     load();
   }, []);
+
+  // Ленивая подгрузка расходов
+  useEffect(() => {
+    fetchExpenses().then(res => setExpenses(res.data))
+  }, [])
 
   useEffect(() => {
   if (lastUpdatedId !== null) {
@@ -71,17 +84,11 @@ export const ExpensesPage = () => {
     setIsAddOpen(false);
   };
 
-  const handleFilters = (filters: FilterParams) => {
-    setFilters(filters);
-    setShowFilters(false);
-    // onApply({
-    //   startDate,
-    //   endDate,
-    //   minPrice: minPrice ? Number(minPrice) : null,
-    //   maxPrice: maxPrice ? Number(maxPrice) : null,
-    // });
-    // onClose();
-  };
+  // Функция для применения новых фильтров из модалки
+  const handleFilters = useCallback((newFilters: FilterParams) => {
+    setFilters(newFilters)
+    setShowFilters(false)
+  }, [])
 
   // Запуск режима выбора и отметка первой карточки
   const handleLongPress = (id: number) => {
