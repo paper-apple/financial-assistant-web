@@ -13,3 +13,9 @@ export type ItemType = {
   amount: number;
   date: string; // или Date, если ты парсишь JSON
 };
+
+export type SortParams = {
+  field: "title" | "category" | "price" | "location" | "datetime";
+  direction: "asc" | "desc";
+};
+

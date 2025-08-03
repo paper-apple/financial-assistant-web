@@ -4,7 +4,8 @@ import { ExpenseForm } from "../components/ExpenseForm";
 import { ExpenseList } from "../components/ExpenseList";
 import { Modal } from "../components/Modal";
 import {FilterForm} from "../components/FilterForm.tsx";
-import {type FilterParams} from "../types.tsx"
+import { SortForm } from "../components/SortForm";
+import {type FilterParams, type SortParams} from "../types.tsx"
 
 export const ExpensesPage = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -21,6 +22,11 @@ export const ExpensesPage = () => {
     maxPrice:  null,
     keywords:  [],       // ← инициализируем
   })
+  const [sortParams, setSortParams] = useState<SortParams>({
+    field: "datetime",
+    direction: "desc",
+  });
+  const [showSort, setShowSort]     = useState(false);
 
   const filteredExpenses = expenses.filter((exp) => {
     const date = new Date(exp.datetime);
@@ -34,12 +40,6 @@ export const ExpensesPage = () => {
       (!filters.minPrice || price >= filters.minPrice) &&
       (!filters.maxPrice || price <= filters.maxPrice);
 
-    // const term = (filters.keywords ?? "").trim().toLowerCase();    
-    // const inKeyword =
-    //   !term ||
-    //   exp.title.toLowerCase().includes(term) ||
-    //   exp.category.toLowerCase().includes(term) ||
-    //   exp.location.toLowerCase().includes(term)
     // Новый блок: проверяем каждое ключевое слово
     const inKeyword =
       filters.keywords.length === 0 ||
@@ -50,6 +50,28 @@ export const ExpensesPage = () => {
       );
 
     return inDateRange && inPriceRange && inKeyword
+  });
+
+  const sortedExpenses = [...filteredExpenses].sort((a, b) => {
+    let cmp = 0;
+    switch (sortParams.field) {
+      case "title":
+        cmp = a.title.localeCompare(b.title);
+        break;
+      case "category":
+        cmp = a.category.localeCompare(b.category);
+        break;
+      case "price":
+        cmp = Number(a.price) - Number(b.price);
+        break;
+      case "location":
+        cmp = a.location.localeCompare(b.location);
+        break;
+      case "datetime":
+        cmp = new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
+        break;
+    }
+    return sortParams.direction === "asc" ? cmp : -cmp;
   });
 
   const load = async () => {
@@ -139,6 +161,12 @@ export const ExpensesPage = () => {
     }
   };
 
+  // 3) Колбэки для открытия/применения сортировки
+  const handleSortApply = useCallback((newSort: SortParams) => {
+    setSortParams(newSort);
+    setShowSort(false);
+  }, []);
+
   return (
     <section >
       {/* ТОП-бар в режиме выбора */}
@@ -174,7 +202,7 @@ export const ExpensesPage = () => {
         <h2 className="text-xl font-semibold">Ваши расходы</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <ExpenseList
-            expenses={filteredExpenses}
+            expenses={sortedExpenses}
             onEdit={handleEditClick}
             onLongPress={handleLongPress}
             onSelect={handleSelect}
@@ -194,7 +222,7 @@ export const ExpensesPage = () => {
         +
       </button>
       
-      {/* Кнопка для фильтрвции */}
+      {/* Кнопка для фильтрации */}
       <button
         onClick={() => setShowFilters(true)}
         className="fixed bottom-4 right-20 bg-blue-600 hover:bg-blue-700 text-white
@@ -202,7 +230,15 @@ export const ExpensesPage = () => {
       >
         Фильтры
       </button>
-      
+
+      {/* Кнопка для сортировки */}
+      <button
+        onClick={() => setShowSort(true)}
+        className="fixed bottom-4 right-50 bg-blue-600 hover:bg-blue-700 text-white
+        font-bold py-2 px-3.5 rounded-full z-50"
+      >
+        Сортировка
+      </button>
 
       {/* Modal для добавления */}
       {isAddOpen && (
@@ -236,19 +272,23 @@ export const ExpensesPage = () => {
           <FilterForm
             initialValues={filters}
             onApply={handleFilters}
-            // onApply={(newFilters: FilterParams) => setFilters(newFilters)}
-            // onClose={() => setShowFilters(false)}
           />
         </Modal>
       )}
 
-      {/* {showFilters && (
-        <FilterModal
-          initialValues={filters}
-          onApply={(newFilters: FilterParams) => setFilters(newFilters)}
-          onClose={() => setShowFilters(false)}
-        />
-      )} */}
+      {/* 4. Модалка сортировки */}
+      {showSort && (
+        <Modal isOpen onClose={() => setShowSort(false)}>
+          <h3 className="text-lg font-semibold mb-3 text-center">
+            Сортировка
+          </h3>
+          <SortForm
+            initialValues={sortParams}
+            onApply={handleSortApply}
+            onClose={() => setShowSort(false)}
+          />
+        </Modal>
+      )}
     </section>
   );
 };

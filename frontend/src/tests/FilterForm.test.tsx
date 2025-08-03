@@ -1,12 +1,9 @@
-import React from "react";
-import { format } from 'date-fns';
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
 // Мокаем react-datepicker, чтобы он рендерил обычный input
 vi.mock("react-datepicker", () => {
-  const React = require("react");
   return {
     __esModule: true,
     default: ({
