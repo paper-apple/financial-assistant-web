@@ -5,12 +5,11 @@ import { type FilterParams } from '../types.tsx';
 
 type Props = {
   initialValues: FilterParams
-  onApply:       (filters: FilterParams) => void
+  onApply: (filters: FilterParams) => void
 }
 
 export function FilterForm({ initialValues, onApply }: Props) {
   // Поля формы
-  // const [keyword, setKeyword]     = useState(initialValues.keyword)
   const [startDate, setStartDate] = useState<Date | null>(initialValues.startDate)
   const [endDate,   setEndDate]   = useState<Date | null>(initialValues.endDate)
   const [minPrice,  setMinPrice]  = useState(initialValues.minPrice?.toString() ?? "")
@@ -74,9 +73,8 @@ export function FilterForm({ initialValues, onApply }: Props) {
   }
 
   const handleKeywordDelete = (wordToDelete: string) => {
-  setKeywords(prev => prev.filter(word => word !== wordToDelete));
-};
-
+    setKeywords(prev => prev.filter(word => word !== wordToDelete));
+  };
 
   return (
     <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
