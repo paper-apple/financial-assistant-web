@@ -19,7 +19,7 @@ export const ExpensesPage = () => {
     endDate:   null,
     minPrice:  null,
     maxPrice:  null,
-    keyword:   "",       // ← инициализируем
+    keywords:  [],       // ← инициализируем
   })
 
   const filteredExpenses = expenses.filter((exp) => {
@@ -34,12 +34,20 @@ export const ExpensesPage = () => {
       (!filters.minPrice || price >= filters.minPrice) &&
       (!filters.maxPrice || price <= filters.maxPrice);
 
-    const term = (filters.keyword ?? "").trim().toLowerCase();    
+    // const term = (filters.keywords ?? "").trim().toLowerCase();    
+    // const inKeyword =
+    //   !term ||
+    //   exp.title.toLowerCase().includes(term) ||
+    //   exp.category.toLowerCase().includes(term) ||
+    //   exp.location.toLowerCase().includes(term)
+    // Новый блок: проверяем каждое ключевое слово
     const inKeyword =
-      !term ||
-      exp.title.toLowerCase().includes(term) ||
-      exp.category.toLowerCase().includes(term) ||
-      exp.location.toLowerCase().includes(term)
+      filters.keywords.length === 0 ||
+      filters.keywords.some(term =>
+        exp.title.toLowerCase().includes(term) ||
+        exp.category.toLowerCase().includes(term) ||
+        exp.location.toLowerCase().includes(term)
+      );
 
     return inDateRange && inPriceRange && inKeyword
   });

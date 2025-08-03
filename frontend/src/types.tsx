@@ -3,7 +3,7 @@ export type FilterParams = {
   endDate: Date | null;
   minPrice: number | null;
   maxPrice: number | null;
-  keyword:  string;      // добавили опциональное ключевое слово
+  keywords:  string[];      // добавили опциональное ключевое слово
 };
 
 export type ItemType = {
