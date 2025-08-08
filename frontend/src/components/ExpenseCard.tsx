@@ -24,12 +24,17 @@ export const ExpenseCard = ({
   const timerRef = useRef<number | null>(null);
   const movedRef = useRef(false);
 
+  // Флаг, что longPress был совершен
+  const longPressTriggered = useRef(false);
+
   const startPress = () => {
     if (!onLongPress) return;
     movedRef.current = false;
+    longPressTriggered.current = false;  // сброс перед новым прессом
     timerRef.current = window.setTimeout(() => {
       if (!movedRef.current) {
         onLongPress(expense.id);
+        longPressTriggered.current = true;
       }
     }, 400);
   };
@@ -42,6 +47,12 @@ export const ExpenseCard = ({
   };
 
   const handleClick = () => {
+    // Если только что отработал longPress — игнорируем этот «клик»
+    if (longPressTriggered.current) {
+      longPressTriggered.current = false;
+      return;
+    }
+    
     if (selectionMode && onSelect) {
       onSelect(expense.id);
     } else {
