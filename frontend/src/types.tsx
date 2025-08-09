@@ -14,8 +14,10 @@ export type ItemType = {
   date: string; // или Date, если ты парсишь JSON
 };
 
+type SortField = "title" | "category" | "price" | "location" | "datetime";
+
 export type SortParams = {
-  field: "title" | "category" | "price" | "location" | "datetime";
+  field: SortField;
   direction: "asc" | "desc";
 };
 

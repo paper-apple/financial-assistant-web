@@ -27,6 +27,13 @@ export const ExpensesPage = () => {
     direction: "desc",
   });
   const [showSort, setShowSort]     = useState(false);
+  const comparators: Record<SortParams["field"], (a: Expense, b: Expense) => number> = {
+    title: (a, b) => a.title.localeCompare(b.title),
+    category: (a, b) => a.category.localeCompare(b.category),
+    price: (a, b) => Number(a.price) - Number(b.price),
+    location: (a, b) => a.location.localeCompare(b.location),
+    datetime: (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime(),
+};
 
   const filteredExpenses = expenses.filter((exp) => {
     const date = new Date(exp.datetime);
@@ -53,24 +60,7 @@ export const ExpensesPage = () => {
   });
 
   const sortedExpenses = [...filteredExpenses].sort((a, b) => {
-    let cmp = 0;
-    switch (sortParams.field) {
-      case "title":
-        cmp = a.title.localeCompare(b.title);
-        break;
-      case "category":
-        cmp = a.category.localeCompare(b.category);
-        break;
-      case "price":
-        cmp = Number(a.price) - Number(b.price);
-        break;
-      case "location":
-        cmp = a.location.localeCompare(b.location);
-        break;
-      case "datetime":
-        cmp = new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
-        break;
-    }
+    const cmp = comparators[sortParams.field]?.(a, b) ?? 0;
     return sortParams.direction === "asc" ? cmp : -cmp;
   });
 
