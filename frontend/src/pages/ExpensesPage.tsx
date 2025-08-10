@@ -1,11 +1,12 @@
 import { useEffect, useState, useCallback  } from "react";
-import { deleteExpense, fetchExpenses, type Expense } from "../api";
+import { deleteExpense, fetchExpenses } from "../api";
 import { ExpenseForm } from "../components/ExpenseForm";
 import { ExpenseList } from "../components/ExpenseList";
 import { Modal } from "../components/Modal";
 import {FilterForm} from "../components/FilterForm.tsx";
 import { SortForm } from "../components/SortForm";
-import {type FilterParams, type SortParams} from "../types.tsx"
+import { StatsModal } from "../components/StatsModal";
+import { type Expense, type FilterParams, type SortParams} from "../types.tsx"
 
 export const ExpensesPage = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -15,6 +16,7 @@ export const ExpensesPage = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [statsOpen, setStatsOpen] = useState(false);
   const [filters, setFilters]       = useState<FilterParams>({
     startDate: null,
     endDate:   null,
@@ -230,6 +232,15 @@ export const ExpensesPage = () => {
         Сортировка
       </button>
 
+      {/* Кнопка для статистики */}
+      <button
+        onClick={() => setStatsOpen(true)}
+        className="fixed bottom-4 right-90 bg-blue-600 hover:bg-blue-700 text-white
+        font-bold py-2 px-3.5 rounded-full z-50"
+      >
+        Статистика
+      </button>
+
       {/* Modal для добавления */}
       {isAddOpen && (
         <Modal isOpen onClose={() => setIsAddOpen(false)}>
@@ -276,6 +287,22 @@ export const ExpensesPage = () => {
             initialValues={sortParams}
             onApply={handleSortApply}
             onClose={() => setShowSort(false)}
+          />
+        </Modal>
+      )}
+
+      {/* Модалка статистики */}
+      {statsOpen && (
+        <Modal isOpen onClose={() => setStatsOpen(false)}>
+          <h3 className="text-lg font-semibold mb-3 text-center">
+            Статистика
+          </h3>
+          <StatsModal
+            isOpen={statsOpen}
+            onClose={() => setStatsOpen(false)}
+            expenses={filteredExpenses} // важно: передаём именно отображаемые элементы
+            initialField="category"
+            currency="BYN"
           />
         </Modal>
       )}

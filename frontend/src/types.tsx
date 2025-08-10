@@ -1,3 +1,12 @@
+export type Expense = {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  location: string;
+  datetime: string; // ISO
+}
+
 export type FilterParams = {
   startDate: Date | null;
   endDate: Date | null;

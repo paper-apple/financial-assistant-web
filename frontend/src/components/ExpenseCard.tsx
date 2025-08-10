@@ -1,6 +1,6 @@
 // components/ExpenseCard
 import { useRef } from "react";
-import type { Expense } from "../api";
+import type { Expense } from "../types";
 
 console.log("ExpenseCard loaded");
 

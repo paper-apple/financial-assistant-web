@@ -1,4 +1,4 @@
-import { type Expense } from "../api";
+import { type Expense } from "../types";
 import { ExpenseCard } from "./ExpenseCard";
 
 type Props = {

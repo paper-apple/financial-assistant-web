@@ -1,5 +1,6 @@
 // src/api.ts
 import axios from "axios";
+import { type Expense } from "./types"
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
@@ -7,14 +8,14 @@ const api = axios.create({
 
 const API_BASE = "http://192.168.100.4:8000";
 
-export interface Expense {
-  id: number;
-  title: string;
-  category: string;
-  price: number;
-  location: string;
-  datetime: string; // ISO
-}
+// export interface Expense {
+//   id: number;
+//   title: string;
+//   category: string;
+//   price: number;
+//   location: string;
+//   datetime: string; // ISO
+// }
 
 // GET /expenses/
 export const fetchExpenses = () => api.get<Expense[]>(`${API_BASE}/expenses`);

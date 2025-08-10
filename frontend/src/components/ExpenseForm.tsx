@@ -1,7 +1,8 @@
 // src/components/ExpenseForm.tsx
 import { useState } from "react";
 import { forwardRef } from "react";
-import { createExpense, updateExpense, type Expense } from "../api";
+import { createExpense, updateExpense } from "../api";
+import { type Expense } from "../types"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ru } from "date-fns/locale";
