@@ -4,11 +4,12 @@ import { ru } from 'date-fns/locale/ru';
 import { type FilterParams } from '../types.tsx';
 
 type Props = {
+  isOpen: boolean
   initialValues: FilterParams
   onApply: (filters: FilterParams) => void
 }
 
-export function FilterForm({ initialValues, onApply }: Props) {
+export function FilterForm({ isOpen, initialValues, onApply }: Props) {
   // Поля формы
   const [startDate, setStartDate] = useState<Date | null>(initialValues.startDate)
   const [endDate,   setEndDate]   = useState<Date | null>(initialValues.endDate)
@@ -75,6 +76,8 @@ export function FilterForm({ initialValues, onApply }: Props) {
   const handleKeywordDelete = (wordToDelete: string) => {
     setKeywords(prev => prev.filter(word => word !== wordToDelete));
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="bg-white p-6 rounded shadow-md w-full max-w-md">

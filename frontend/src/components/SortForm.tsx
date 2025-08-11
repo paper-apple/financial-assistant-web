@@ -3,12 +3,13 @@ import { useState } from "react";
 import { type SortParams } from "../types";
 
 type Props = {
+  isOpen: boolean;
   initialValues: SortParams;
   onApply:       (sort: SortParams) => void;
   onClose:       () => void;
 };
 
-export function SortForm({ initialValues, onApply, onClose }: Props) {
+export function SortForm({ isOpen, initialValues, onApply, onClose }: Props) {
   const [field, setField]         = useState<SortParams["field"]>(initialValues.field);
   const [direction, setDirection] = useState<SortParams["direction"]>(
     initialValues.direction
@@ -17,6 +18,9 @@ export function SortForm({ initialValues, onApply, onClose }: Props) {
   const handleApply = () => {
     onApply({ field, direction });
   };
+
+  if (!isOpen) return null;
+
 
   return (
     <div className="bg-white p-6 rounded shadow-md w-full max-w-md">

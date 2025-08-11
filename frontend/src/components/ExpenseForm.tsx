@@ -10,19 +10,20 @@ import { Modal } from "../components/Modal";
 
 
 type Props = {
-  initialData?: Expense;
-  onCreated?: (created: Expense) => void;
-  onUpdated?: (updated: Expense) => void;
+  isOpen: boolean | Expense | null
+  initialData?: Expense
+  onCreated?: (created: Expense) => void
+  onUpdated?: (updated: Expense) => void
 };
 
 export const ExpenseForm = ({
+  isOpen,
   initialData,
   onCreated,
   onUpdated,
 }: Props) => {
   const [wasSubmitted, setWasSubmitted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const [form, setForm] = useState({
     title: initialData?.title || "",
@@ -75,24 +76,8 @@ export const ExpenseForm = ({
     }
   };
 
-  // const CustomInput = forwardRef<HTMLInputElement, any>(({ value, onClick, placeholder }, ref) => (
-  // <input
-  //   type="text"
-  //   readOnly
-  //   onClick={onClick}
-  //   ref={ref}
-  //   value={value}
-  //   placeholder={placeholder}
-  //   className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
-  // />
-  // ));
+  if (!isOpen) return null;
 
-  // const handleDateChange = (date: Date) => {
-  //   setForm((f) => ({ ...f, datetime: date.toISOString() }));
-  //   setIsOpen(false);
-  // };
-
-  // 4. JSX c Tailwind-классами
   return (
     <div className="bg-white p-4 rounded shadow-md">
       <div className="grid grid-cols-1 sm:grid-cols-0 gap-2">  
@@ -162,40 +147,8 @@ export const ExpenseForm = ({
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
             Дата
           </label>
-          {/* <DatePicker
-            selected={form.datetime ? new Date(form.datetime) : null}
-            onChange={(date) =>
-              setForm((f) => ({ ...f, datetime: date?.toISOString() || "" }))
-            }
-            showTimeSelect
-            dateFormat="dd.MM.yyyy HH:mm"
-            locale={ru}
-            placeholderText="Выберите дату и время"
-            customInput={<CustomInput placeholder="Дата и время" />}
-            popperPlacement="top"
-          /> */}
-
-          {/* <div className="ios-style-picker">
-            <DatePicker
-              selected={form.datetime ? new Date(form.datetime) : null}
-              onChange={(date) =>
-                setForm((f) => ({ ...f, datetime: date?.toISOString() || "" }))
-              }              
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              locale={ru}
-              dateFormat="dd.MM.yyyy HH:mm"
-              calendarClassName="ios-calendar"
-              timeCaption="Время"
-              // inline
-              fixedHeight
-              customInput={<CustomInput placeholder="Дата и время" />}
-            />
-          </div> */}
-
           <button
-            onClick={() => setIsOpen(true)}
+            onClick={() => setCalendarOpen(true)}
             className="w-full border rounded px-3 py-2 text-left"
           >
             {form.datetime
@@ -221,56 +174,32 @@ export const ExpenseForm = ({
       >
         {initialData ? "Сохранить" : "Добавить расход"}
       </button>
-      {/* {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      {calendarOpen && (
+        <Modal isOpen onClose={() => setCalendarOpen(false)}>
           <DatePicker
-              selected={form.datetime ? new Date(form.datetime) : null}
-              onChange={(date) =>
-                setForm((f) => ({ ...f, datetime: date?.toISOString() || "" }))
-              }              
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              locale={ru}
-              dateFormat="dd.MM.yyyy HH:mm"
-              calendarClassName="ios-calendar"
-              timeCaption="Время"
-              inline
-              fixedHeight
-              // customInput={<CustomInput placeholder="Дата и время" />}
-            />
-        </div>
-      )} */}
-      {isOpen && (
-        <Modal isOpen onClose={() => setIsOpen(false)}>
-          {/* <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded p-4"> */}
-                <DatePicker
-                  selected={modalDate}
-                  onChange={(date) => setModalDate(date)}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={15}
-                  locale={ru}
-                  dateFormat="dd.MM.yyyy HH:mm"
-                  calendarClassName="ios-calendar"
-                  timeCaption="Время"
-                  inline
-                  fixedHeight
-                />
-                <button
-                  onClick={() => {
-                    if (modalDate) {
-                      setForm((f) => ({ ...f, datetime: modalDate.toISOString() }));
-                    }
-                    setIsOpen(false);
-                  }}
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
-                >
-                  Сохранить
-                </button>
-            {/* </div>
-          </div> */}
+            selected={modalDate}
+            onChange={(date) => setModalDate(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            locale={ru}
+            dateFormat="dd.MM.yyyy HH:mm"
+            calendarClassName="ios-calendar"
+            timeCaption="Время"
+            inline
+            fixedHeight
+          />
+          <button
+            onClick={() => {
+              if (modalDate) {
+                setForm((f) => ({ ...f, datetime: modalDate.toISOString() }));
+              }
+              setCalendarOpen(false);
+            }}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
+          >
+            Сохранить
+          </button>
         </Modal>
       )}
     </div>

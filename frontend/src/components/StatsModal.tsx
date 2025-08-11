@@ -37,11 +37,7 @@ export function StatsModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* backdrop */}
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-
-      {/* modal panel */}
+    <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg">
       <div className="relative z-10 w-full max-w-2xl bg-white rounded-lg shadow-lg">
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-lg font-semibold">Статистика по корзине</h2>

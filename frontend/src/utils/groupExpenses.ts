@@ -8,10 +8,6 @@ export type StatRow = {
   total: number;   // Общая сумма
 };
 
-// export function groupExpenses<T extends { [k in GroupField]: string; price: number | string }>(
-//   expenses: T[],
-//   field: GroupField
-// ): StatRow[] {
 export function groupExpenses(expenses: Expense[], field: GroupField): StatRow[] {
   const map = new Map<string, { display: string; count: number; total: number }>();
 
@@ -32,6 +28,7 @@ export function groupExpenses(expenses: Expense[], field: GroupField): StatRow[]
     }
   }
 
+  // Преобразование значений Map в обычный список
   const rows: StatRow[] = Array.from(map.values()).map(r => ({
     key: r.display,
     count: r.count,

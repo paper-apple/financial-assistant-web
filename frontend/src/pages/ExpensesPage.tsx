@@ -247,7 +247,10 @@ export const ExpensesPage = () => {
           <h3 className="text-lg font-semibold mb-3 text-center">
             Добавить расход
           </h3>
-          <ExpenseForm onCreated={handleCreated} />
+          <ExpenseForm 
+            isOpen={isAddOpen}
+            onCreated={handleCreated}
+          />
         </Modal>
       )}
 
@@ -258,6 +261,7 @@ export const ExpensesPage = () => {
             Редактировать расход
           </h3>
           <ExpenseForm
+            isOpen={editingExpense}
             initialData={editingExpense}
             onUpdated={handleUpdated}
           />
@@ -271,6 +275,7 @@ export const ExpensesPage = () => {
             Фильтры
           </h3>
           <FilterForm
+            isOpen={showFilters}
             initialValues={filters}
             onApply={handleFilters}
           />
@@ -284,6 +289,7 @@ export const ExpensesPage = () => {
             Сортировка
           </h3>
           <SortForm
+            isOpen={showSort}
             initialValues={sortParams}
             onApply={handleSortApply}
             onClose={() => setShowSort(false)}
