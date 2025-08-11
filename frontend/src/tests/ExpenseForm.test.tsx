@@ -1,23 +1,29 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import {ExpenseForm} from "../components/ExpenseForm";
 
 describe("AddExpenseForm", () => {
-  it("показывает ошибку, если title пустой и нажать 'Добавить'", async () => {
-    // рендерим форму
-    render(<ExpenseForm />);
+  it.each([
+    ["Название", { title: "", category: "Еда", price: "5.5", place: "Кафе" }],
+    ["Категория", { title: "Кофе", category: "", price: "5.5", place: "Кафе" }],
+    ["Сумма",     { title: "Кофе", category: "Еда", price: "", place: "Кафе" }],
+    ["Место",     { title: "Кофе", category: "Еда", price: "5.5", place: "" }],
+  ])("показывает ошибку, если поле '%s' пустое", async (_, { title, category, price, place }) => {
+    render(<ExpenseForm isOpen={true}/>);
 
-    // находим кнопку и кликаем
+    if (title)     await userEvent.type(screen.getByPlaceholderText("Название"), title);
+    if (category)  await userEvent.type(screen.getByPlaceholderText("Категория"), category);
+    if (price)     await userEvent.type(screen.getByPlaceholderText("Сумма"), price);
+    if (place)     await userEvent.type(screen.getByPlaceholderText("Место"), place);
+
     await userEvent.click(screen.getByRole("button", { name: /добавить/i }));
 
-    // ожидаем увидеть текст ошибки под полем
-    const errorText = screen.getByText(/заполните поля/i);
-    expect(errorText).toBeInTheDocument();
+    expect(screen.getByText(/заполните поля/i)).toBeInTheDocument();
   });
 
   it("не показывает ошибку, если все поля заполнены", async () => {
-    render(<ExpenseForm />);
+    render(<ExpenseForm isOpen={true}/>);
 
     // вводим текст
     const titleInput = screen.getByPlaceholderText("Название");
@@ -25,7 +31,6 @@ describe("AddExpenseForm", () => {
     const priceInput = screen.getByPlaceholderText("Сумма");
     const placeInput = screen.getByPlaceholderText("Место");
 
-    // fireEvent.change(titleInput, { target: { value: "Кофе" } });
     await userEvent.type(titleInput, "Кофе");
     await userEvent.type(categoryInput, "Еда");
     await userEvent.type(priceInput, "5.5");

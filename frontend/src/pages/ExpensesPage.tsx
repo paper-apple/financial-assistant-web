@@ -14,6 +14,7 @@ export const ExpensesPage = () => {
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [statsOpen, setStatsOpen] = useState(false);
@@ -256,12 +257,12 @@ export const ExpensesPage = () => {
 
       {/* Modal для редактирования */}
       {editingExpense && (
-        <Modal isOpen onClose={() => setEditingExpense(null)}>
+        <Modal isOpen onClose={() => setIsUpdateOpen(false)}>
           <h3 className="text-lg font-semibold mb-3 text-center">
             Редактировать расход
           </h3>
           <ExpenseForm
-            isOpen={editingExpense}
+            isOpen={isUpdateOpen}
             initialData={editingExpense}
             onUpdated={handleUpdated}
           />

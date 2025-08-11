@@ -14,6 +14,7 @@ describe("SortForm", () => {
   it("должен корректно отображать начальные значения", () => {
     render(
       <SortForm
+        isOpen={true}
         initialValues={initialValues}
         onApply={vi.fn()}
         onClose={vi.fn()}
@@ -35,6 +36,7 @@ describe("SortForm", () => {
     const onClose = vi.fn();
     render(
       <SortForm
+        isOpen={true}
         initialValues={initialValues}
         onApply={vi.fn()}
         onClose={onClose}
@@ -50,6 +52,7 @@ describe("SortForm", () => {
     const onApply = vi.fn();
     render(
       <SortForm
+        isOpen={true}
         initialValues={initialValues}
         onApply={onApply}
         onClose={vi.fn()}
@@ -66,6 +69,7 @@ describe("SortForm", () => {
     const onApply = vi.fn();
     render(
       <SortForm
+        isOpen={true}
         initialValues={initialValues}
         onApply={onApply}
         onClose={vi.fn()}

@@ -47,7 +47,10 @@ describe("FilterForm", () => {
   });
 
   it("рендерит начальные значения", () => {
-    render(<FilterForm initialValues={initialValues} onApply={onApply} />);
+    render(<FilterForm 
+      isOpen={true} 
+      initialValues={initialValues} 
+      onApply={onApply} />);
 
     // Проверяем поля цены
     expect(screen.getByPlaceholderText("Мин")).toHaveValue("10");
@@ -62,7 +65,7 @@ describe("FilterForm", () => {
   });
 
   it("добавляет и удаляет ключевое слово", async () => {
-    render(<FilterForm initialValues={{ ...initialValues, keywords: [] }} onApply={onApply} />);
+    render(<FilterForm isOpen={true} initialValues={{ ...initialValues, keywords: [] }} onApply={onApply} />);
     const input = screen.getByPlaceholderText("Введите ключевое слово");
     const addBtn = screen.getByText("Добавить ключевое слово");
 
@@ -80,7 +83,11 @@ describe("FilterForm", () => {
   });
 
   it("показывает ошибку, если minPrice > maxPrice", async () => {
-    render(<FilterForm initialValues={initialValues} onApply={onApply} />);
+    render(<FilterForm 
+      isOpen={true} 
+      initialValues={initialValues} 
+      onApply={onApply} />);
+
     const minInput = screen.getByPlaceholderText("Мин");
     const maxInput = screen.getByPlaceholderText("Макс");
 
@@ -96,6 +103,7 @@ describe("FilterForm", () => {
   it("показывает ошибку, если startDate > endDate", async () => {
     render(
       <FilterForm
+        isOpen={true}
         initialValues={{ ...initialValues, startDate: new Date("2025-02-02T12:00:00"), endDate: new Date("2025-02-01T12:00:00") }}
         onApply={onApply}
       />
@@ -108,7 +116,10 @@ describe("FilterForm", () => {
   });
 
   it("вызывает onApply с корректными фильтрами", async () => {
-    render(<FilterForm initialValues={initialValues} onApply={onApply} />);
+    render(<FilterForm 
+      isOpen={true} 
+      initialValues={initialValues} 
+      onApply={onApply} />);
 
     // Меняем цены
     await userEvent.clear(screen.getByPlaceholderText("Мин"));
@@ -134,7 +145,10 @@ describe("FilterForm", () => {
   });
 
   it("сбрасывает все поля по нажатию Reset", async () => {
-    render(<FilterForm initialValues={initialValues} onApply={onApply} />);
+    render(<FilterForm 
+      isOpen={true}
+      initialValues={initialValues} 
+      onApply={onApply} />);
 
     // Жмём «Сбросить»
     await userEvent.click(screen.getByText("Сбросить"));

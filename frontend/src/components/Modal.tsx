@@ -1,8 +1,7 @@
 // src/components/Modal.tsx
-import { type ReactNode, useEffect, useState, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 import { addModalToStack, removeModalFromStack, getTopModalId } from "../utils/modalStack";
 import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
-import { getModalStack, nextId } from '../utils/modalStack';
 
 type Props = {
   isOpen: boolean;

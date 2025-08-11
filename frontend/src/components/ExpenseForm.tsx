@@ -10,7 +10,7 @@ import { Modal } from "../components/Modal";
 
 
 type Props = {
-  isOpen: boolean | Expense | null
+  isOpen: boolean
   initialData?: Expense
   onCreated?: (created: Expense) => void
   onUpdated?: (updated: Expense) => void
@@ -23,7 +23,7 @@ export const ExpenseForm = ({
   onUpdated,
 }: Props) => {
   const [wasSubmitted, setWasSubmitted] = useState(false);
-  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const [form, setForm] = useState({
     title: initialData?.title || "",
@@ -148,7 +148,7 @@ export const ExpenseForm = ({
             Дата
           </label>
           <button
-            onClick={() => setCalendarOpen(true)}
+            onClick={() => setIsCalendarOpen(true)}
             className="w-full border rounded px-3 py-2 text-left"
           >
             {form.datetime
@@ -174,8 +174,8 @@ export const ExpenseForm = ({
       >
         {initialData ? "Сохранить" : "Добавить расход"}
       </button>
-      {calendarOpen && (
-        <Modal isOpen onClose={() => setCalendarOpen(false)}>
+      {isCalendarOpen && (
+        <Modal isOpen onClose={() => setIsCalendarOpen(false)}>
           <DatePicker
             selected={modalDate}
             onChange={(date) => setModalDate(date)}
@@ -194,7 +194,7 @@ export const ExpenseForm = ({
               if (modalDate) {
                 setForm((f) => ({ ...f, datetime: modalDate.toISOString() }));
               }
-              setCalendarOpen(false);
+              setIsCalendarOpen(false);
             }}
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
           >
