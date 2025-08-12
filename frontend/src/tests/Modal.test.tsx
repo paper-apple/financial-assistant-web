@@ -5,7 +5,7 @@ import { Modal } from "../components/Modal";
 // import { test } from "@types/mocha"
 
 describe("Modal component", () => {
-  test("renders when isOpen is true", () => {
+  test("Рендер, когда isOpen=true", () => {
     render(
       <Modal isOpen={true} onClose={() => {}}>
         <span>Modal Content</span>
@@ -15,7 +15,7 @@ describe("Modal component", () => {
     expect(screen.getByText("Modal Content")).toBeInTheDocument();
   });
 
-  test("does not render when isOpen is false", () => {
+  test("Рендер, когда isOpen=false", () => {
     render(
       <Modal isOpen={false} onClose={() => {}}>
         <span>Modal Content</span>
@@ -25,7 +25,7 @@ describe("Modal component", () => {
     expect(screen.queryByText("Modal Content")).toBeNull();
   });
 
-  test("calls onClose when backdrop is clicked", () => {
+  test("Вызов onClose при нажатии на фон", () => {
     const onClose = vi.fn();
     render(
       <Modal isOpen={true} onClose={onClose}>
@@ -37,7 +37,7 @@ describe("Modal component", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  test("does not call onClose when content is clicked", () => {
+  test("Вызов onClose не должен происходить при нажатии на модальном окне", () => {
     const onClose = vi.fn();
     render(
       <Modal isOpen={true} onClose={onClose}>
@@ -49,7 +49,7 @@ describe("Modal component", () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  test("calls onClose when Escape is pressed and modal is topmost", () => {
+  test("Закрытие модального окна при нажатии Esc", () => {
     const onClose = vi.fn();
     render(
       <Modal isOpen={true} onClose={onClose}>

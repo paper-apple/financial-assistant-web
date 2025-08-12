@@ -1,5 +1,5 @@
 // src/components/Modal.tsx
-import { type ReactNode, useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef, useId } from "react";
 import { addModalToStack, removeModalFromStack, getTopModalId } from "../utils/modalStack";
 import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
@@ -7,9 +7,11 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  title?: string;
 };
 
-export const Modal = ({ isOpen, onClose, children }: Props) => {
+export const Modal = ({ isOpen, onClose, title, children }: Props) => {
+  const titleId = useId(); // Генерируем уникальный ID
   useBodyScrollLock(isOpen);
   const modalIdRef = useRef<number | null>(null);
 
@@ -47,7 +49,15 @@ export const Modal = ({ isOpen, onClose, children }: Props) => {
       <div
         className="bg-white rounded-lg p-4 w-full max-w-md mx-auto shadow-lg"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={title ? titleId : undefined}
       >
+        {title && (
+          <h3 id={titleId} className="text-lg font-semibold mb-3 text-center">
+            {title}
+          </h3>
+        )}
         {children}
       </div>
     </div>

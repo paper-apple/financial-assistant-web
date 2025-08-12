@@ -9,27 +9,27 @@ import { StatsModal } from "../components/StatsModal";
 import { type Expense, type FilterParams, type SortParams} from "../types.tsx"
 
 export const ExpensesPage = () => {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [isAddOpen, setIsAddOpen]           = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen]     = useState(false);
+  const [selectionMode, setSelectionMode]   = useState(false);
+  const [showFilters, setShowFilters]       = useState(false);
+  const [statsOpen, setStatsOpen]           = useState(false);
+  const [showSort, setShowSort]             = useState(false);
+  const [expenses, setExpenses]             = useState<Expense[]>([]);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
-  const [selectionMode, setSelectionMode] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
-  const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
-  const [showFilters, setShowFilters] = useState(false);
-  const [statsOpen, setStatsOpen] = useState(false);
-  const [filters, setFilters]       = useState<FilterParams>({
+  const [selectedIds, setSelectedIds]       = useState<number[]>([]);
+  const [lastUpdatedId, setLastUpdatedId]   = useState<number | null>(null);
+  const [sortParams, setSortParams]         = useState<SortParams>({
+    field: "datetime",
+    direction: "desc",
+  });
+  const [filters, setFilters]               = useState<FilterParams>({
     startDate: null,
     endDate:   null,
     minPrice:  null,
     maxPrice:  null,
-    keywords:  [],       // ← инициализируем
+    keywords:  [],
   })
-  const [sortParams, setSortParams] = useState<SortParams>({
-    field: "datetime",
-    direction: "desc",
-  });
-  const [showSort, setShowSort]     = useState(false);
   const comparators: Record<SortParams["field"], (a: Expense, b: Expense) => number> = {
     title: (a, b) => a.title.localeCompare(b.title),
     category: (a, b) => a.category.localeCompare(b.category),
@@ -89,6 +89,7 @@ export const ExpensesPage = () => {
   }, [lastUpdatedId]);
 
   const handleEditClick = (expense: Expense) => {
+    setIsUpdateOpen(true);
     setEditingExpense(expense);
   };
 
@@ -206,7 +207,7 @@ export const ExpensesPage = () => {
         </div>  
       </div>
 
-      {/* Floating Button */}
+      {/* Кнопка "+" */}
       <button
         onClick={() => setIsAddOpen(true)}
         className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white
@@ -244,10 +245,10 @@ export const ExpensesPage = () => {
 
       {/* Modal для добавления */}
       {isAddOpen && (
-        <Modal isOpen onClose={() => setIsAddOpen(false)}>
-          <h3 className="text-lg font-semibold mb-3 text-center">
+        <Modal isOpen onClose={() => setIsAddOpen(false)} title="Добавить расход">
+          {/* <h3 id="calendar-modal-title" className="text-lg font-semibold mb-3 text-center">
             Добавить расход
-          </h3>
+          </h3> */}
           <ExpenseForm 
             isOpen={isAddOpen}
             onCreated={handleCreated}
@@ -256,7 +257,7 @@ export const ExpensesPage = () => {
       )}
 
       {/* Modal для редактирования */}
-      {editingExpense && (
+      {isUpdateOpen && editingExpense && (
         <Modal isOpen onClose={() => setIsUpdateOpen(false)}>
           <h3 className="text-lg font-semibold mb-3 text-center">
             Редактировать расход
