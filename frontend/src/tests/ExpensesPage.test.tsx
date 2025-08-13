@@ -10,7 +10,8 @@ beforeAll(() => {
       disconnect() {}
     };
   });
-test("only top modal closes on Escape", async () => {
+  
+test("При нажатии Esc закрывается только верхняя модалка", async () => {
   const user = userEvent.setup();
 
   // Открываем основную модалку
