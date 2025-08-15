@@ -4,19 +4,18 @@ import { addModalToStack, removeModalFromStack, getTopModalId } from "../utils/m
 import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
 type Props = {
-  isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
   title?: string;
 };
 
-export const Modal = ({ isOpen, onClose, title, children }: Props) => {
+export const Modal = ({ onClose, title, children }: Props) => {
   const titleId = useId(); // Генерируем уникальный ID
-  useBodyScrollLock(isOpen);
+  useBodyScrollLock();
   const modalIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (isOpen && modalIdRef.current === null) {
+    if (modalIdRef.current === null) {
       const id = addModalToStack();
       modalIdRef.current = id;
     }
@@ -37,9 +36,7 @@ export const Modal = ({ isOpen, onClose, title, children }: Props) => {
       }
     };
     
-  }, [isOpen]);
-
-  if (!isOpen) return null;
+  });
 
   return (
     <div

@@ -4,8 +4,7 @@ import { type Expense } from "../types";
 import { groupExpenses, type GroupField } from "../utils/groupExpenses";
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   expenses: Expense[];               // сюда передаёшь отображённые карточки (filteredExpenses)
   initialField?: GroupField;         // необязательный дефолт
   currency?: string;                 // "BYN" по умолчанию
@@ -18,7 +17,6 @@ const groupFieldLabels: Record<GroupField, string> = {
 };
 
 export function StatsModal({
-  isOpen,
   onClose,
   expenses,
   initialField = "category",
@@ -33,8 +31,6 @@ export function StatsModal({
 
   const money = (n: number) =>
     new Intl.NumberFormat("ru-RU", { style: "currency", currency, maximumFractionDigits: 2 }).format(n);
-
-  if (!isOpen) return null;
 
   return (
     <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg">

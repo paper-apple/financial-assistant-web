@@ -9,14 +9,12 @@ import { Modal } from "../components/Modal";
 
 
 type Props = {
-  isOpen: boolean
   initialData?: Expense
   onCreated?: (created: Expense) => void
   onUpdated?: (updated: Expense) => void
 };
 
 export const ExpenseForm = ({
-  isOpen,
   initialData,
   onCreated,
   onUpdated,
@@ -74,8 +72,6 @@ export const ExpenseForm = ({
       console.error("Ошибка при сохранении:", err);
     }
   };
-
-  if (!isOpen) return null;
 
   return (
     <div className="bg-white p-4 rounded shadow-md">
@@ -176,7 +172,6 @@ export const ExpenseForm = ({
       </button>
       {isCalendarOpen && (
         <Modal 
-          isOpen 
           onClose={() => setIsCalendarOpen(false)}
           title="Выберите дату и время"
         >
