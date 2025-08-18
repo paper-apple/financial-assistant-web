@@ -15,13 +15,13 @@ export type FilterParams = {
   keywords:  string[];      // добавили опциональное ключевое слово
 };
 
-export type ItemType = {
-  id: string;
-  title: string;
-  description?: string;
-  amount: number;
-  date: string; // или Date, если ты парсишь JSON
-};
+// export type ItemType = {
+//   id: string;
+//   title: string;
+//   description?: string;
+//   amount: number;
+//   date: string; // или Date, если ты парсишь JSON
+// };
 
 type SortField = "title" | "category" | "price" | "location" | "datetime";
 
@@ -30,3 +30,10 @@ export type SortParams = {
   direction: "asc" | "desc";
 };
 
+export type FormState = {
+  title: string;
+  category: string;
+  price: string;      // именно string, т.к. в useState ты делаешь String(...)
+  location: string;
+  datetime: string;   // ISO-строка
+};

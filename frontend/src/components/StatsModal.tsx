@@ -4,7 +4,7 @@ import { type Expense } from "../types";
 import { groupExpenses, type GroupField } from "../utils/groupExpenses";
 
 type Props = {
-  onClose?: () => void;
+  onClose: () => void;
   expenses: Expense[];               // сюда передаёшь отображённые карточки (filteredExpenses)
   initialField?: GroupField;         // необязательный дефолт
   currency?: string;                 // "BYN" по умолчанию

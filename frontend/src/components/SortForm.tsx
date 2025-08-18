@@ -5,7 +5,7 @@ import { type SortParams } from "../types";
 type Props = {
   initialValues: SortParams;
   onApply:       (sort: SortParams) => void;
-  onClose?:       () => void;
+  onClose:       () => void;
 };
 
 export function SortForm({ initialValues, onApply, onClose }: Props) {
@@ -15,7 +15,8 @@ export function SortForm({ initialValues, onApply, onClose }: Props) {
   );
 
   const handleApply = () => {
-    onApply({ field, direction });
+    onApply({ field, direction })
+    onClose()
   };
 
   return (

@@ -1,36 +1,28 @@
 // src/components/ExpenseForm.tsx
 import { useState } from "react";
 import { createExpense, updateExpense } from "../api";
-import { type Expense } from "../types"
-import DatePicker from "react-datepicker";
+import type { Expense, FormState } from "../types"
 import "react-datepicker/dist/react-datepicker.css";
-import { ru } from "date-fns/locale";
-import { Modal } from "../components/Modal";
 
 
 type Props = {
+  form: FormState
   initialData?: Expense
   onCreated?: (created: Expense) => void
   onUpdated?: (updated: Expense) => void
+  updateField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
+  onOpen: () => void
 };
 
 export const ExpenseForm = ({
+  form,
   initialData,
   onCreated,
   onUpdated,
+  updateField,
+  onOpen,
 }: Props) => {
   const [wasSubmitted, setWasSubmitted] = useState(false);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-
-  const [form, setForm] = useState({
-    title: initialData?.title || "",
-    category: initialData?.category || "",
-    price: String(initialData?.price || ""),
-    location: initialData?.location || "",
-    datetime: initialData?.datetime || new Date().toISOString(),
-  });
-
-  const [modalDate, setModalDate] = useState<Date | null>(form.datetime ? new Date(form.datetime) : null);
 
   // 2. Универсальный onChange для всех input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +37,8 @@ export const ExpenseForm = ({
         .replace(/^(\d*\.\d{0,2}).*$/, "$1"); // ограничиваем до 2 знаков после точки
     }
 
-    setForm((f) => ({ ...f, [name]: sanitizedValue }));
+    // setForm((f) => ({ ...f, [name]: sanitizedValue }));
+    updateField(name as keyof FormState, sanitizedValue);
   };
 
 
@@ -143,7 +136,7 @@ export const ExpenseForm = ({
             Дата
           </label>
           <button
-            onClick={() => setIsCalendarOpen(true)}
+            onClick={onOpen}
             className="w-full border rounded px-3 py-2 text-left"
             data-testid="calendar-button"
           >
@@ -170,40 +163,6 @@ export const ExpenseForm = ({
       >
         {initialData ? "Сохранить" : "Добавить"}
       </button>
-      {isCalendarOpen && (
-        <Modal 
-          onClose={() => setIsCalendarOpen(false)}
-          title="Выберите дату и время"
-        >
-          <div>
-            {/* <h4 className="text-center mb-2 font-medium">Выберите дату и время</h4> */}
-            <DatePicker
-              selected={modalDate}
-              onChange={(date) => setModalDate(date)}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              locale={ru}
-              dateFormat="dd.MM.yyyy HH:mm"
-              calendarClassName="ios-calendar"
-              timeCaption="Время"
-              inline
-              fixedHeight
-            />
-            <button
-              onClick={() => {
-                if (modalDate) {
-                  setForm((f) => ({ ...f, datetime: modalDate.toISOString() }));
-                }
-                setIsCalendarOpen(false);
-              }}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
-            >
-              Сохранить
-            </button>
-          </div>
-        </Modal>
-      )}
     </div>
   );
 };

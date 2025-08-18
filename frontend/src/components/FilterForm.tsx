@@ -6,9 +6,10 @@ import { type FilterParams } from '../types.tsx';
 type Props = {
   initialValues: FilterParams
   onApply: (filters: FilterParams) => void
+  onClose: () => void
 }
 
-export function FilterForm({ initialValues, onApply }: Props) {
+export function FilterForm({ initialValues, onApply, onClose }: Props) {
   // Поля формы
   const [startDate, setStartDate] = useState<Date | null>(initialValues.startDate)
   const [endDate,   setEndDate]   = useState<Date | null>(initialValues.endDate)
@@ -59,6 +60,7 @@ export function FilterForm({ initialValues, onApply }: Props) {
       maxPrice:  maxPrice  ? Number(maxPrice) : null,
       keywords:  keywordsList,
     })
+    onClose()
   }
 
   // Сброс фильтров
