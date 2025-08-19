@@ -10,5 +10,5 @@ export const useBodyScrollLock = () => {
     return () => {
       document.body.style.overflow = originalStyle;
     };
-  });
+  }, []);
 };

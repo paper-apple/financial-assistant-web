@@ -1,8 +1,8 @@
 // src/components/SortForm.test.tsx
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import { SortForm } from "../components/SortForm";
-import type { SortParams } from "../types";
+import { SortForm } from "../../components/SortForm";
+import type { SortParams } from "../../types";
 import { userEvent } from "@testing-library/user-event";
 
 describe("SortForm", () => {
@@ -14,7 +14,7 @@ describe("SortForm", () => {
   it("должен корректно отображать начальные значения", () => {
     render(
       <SortForm
-        isOpen={true}
+        // isOpen={true}
         initialValues={initialValues}
         onApply={vi.fn()}
         onClose={vi.fn()}
@@ -36,14 +36,12 @@ describe("SortForm", () => {
     const onClose = vi.fn();
     render(
       <SortForm
-        isOpen={true}
         initialValues={initialValues}
         onApply={vi.fn()}
         onClose={onClose}
       />
     );
 
-    // fireEvent.click(screen.getByText("Отмена"));
     await userEvent.click(screen.getByText("Отмена"));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
@@ -52,14 +50,12 @@ describe("SortForm", () => {
     const onApply = vi.fn();
     render(
       <SortForm
-        isOpen={true}
         initialValues={initialValues}
         onApply={onApply}
         onClose={vi.fn()}
       />
     );
 
-    // fireEvent.click(screen.getByText("Применить"));
     await userEvent.click(screen.getByText("Применить"));
     expect(onApply).toHaveBeenCalledWith(initialValues);
     expect(onApply).toHaveBeenCalledTimes(1);
@@ -69,7 +65,6 @@ describe("SortForm", () => {
     const onApply = vi.fn();
     render(
       <SortForm
-        isOpen={true}
         initialValues={initialValues}
         onApply={onApply}
         onClose={vi.fn()}

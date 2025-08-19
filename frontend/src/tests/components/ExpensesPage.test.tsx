@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeAll, test } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { ExpensesPage } from "../pages/ExpensesPage"; // страница с модалками
+import { ExpensesPage } from "../../pages/ExpensesPage"; // страница с модалками
 
 beforeAll(() => {
     global.ResizeObserver = class {

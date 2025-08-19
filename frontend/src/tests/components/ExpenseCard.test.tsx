@@ -1,8 +1,8 @@
 // src/components/__tests__/ExpenseCard.test.tsx
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ExpenseCard } from "../components/ExpenseCard";
-import { type Expense } from "../types"
+import { ExpenseCard } from "../../components/ExpenseCard";
+import { type Expense } from "../../types"
 
 function makeExpense(overrides: Partial<Expense> = {}): Expense {
   const base = {

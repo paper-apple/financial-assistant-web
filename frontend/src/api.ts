@@ -8,15 +8,6 @@ const api = axios.create({
 
 const API_BASE = "http://192.168.100.4:8000";
 
-// export interface Expense {
-//   id: number;
-//   title: string;
-//   category: string;
-//   price: number;
-//   location: string;
-//   datetime: string; // ISO
-// }
-
 // GET /expenses/
 export const fetchExpenses = () => api.get<Expense[]>(`${API_BASE}/expenses`);
 

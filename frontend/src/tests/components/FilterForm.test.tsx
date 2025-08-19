@@ -28,8 +28,8 @@ vi.mock("react-datepicker", () => {
   };
 });
 
-import { FilterForm } from "../components/FilterForm.tsx";
-import type { FilterParams } from "../types.tsx";
+import { FilterForm } from "../../components/FilterForm.tsx";
+import type { FilterParams } from "../../types.tsx";
 
 describe("FilterForm", () => {
   const baseDate = new Date("2025-01-01T12:00:00Z");
@@ -41,6 +41,7 @@ describe("FilterForm", () => {
     keywords: ["foo"],
   };
   const onApply = vi.fn();
+  const onClose = vi.fn();
 
   beforeEach(() => {
     onApply.mockClear();
@@ -48,7 +49,7 @@ describe("FilterForm", () => {
 
   it("рендерит начальные значения", () => {
     render(<FilterForm 
-      isOpen={true} 
+      onClose={onClose} 
       initialValues={initialValues} 
       onApply={onApply} />);
 
@@ -65,7 +66,10 @@ describe("FilterForm", () => {
   });
 
   it("добавляет и удаляет ключевое слово", async () => {
-    render(<FilterForm isOpen={true} initialValues={{ ...initialValues, keywords: [] }} onApply={onApply} />);
+    render(<FilterForm 
+      onClose={onClose} 
+      initialValues={{ ...initialValues, keywords: [] }} 
+      onApply={onApply} />);
     const input = screen.getByPlaceholderText("Введите ключевое слово");
     const addBtn = screen.getByText("Добавить ключевое слово");
 
@@ -84,7 +88,7 @@ describe("FilterForm", () => {
 
   it("показывает ошибку, если minPrice > maxPrice", async () => {
     render(<FilterForm 
-      isOpen={true} 
+      onClose={onClose} 
       initialValues={initialValues} 
       onApply={onApply} />);
 
@@ -103,7 +107,7 @@ describe("FilterForm", () => {
   it("показывает ошибку, если startDate > endDate", async () => {
     render(
       <FilterForm
-        isOpen={true}
+        onClose={onClose}
         initialValues={{ ...initialValues, startDate: new Date("2025-02-02T12:00:00"), endDate: new Date("2025-02-01T12:00:00") }}
         onApply={onApply}
       />
@@ -117,7 +121,7 @@ describe("FilterForm", () => {
 
   it("вызывает onApply с корректными фильтрами", async () => {
     render(<FilterForm 
-      isOpen={true} 
+      onClose={onClose}
       initialValues={initialValues} 
       onApply={onApply} />);
 
@@ -146,7 +150,7 @@ describe("FilterForm", () => {
 
   it("сбрасывает все поля по нажатию Reset", async () => {
     render(<FilterForm 
-      isOpen={true}
+      onClose={onClose}
       initialValues={initialValues} 
       onApply={onApply} />);
 
