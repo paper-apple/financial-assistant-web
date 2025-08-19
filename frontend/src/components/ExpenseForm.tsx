@@ -36,13 +36,11 @@ export const ExpenseForm = ({
         .replace(",", ".")            // нормализуем запятую
         .replace(/^(\d*\.\d{0,2}).*$/, "$1"); // ограничиваем до 2 знаков после точки
     }
-
-    // setForm((f) => ({ ...f, [name]: sanitizedValue }));
     updateField(name as keyof FormState, sanitizedValue);
   };
 
 
-  // 3. Отправка формы
+  // Отправка формы
   const handleSubmit = async () => {
     setWasSubmitted(true);
 
@@ -104,9 +102,9 @@ export const ExpenseForm = ({
           </label>
           <input
             name="price"
-            type="text"
-            inputMode="decimal"
-            pattern="[0-9]*"
+            // type="text"
+            // inputMode="decimal"
+            // pattern="[0-9]*"
             value={form.price}
             onChange={handleChange}
             placeholder="Сумма"

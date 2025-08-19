@@ -64,7 +64,6 @@ export const ExpensesPage = () => {
   // Редактируемый расход
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
 
-  
   const [form, setForm] = useState<FormState>(() => initFormFromExpense());
 
   useEffect(() => {
@@ -82,6 +81,10 @@ export const ExpensesPage = () => {
 
   const closeModal = (modal: keyof typeof modals) => {
     setModals(prev => ({ ...prev, [modal]: false }));
+    if (modal === "update" || "add") {
+      setEditingExpense(null);
+      setForm(initFormFromExpense(undefined));
+    }
   };
 
   // устанавливает расход для редактирования и открывает модалку редактирования
@@ -99,7 +102,6 @@ export const ExpensesPage = () => {
   // вызывается после успешного обновления расхода (обновляет расход и закрывает модалку)
   const handleUpdated = (updated: Expense) => {
     updateExpense(updated);
-    setEditingExpense(null);
     closeModal("update");
   };
 

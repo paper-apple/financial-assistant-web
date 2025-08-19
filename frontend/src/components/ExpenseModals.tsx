@@ -64,8 +64,8 @@ export const ExpenseModals = ({
     {modals.update && editingExpense && (
       <Modal onClose={() => onClose("update")} title="Редактировать расход">
         <ExpenseForm 
-          form={form} 
-          initialData={editingExpense} 
+          form={form}
+          initialData={editingExpense}
           onUpdated={onUpdated} 
           updateField={updateField}
           onOpen={() => onOpen("calendar")}
