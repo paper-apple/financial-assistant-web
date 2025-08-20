@@ -24,7 +24,7 @@ export const ExpenseForm = ({
 }: Props) => {
   const [wasSubmitted, setWasSubmitted] = useState(false);
 
-  // 2. Универсальный onChange для всех input
+  // Универсальный onChange для всех input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 

@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { Modal } from "../../components/Modal";
 
 describe("Modal component", () => {
-  test("Рендер, когда isOpen=true", () => {
+  test("Рендер", () => {
     render(
       <Modal onClose={() => {}}>
         <span>Modal Content</span>

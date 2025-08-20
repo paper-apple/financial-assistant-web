@@ -11,7 +11,7 @@ type Props = {
 
 export const Modal = ({ onClose, title, children }: Props) => {
   const titleId = useId(); // Генерируем уникальный ID
-  // useBodyScrollLock();
+  useBodyScrollLock();
   const modalIdRef = useRef<number | null>(null);
 
   useEffect(() => {
