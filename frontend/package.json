@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test:integration": "vitest run src/tests/ExpensesPage.integration.test.tsx"
+
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",

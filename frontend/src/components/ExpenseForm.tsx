@@ -4,7 +4,6 @@ import { createExpense, updateExpense } from "../api";
 import type { Expense, FormState } from "../types"
 import "react-datepicker/dist/react-datepicker.css";
 
-
 type Props = {
   form: FormState
   initialData?: Expense
@@ -102,9 +101,9 @@ export const ExpenseForm = ({
           </label>
           <input
             name="price"
-            // type="text"
-            // inputMode="decimal"
-            // pattern="[0-9]*"
+            type="text"
+            inputMode="decimal"
+            pattern="[0-9]*"
             value={form.price}
             onChange={handleChange}
             placeholder="Сумма"

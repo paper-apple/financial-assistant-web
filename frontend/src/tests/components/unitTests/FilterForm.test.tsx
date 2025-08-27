@@ -28,8 +28,8 @@ vi.mock("react-datepicker", () => {
   };
 });
 
-import { FilterForm } from "../../components/FilterForm.tsx";
-import type { FilterParams } from "../../types.tsx";
+import { FilterForm } from "../../../components/FilterForm.tsx";
+import type { FilterParams } from "../../../types.tsx";
 
 describe("FilterForm", () => {
   const baseDate = new Date("2025-01-01T12:00:00Z");

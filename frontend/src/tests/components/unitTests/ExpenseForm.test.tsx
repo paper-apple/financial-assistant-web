@@ -2,9 +2,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ExpenseForm } from "../../components/ExpenseForm";
-import type { Expense, FormState } from "../../types";
-import * as api from "../../api";
+import { ExpenseForm } from "../../../components/ExpenseForm";
+import type { Expense, FormState } from "../../../types";
+import * as api from "../../../api";
 
 // Моковые функции для пропсов
 const mockUpdateField = vi.fn();

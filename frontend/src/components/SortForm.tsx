@@ -25,8 +25,9 @@ export function SortForm({ initialValues, onApply, onClose }: Props) {
 
       {/* Выбор поля */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Поле для сортировки</label>
+        <label className="block text-sm font-medium mb-1" id="sort-label">Поле для сортировки</label>
         <select
+          aria-labelledby="sort-label"
           value={field}
           onChange={e => setField(e.target.value as SortParams["field"])}
           className="w-full border-gray-300 border rounded px-3 py-2"

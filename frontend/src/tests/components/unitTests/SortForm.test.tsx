@@ -1,8 +1,8 @@
 // src/components/SortForm.test.tsx
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import { SortForm } from "../../components/SortForm";
-import type { SortParams } from "../../types";
+import { SortForm } from "../../../components/SortForm";
+import type { SortParams } from "../../../types";
 import { userEvent } from "@testing-library/user-event";
 
 describe("SortForm", () => {

@@ -68,6 +68,7 @@ export const ExpenseCard = ({
   return (
     <li
       key={expense.id}
+      data-testid={`expense-card-${expense.id}`}
       className={`relative cursor-pointer p-4 rounded-lg border overflow-hidden
       shadow-md hover:shadow-lg transition-shadow duration-300 select-none
       ${selected ? "bg-blue-50 border-blue-500" : "bg-white border-gray-200"}`}
@@ -78,9 +79,11 @@ export const ExpenseCard = ({
       onTouchEnd={cancelPress}
       onTouchMove={handleTouchMove}
       onClick={handleClick}
+      
     >
       {/* Подсветка обновления */}
       <div
+        data-testid={`highlight-${expense.id}`}
         className={`absolute inset-0 rounded bg-green-100 pointer-events-none
           transition-opacity duration-700
           ${highlight ? "opacity-100" : "opacity-0"}`}
@@ -91,14 +94,14 @@ export const ExpenseCard = ({
           {selectionMode && selected && (
             <span className="absolute top-1 right-1 text-blue-600">✔️</span>
           )}
-          <div className="font-semibold">{expense.title}</div>
-          <div className="text-sm text-blue-600">{expense.category}</div>
-          <div className="text-xs text-gray-700 leading-tight">{expense.location}</div>
-          <div className="flex justify-between text-xs text-gray-800 mt-1">
+          <div className="font-semibold" data-testid="expense-title">{expense.title}</div>
+          <div className="text-sm text-blue-600" data-testid="expense-category">{expense.category}</div>
+          <div className="text-xs text-gray-700 leading-tight" data-testid="expense-location">{expense.location}</div>
+          <div className="flex justify-between text-xs text-gray-800 mt-1" data-testid="expense-price">
             <span className="font-medium">{expense.price.toFixed(2)} ₽</span>
-            <span className="text-gray-500">{new Date(expense.datetime).toLocaleString()}</span>
+            <span className="text-gray-500" data-testid="expense-datetime">{new Date(expense.datetime).toLocaleString()}</span>
+          </div>
         </div>
-      </div>
     </li>
   );
 };

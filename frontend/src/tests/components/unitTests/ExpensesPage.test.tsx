@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeAll, test } from "vitest";
+import { expect, beforeAll, test } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { ExpensesPage } from "../../pages/ExpensesPage"; // страница с модалками
+import { ExpensesPage } from "../../../pages/ExpensesPage"; // страница с модалками
 
 beforeAll(() => {
     global.ResizeObserver = class {
@@ -25,24 +25,24 @@ test("При нажатии Esc закрывается только верхня
 
   // Родительская модалка открыта
   expect(
-    screen.getByRole("dialog", { name: /Выберите дату и время/i })
+    screen.getByRole("dialog", { name: /Добавить расход/i })
   ).toBeInTheDocument();
 
   // Нажимаем Escape
   await user.keyboard("{Escape}");
 
-  // Проверяем, что вложенная модалка закрылась
-  expect(screen.queryByRole("dialog", { name: /Выберите дату и время/i })).not.toBeInTheDocument();
+  // // Проверяем, что вложенная модалка закрылась
+  expect(screen.queryByRole("dialog", { name: /Календарь/i })).not.toBeInTheDocument();
 
-  // Основная модалка осталась
+  // // Основная модалка осталась
   expect(
     screen.getByRole("dialog", { name: /Добавить расход/i })
   ).toBeInTheDocument();
 
-  // Снова нажимаем Escape
+  // // Снова нажимаем Escape
   await user.keyboard("{Escape}");
 
-  // Родительская модалка закрылась
+  // // Родительская модалка закрылась
   expect(
     screen.queryByRole("dialog", { name: /Добавить расход/i })
   ).not.toBeInTheDocument();

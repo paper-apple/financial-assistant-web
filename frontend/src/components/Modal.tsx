@@ -16,7 +16,7 @@ export const Modal = ({ onClose, title, children }: Props) => {
 
   useEffect(() => {
     if (modalIdRef.current === null) {
-      const id = addModalToStack();
+      const id = addModalToStack(); // Добавление номера модалки в список и его получение
       modalIdRef.current = id;
     }
 

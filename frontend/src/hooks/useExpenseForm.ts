@@ -91,7 +91,6 @@ export const useExpenseForm = () => {
   const setFormFromExpense = useCallback((expense: Expense | null) => {
     setEditingExpense(expense);
     setForm(initFormFromExpense(expense ?? undefined));
-
   }, []);
 
   const resetForm = useCallback(() => {
