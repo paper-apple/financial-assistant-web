@@ -2,38 +2,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExpensesPage } from '../../../pages/ExpensesPage';
-// import * as api from '../../../api';
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { setupApiMocks } from './setupTestEnv';
 
-// const mockExpenses = [
-//   {
-//     id: 1,
-//     title: 'Apple',
-//     category: 'Food',
-//     price: 5,
-//     location: 'Market',
-//     datetime: '2023-01-03T10:00:00.000Z'
-//   },
-//   {
-//     id: 2,
-//     title: 'Banana',
-//     category: 'Food',
-//     price: 3,
-//     location: 'Store',
-//     datetime: '2023-01-02T12:00:00.000Z'
-//   },
-//   {
-//     id: 3,
-//     title: 'Coffee',
-//     category: 'Drink',
-//     price: 10,
-//     location: 'Cafe',
-//     datetime: '2023-01-01T08:00:00.000Z'
-//   }
-// ];
-
-describe('SortForm Integration Tests', () => {
+describe('Интеграционный тест выбора сортировки', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
@@ -43,19 +15,6 @@ describe('SortForm Integration Tests', () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
-  // beforeEach(() => {
-  //   vi.spyOn(api, 'fetchExpenses').mockResolvedValue({
-  //     data: mockExpenses,
-  //     status: 200,
-  //     statusText: 'OK',
-  //     headers: {},
-  //     config: {} as any
-  //   });
-  // });
-
-  // afterEach(() => {
-  //   vi.restoreAllMocks();
-  // });
 
   it('открыть модальное окно с сортировкой, изменить параметры, применить параметры', async () => {
     render(<ExpensesPage />);
@@ -79,13 +38,15 @@ describe('SortForm Integration Tests', () => {
 
     // Проверяем что модалка открылась
     await waitFor(() => {
-      expect(screen.getByText('Поле для сортировки')).toBeInTheDocument();
+      expect(screen.getByText('Выбор поля')).toBeInTheDocument();
       expect(screen.getByText('Направление')).toBeInTheDocument();
     });
 
     // Проверяем начальные значения в форме
-    const fieldSelect = screen.getByLabelText('Поле для сортировки');
-    expect(fieldSelect).toHaveValue('datetime');
+    const dataRadio = screen.getByLabelText('Дата');
+    const titleRadio = screen.getByLabelText('Название');
+    expect(dataRadio).toBeChecked();
+    expect(titleRadio).not.toBeChecked();
 
     const ascendingRadio = screen.getByLabelText('По возрастанию');
     const descendingRadio = screen.getByLabelText('По убыванию');
@@ -93,7 +54,7 @@ describe('SortForm Integration Tests', () => {
     expect(ascendingRadio).not.toBeChecked();
 
     // Меняем поле сортировки на "Название"
-    await user.selectOptions(fieldSelect, 'title');
+    await user.click(titleRadio);
 
     // Меняем направление на "По возрастанию"
     await user.click(ascendingRadio);
@@ -104,7 +65,7 @@ describe('SortForm Integration Tests', () => {
 
     // Проверяем что модалка закрылась
     await waitFor(() => {
-      expect(screen.queryByText('Поле для сортировки')).not.toBeInTheDocument();
+      expect(screen.queryByText('Выбор поля')).not.toBeInTheDocument();
     });
 
     // Проверяем что расходы отсортированы по названию (A-Z)
@@ -128,12 +89,13 @@ describe('SortForm Integration Tests', () => {
     await user.click(sortButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Поле для сортировки')).toBeInTheDocument();
+      expect(screen.getByText('Выбор поля')).toBeInTheDocument();
     });
 
     // Выбираем сортировку по цене
-    const fieldSelect = screen.getByLabelText('Поле для сортировки');
-    await user.selectOptions(fieldSelect, 'price');
+    const priceRadio = screen.getByLabelText('Стоимость');
+    await user.click(priceRadio);
+
 
     // Выбираем сортировку по убыванию (должна быть выбрана по умолчанию)
     const descendingRadio = screen.getByLabelText('По убыванию');
@@ -163,12 +125,12 @@ describe('SortForm Integration Tests', () => {
     await user.click(screen.getByText('Сортировка'));
 
     await waitFor(() => {
-      expect(screen.getByText('Поле для сортировки')).toBeInTheDocument();
+      expect(screen.getByText('Выбор поля')).toBeInTheDocument();
     });
 
     // Выбираем сортировку по категории
-    const fieldSelect = screen.getByLabelText('Поле для сортировки');
-    await user.selectOptions(fieldSelect, 'category');
+    const categoryRadio = screen.getByLabelText('Категория');
+    await user.click(categoryRadio);
 
     // Выбираем сортировку по возрастанию
     const ascendingRadio = screen.getByLabelText('По возрастанию');
@@ -201,12 +163,13 @@ describe('SortForm Integration Tests', () => {
     await user.click(screen.getByText('Сортировка'));
 
     await waitFor(() => {
-      expect(screen.getByText('Поле для сортировки')).toBeInTheDocument();
+      expect(screen.getByText('Выбор поля')).toBeInTheDocument();
     });
 
     // Меняем параметры сортировки
-    const fieldSelect = screen.getByLabelText('Поле для сортировки');
-    await user.selectOptions(fieldSelect, 'title');
+    const titleRadio = screen.getByLabelText('Название');
+    await user.click(titleRadio);
+
 
     const ascendingRadio = screen.getByLabelText('По возрастанию');
     await user.click(ascendingRadio);
@@ -217,7 +180,7 @@ describe('SortForm Integration Tests', () => {
 
     // Проверяем что модалка закрылась и порядок не изменился
     await waitFor(() => {
-      expect(screen.queryByText('Поле для сортировки')).not.toBeInTheDocument();
+      expect(screen.queryByText('Выбор поля')).not.toBeInTheDocument();
     });
 
     const finalItems = screen.getAllByTestId(/expense-card-/);
@@ -237,10 +200,10 @@ describe('SortForm Integration Tests', () => {
     await user.click(screen.getByText('Сортировка'));
     
     await waitFor(() => {
-      expect(screen.getByText('Поле для сортировки')).toBeInTheDocument();
+      expect(screen.getByText('Выбор поля')).toBeInTheDocument();
     });
 
-    await user.selectOptions(screen.getByLabelText('Поле для сортировки'), 'title');
+    await user.click(screen.getByLabelText('Название'));
     await user.click(screen.getByLabelText('По возрастанию'));
     await user.click(screen.getByRole('button', { name: /применить/i }));
 

@@ -98,7 +98,7 @@ export const ExpenseCard = ({
           <div className="text-sm text-blue-600" data-testid="expense-category">{expense.category}</div>
           <div className="text-xs text-gray-700 leading-tight" data-testid="expense-location">{expense.location}</div>
           <div className="flex justify-between text-xs text-gray-800 mt-1" data-testid="expense-price">
-            <span className="font-medium">{expense.price.toFixed(2)} ₽</span>
+            <span className="font-medium">{expense.price} ₽</span>
             <span className="text-gray-500" data-testid="expense-datetime">{new Date(expense.datetime).toLocaleString()}</span>
           </div>
         </div>

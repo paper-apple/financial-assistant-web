@@ -21,23 +21,52 @@ export function SortForm({ initialValues, onApply, onClose }: Props) {
 
   return (
     <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-      <h2 className="text-lg font-semibold mb-4">Сортировка</h2>
-
+      
       {/* Выбор поля */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1" id="sort-label">Поле для сортировки</label>
-        <select
-          aria-labelledby="sort-label"
-          value={field}
-          onChange={e => setField(e.target.value as SortParams["field"])}
-          className="w-full border-gray-300 border rounded px-3 py-2"
-        >
-          <option value="title">Название</option>
-          <option value="category">Категория</option>
-          <option value="price">Цена</option>
-          <option value="location">Место</option>
-          <option value="datetime">Дата</option>
-        </select>
+      <div className="mb-6">
+        <label className="block text-sm font-medium mb-1">Выбор поля</label>
+        <div className="flex gap-4">
+          <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              checked={field === "title"}
+              onChange={() => setField("title")}
+            />
+            Название
+          </label>
+          <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              checked={field === "category"}
+              onChange={() => setField("category")}
+            />
+            Категория
+          </label>
+                    <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              checked={field === "price"}
+              onChange={() => setField("price")}
+            />
+            Стоимость
+          </label>
+                    <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              checked={field === "location"}
+              onChange={() => setField("location")}
+            />
+            Место
+          </label>
+                    <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              checked={field === "datetime"}
+              onChange={() => setField("datetime")}
+            />
+            Дата
+          </label>
+        </div>
       </div>
 
       {/* Направление */}

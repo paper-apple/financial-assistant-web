@@ -3,10 +3,10 @@ import axios from "axios";
 import { type Expense } from "./types"
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
 });
 
-const API_BASE = "http://192.168.100.4:8000";
+const API_BASE = "http://192.168.100.4:3000";
 
 // GET /expenses/
 export const fetchExpenses = () => api.get<Expense[]>(`${API_BASE}/expenses`);
