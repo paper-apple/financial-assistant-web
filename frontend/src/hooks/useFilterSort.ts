@@ -18,9 +18,9 @@ export const useFilterSort = (expenses: Expense[]) => {
 
   const comparators = useMemo(() => ({
     title: (a: Expense, b: Expense) => a.title.localeCompare(b.title),
-    category: (a: Expense, b: Expense) => a.category.localeCompare(b.category),
+    category: (a: Expense, b: Expense) => a.category.name.localeCompare(b.category.name),
     price: (a: Expense, b: Expense) => Number(a.price) - Number(b.price),
-    location: (a: Expense, b: Expense) => a.location.localeCompare(b.location),
+    location: (a: Expense, b: Expense) => a.location.name.localeCompare(b.location.name),
     datetime: (a: Expense, b: Expense) => 
       new Date(a.datetime).getTime() - new Date(b.datetime).getTime(),
   }), []);
@@ -38,8 +38,8 @@ export const useFilterSort = (expenses: Expense[]) => {
         (filters.keywords.length === 0 || 
           filters.keywords.some(term => 
             exp.title.toLowerCase().includes(term) ||
-            exp.category.toLowerCase().includes(term) ||
-            exp.location.toLowerCase().includes(term)
+            exp.category.name.toLowerCase().includes(term) ||
+            exp.location.name.toLowerCase().includes(term)
           )
         )
       );

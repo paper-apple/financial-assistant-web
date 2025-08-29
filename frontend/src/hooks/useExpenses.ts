@@ -7,9 +7,17 @@ export const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
 
+  // const loadExpenses = async () => {
+  //   const res = await fetchExpenses();
+  //   setExpenses(res.data);
+  // };
   const loadExpenses = async () => {
-    const res = await fetchExpenses();
-    setExpenses(res.data);
+    try {
+      const response = await fetchExpenses();
+      setExpenses(response.data);
+    } catch (error) {
+      console.error("Ошибка загрузки расходов:", error);
+    }
   };
 
   useEffect(() => {

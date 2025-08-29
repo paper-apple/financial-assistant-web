@@ -2,8 +2,6 @@
 import { useRef } from "react";
 import type { Expense } from "../types";
 
-console.log("ExpenseCard loaded");
-
 export const ExpenseCard = ({
   expense,
   onEdit,
@@ -95,8 +93,8 @@ export const ExpenseCard = ({
             <span className="absolute top-1 right-1 text-blue-600">✔️</span>
           )}
           <div className="font-semibold" data-testid="expense-title">{expense.title}</div>
-          <div className="text-sm text-blue-600" data-testid="expense-category">{expense.category}</div>
-          <div className="text-xs text-gray-700 leading-tight" data-testid="expense-location">{expense.location}</div>
+          <div className="text-sm text-blue-600" data-testid="expense-category">{expense.category.name}</div>
+          <div className="text-xs text-gray-700 leading-tight" data-testid="expense-location">{expense.location.name}</div>
           <div className="flex justify-between text-xs text-gray-800 mt-1" data-testid="expense-price">
             <span className="font-medium">{expense.price} ₽</span>
             <span className="text-gray-500" data-testid="expense-datetime">{new Date(expense.datetime).toLocaleString()}</span>

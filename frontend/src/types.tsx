@@ -1,10 +1,46 @@
-export type Expense = {
+// export type Expense = {
+//   id: number;
+//   title: string;
+//   category: string;
+//   price: number;
+//   location: string;
+//   datetime: string; // ISO
+// }
+
+export interface Category {
+  id: number;
+  name: string;
+}
+
+export interface Location {
+  id: number;
+  name: string;
+}
+
+export interface Expense {
   id: number;
   title: string;
-  category: string;
+  category: Category; // Теперь это объект, а не строка
   price: number;
-  location: string;
-  datetime: string; // ISO
+  location: Location; // Теперь это объект, а не строка
+  datetime: string;
+}
+
+// Типы для создания/обновления расходов
+export interface ExpenseCreate {
+  title: string;
+  category: string; // При создании передаем строку
+  price: number;
+  location: string; // При создании передаем строку
+  datetime: string;
+}
+
+export interface ExpenseUpdate {
+  title?: string;
+  category?: string; // При обновлении передаем строку
+  price?: number;
+  location?: string; // При обновлении передаем строку
+  datetime?: string;
 }
 
 export type FilterParams = {
@@ -14,14 +50,6 @@ export type FilterParams = {
   maxPrice: number | null;
   keywords:  string[];      // добавили опциональное ключевое слово
 };
-
-// export type ItemType = {
-//   id: string;
-//   title: string;
-//   description?: string;
-//   amount: number;
-//   date: string; // или Date, если ты парсишь JSON
-// };
 
 type SortField = "title" | "category" | "price" | "location" | "datetime";
 
