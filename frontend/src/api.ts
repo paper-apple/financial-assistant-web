@@ -67,15 +67,15 @@ export const deleteExpense = async (id: number): Promise<void> => {
 };
 
 // Категории
-export const fetchCategories = (): Promise<Category[]> =>
-  api.get<Category[]>("/categories").then(res => res.data);
+// export const fetchCategories = (): Promise<Category[]> =>
+//   api.get<Category[]>("/categories").then(res => res.data);
 
-export const createCategory = (data: { name: string }): Promise<Category> =>
-  api.post<Category>("/categories", data).then(res => res.data);
+// export const createCategory = (data: { name: string }): Promise<Category> =>
+//   api.post<Category>("/categories", data).then(res => res.data);
 
-// Места
-export const fetchLocations = (): Promise<Location[]> =>
-  api.get<Location[]>("/locations").then(res => res.data);
+// // Места
+// export const fetchLocations = (): Promise<Location[]> =>
+//   api.get<Location[]>("/locations").then(res => res.data);
 
-export const createLocation = (data: { name: string }): Promise<Location> =>
-  api.post<Location>("/locations", data).then(res => res.data);
+// export const createLocation = (data: { name: string }): Promise<Location> =>
+//   api.post<Location>("/locations", data).then(res => res.data);

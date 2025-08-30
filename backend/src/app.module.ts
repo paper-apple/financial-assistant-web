@@ -39,7 +39,7 @@ import { Location } from './locations/entities/location.entity';
       database: 'expenses_db',
       entities: [Expense, Category, Location],
       synchronize: true, // Только для разработки
-      autoLoadEntities: true, // Добавьте эту строку
+      // autoLoadEntities: true, // Добавьте эту строку
     }),
     ExpensesModule,
     CategoriesModule,

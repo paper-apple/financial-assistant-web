@@ -21,7 +21,7 @@ import { LocationsModule } from '../locations/locations.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Expense]),
+    TypeOrmModule.forFeature([Expense]), // Подключение Expense к модулю и регистрация Repository<Expense>
     CategoriesModule,
     LocationsModule,
   ],

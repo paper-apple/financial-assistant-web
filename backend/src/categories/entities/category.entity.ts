@@ -9,6 +9,7 @@ export class Category {
   @Column({ length: 30, unique: true })
   name: string;
 
-  @OneToMany(() => Expense, expense => expense.category)
-  expenses: Expense[];
+  @OneToMany(() => Expense, 
+    expense => expense.category) // Связь с нужным полем в Expense
+  expenses: Expense[]; // Массив всех расходов связанных с этой категорией
 }

@@ -35,7 +35,6 @@ export class CreateExpenseDto {
   price: number;
 
   @IsString()
-  @IsOptional()
   location: string;
 
   @IsDate()

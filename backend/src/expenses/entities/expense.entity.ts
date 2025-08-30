@@ -30,6 +30,10 @@ export class Expense {
   @PrimaryGeneratedColumn()
   id: number;
 
+  // @ManyToOne(() => User, user => user.expenses, { nullable: false })
+  // @JoinColumn({ name: 'user_id' })
+  // user: User;
+
   @Column({ length: 30 })
   title: string;
 
