@@ -1,6 +1,35 @@
+// // import { Module } from '@nestjs/common';
+// // import { TypeOrmModule } from '@nestjs/typeorm';
+// // import { ExpensesModule } from './expenses/expenses.module';
+
+// // @Module({
+// //   imports: [
+// //     TypeOrmModule.forRoot({
+// //       type: 'postgres',
+// //       host: 'localhost',
+// //       port: 5432,
+// //       username: 'postgres',
+// //       password: 'postgres',
+// //       database: 'finance_db',
+// //       entities: [__dirname + '/**/*.entity{.ts,.js}'],
+// //       synchronize: true,
+// //     }),
+// //     ExpensesModule,
+// //   ],
+// // })
+// // export class AppModule {}
+
 // import { Module } from '@nestjs/common';
 // import { TypeOrmModule } from '@nestjs/typeorm';
 // import { ExpensesModule } from './expenses/expenses.module';
+// import { CategoriesModule } from './categories/categories.module';
+// import { LocationsModule } from './locations/locations.module';
+// import { Expense } from './expenses/entities/expense.entity';
+// import { Category } from './categories/entities/category.entity';
+// import { Location } from './locations/entities/location.entity';
+// import { UsersModule } from './users/users.module';
+// import { AuthModule } from './auth/auth.module';
+// import { User } from './users/entities/user.entity';
 
 // @Module({
 //   imports: [
@@ -10,11 +39,16 @@
 //       port: 5432,
 //       username: 'postgres',
 //       password: 'postgres',
-//       database: 'finance_db',
-//       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-//       synchronize: true,
+//       database: 'expenses_db',
+//       entities: [Expense, Category, Location, User],
+//       synchronize: true, // Только для разработки
+//       // autoLoadEntities: true, // Добавьте эту строку
 //     }),
 //     ExpensesModule,
+//     CategoriesModule,
+//     LocationsModule,
+//     UsersModule,
+//     AuthModule,
 //   ],
 // })
 // export class AppModule {}
@@ -22,9 +56,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ExpensesModule } from './expenses/expenses.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
 import { LocationsModule } from './locations/locations.module';
 import { Expense } from './expenses/entities/expense.entity';
+import { User } from './users/entities/user.entity';
 import { Category } from './categories/entities/category.entity';
 import { Location } from './locations/entities/location.entity';
 
@@ -36,12 +73,15 @@ import { Location } from './locations/entities/location.entity';
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'expenses_db',
+      database: 'expenses_db2',
+      // entities: [Expense, User, Category, Location],
       entities: [Expense, Category, Location],
-      synchronize: true, // Только для разработки
-      // autoLoadEntities: true, // Добавьте эту строку
+      synchronize: true,
+      autoLoadEntities: true,
     }),
     ExpensesModule,
+    // UsersModule,
+    // AuthModule,
     CategoriesModule,
     LocationsModule,
   ],

@@ -17,6 +17,12 @@ export interface Location {
   name: string;
 }
 
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+}
+
 export interface Expense {
   id: number;
   title: string;
@@ -24,6 +30,7 @@ export interface Expense {
   price: number;
   location: Location; // Теперь это объект, а не строка
   datetime: string;
+  // user: User;
 }
 
 // Типы для создания/обновления расходов

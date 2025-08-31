@@ -24,11 +24,16 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Category } from '../../categories/entities/category.entity';
 import { Location } from '../../locations/entities/location.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Entity('expenses')
 export class Expense {
   @PrimaryGeneratedColumn()
   id: number;
+
+  // @ManyToOne(() => User, { eager: true, nullable: false })
+  // @JoinColumn({ name: 'user_id' })
+  // user: User;
 
   // @ManyToOne(() => User, user => user.expenses, { nullable: false })
   // @JoinColumn({ name: 'user_id' })

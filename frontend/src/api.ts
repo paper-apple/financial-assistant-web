@@ -39,9 +39,31 @@ const API_BASE = "http://192.168.100.4:3000";
 //   baseURL: API_BASE,
 // });
 
+
+
 const api = axios.create({
   baseURL: API_BASE || "http://localhost:3000",
+  // withCredentials: true, // Для работы с cookies
 });
+
+// api.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response?.status === 401) {
+//       // Перенаправляем на страницу логина при 401 ошибке
+//       window.location.href = '/login';
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
+export const login = (username: string, password: string) =>
+  api.post('/auth/login', { username, password });
+
+export const register = (username: string, password: string) =>
+  api.post('/auth/register', { username, password });
+
+export const logout = () => api.post('/auth/logout');
 
 // GET /expenses/
 // export const fetchExpenses = () => 
