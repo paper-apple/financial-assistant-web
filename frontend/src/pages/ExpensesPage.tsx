@@ -87,64 +87,64 @@ export const ExpensesPage = () => {
     closeModal("update");
   }, []);
 
-  // const [user, setUser] = useState<any>(null);
-  // const [authExpenses, setAuthExpenses] = useState<Expense[]>([]);
-  // const [isLogin, setIsLogin] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const [authExpenses, setAuthExpenses] = useState<Expense[]>([]);
+  const [isLogin, setIsLogin] = useState(true);
 
-  // useEffect(() => {
-  //   checkAuth();
-  // }, []);
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
-  // const checkAuth = async () => {
-  //   try {
-  //     console.log("1");
-  //     const response = await fetchExpenses();
-  //     console.log("2")
-  //     setUser({ username: 'Авторизован' }); // Простая проверка
-  //     setAuthExpenses(response.data);
-  //   } catch (error) {
-  //     setUser(null);
-  //   }
-  // };
+  const checkAuth = async () => {
+    try {
+      console.log("1");
+      const response = await fetchExpenses();
+      console.log("2")
+      setUser({ username: 'Авторизован' }); // Простая проверка
+      setAuthExpenses(response.data);
+    } catch (error) {
+      setUser(null);
+    }
+  };
 
-  // const handleAuth = (authData: any) => {
-  //   setUser(authData.user);
-  //   checkAuth();
-  // };
+  const handleAuth = (authData: any) => {
+    setUser(authData.user);
+    checkAuth();
+  };
 
-  // const handleLogout = async () => {
-  //   await logout();
-  //   setUser(null);
-  //   setAuthExpenses([]);
-  // };
+  const handleLogout = async () => {
+    await logout();
+    setUser(null);
+    setAuthExpenses([]);
+  };
 
-  // if (!user) {
-  //   return (
-  //     <div>
-  //       <AuthForm 
-  //         onAuth={handleAuth} 
-  //         isLogin={isLogin}
-  //       />
-  //       <button onClick={() => setIsLogin(!isLogin)}>
-  //         {isLogin ? 'Нет аккаунта? Зарегистрироваться' : 'Есть аккаунт? Войти'}
-  //       </button>
-  //     </div>
-  //   );
-  // }
+  if (!user) {
+    return (
+      <div>
+        <AuthForm 
+          onAuth={handleAuth} 
+          isLogin={isLogin}
+        />
+        <button onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? 'Нет аккаунта? Зарегистрироваться' : 'Есть аккаунт? Войти'}
+        </button>
+      </div>
+    );
+  }
   
-  // return (
-  //   <div>
-  //     <div>
-  //       <span>Привет, {user.username}!</span>
-  //       <button onClick={handleLogout}>Выйти</button>
-  //     </div>
-  //     <ul>
-  //       {expenses.map((e: any) => (
-  //         <li key={e.id}>{e.title} — {e.price}</li>
-  //       ))}
-  //     </ul>
-  //   </div>
-  // );
+  return (
+    <div>
+      <div>
+        <span>Привет, {user.username}!</span>
+        <button onClick={handleLogout}>Выйти</button>
+      </div>
+      <ul>
+        {expenses.map((e: any) => (
+          <li key={e.id}>{e.title} — {e.price}</li>
+        ))}
+      </ul>
+    </div>
+  );
 
   return (
     <section>

@@ -69,15 +69,12 @@ export class UsersService {
   }
 
   async create(username: string, password: string): Promise<User> {
-    // Проверка существования пользователя
     const existingUser = await this.findOne(username);
     if (existingUser) {
       throw new ConflictException('Пользователь уже существует');
     }
 
-    // Хэширование пароля
     const hashedPassword = await bcrypt.hash(password, 10);
-    // Создание пользователя
     const user = this.usersRepository.create({ username, password: hashedPassword });
     return this.usersRepository.save(user);
   }

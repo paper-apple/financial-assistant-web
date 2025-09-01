@@ -38,24 +38,41 @@ export class AuthController {
   //   return res.json({ success: true, user: { id: user.id, username: user.username } });
   // }
 
+
+//   @Post('login')
+//   async login(@Body() body, @Res() res: Response) {
+//   try {
+//     const user = await this.authService.validateUser(body.username, body.password);
+//     if (!user) throw new UnauthorizedException('Неверные данные');
+//     console.log(user)
+//     res.cookie('userId', user.id, {
+//       httpOnly: true,
+//       sameSite: 'none',
+//       secure: true,
+//     });
+
+//     return res.json({ success: true, user: { id: user.id, username: user.username } });
+//   } catch (err) {
+//     console.error('Ошибка при логине:', err);
+//     throw err; // или new InternalServerErrorException('Ошибка сервера')
+//   }
+// }
+
   @Post('login')
-  async login(@Body() body, @Res() res: Response) {
-  try {
+  async login(@Body() body: { username: string; password: string }, @Res() res: Response) {
     const user = await this.authService.validateUser(body.username, body.password);
     if (!user) throw new UnauthorizedException('Неверные данные');
-    console.log(user)
-    res.cookie('userId', user.id, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: false,
-    });
 
+    res.cookie('userId', user.id, { 
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true, // false для localhost, true для production
+      // maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
+      // domain: 'http://localhost:3000' // явно указываем домен
+    });
+    
     return res.json({ success: true, user: { id: user.id, username: user.username } });
-  } catch (err) {
-    console.error('Ошибка при логине:', err);
-    throw err; // или new InternalServerErrorException('Ошибка сервера')
   }
-}
 
   @Post('register')
   async register(@Body() body: { username: string; password: string }) {

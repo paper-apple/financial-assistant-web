@@ -1,10 +1,26 @@
-// import { Injectable, NotFoundException } from '@nestjs/common';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { Repository } from 'typeorm';
-// import { Category } from './entities/category.entity';
-// import { CreateCategoryDto } from './dto/create-category.dto';
-// import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Category } from './entities/category.entity';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
+@Injectable()
+export class CategoriesService {
+  constructor(
+    @InjectRepository(Category)
+    private categoriesRepository: Repository<Category>,
+  ) {}
+
+  async findOrCreate(name: string): Promise<Category> {
+    let category = await this.categoriesRepository.findOne({ where: { name } });
+    if (!category) {
+      category = this.categoriesRepository.create({ name });
+      category = await this.categoriesRepository.save(category);
+    }
+    return category;
+  }
+}
 // @Injectable()
 // export class CategoriesService {
 //   constructor(
@@ -47,24 +63,3 @@
 //   }
 // }
 
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Category } from './entities/category.entity';
-
-@Injectable()
-export class CategoriesService {
-  constructor(
-    @InjectRepository(Category)
-    private categoriesRepository: Repository<Category>,
-  ) {}
-
-  async findOrCreate(name: string): Promise<Category> {
-    let category = await this.categoriesRepository.findOne({ where: { name } });
-    if (!category) {
-      category = this.categoriesRepository.create({ name });
-      category = await this.categoriesRepository.save(category);
-    }
-    return category;
-  }
-}

@@ -38,6 +38,6 @@ export class CreateExpenseDto {
   location: string;
 
   @IsDate()
-  @Type(() => Date)
+  // @Type(() => Date)
   datetime: Date;
 }
