@@ -40,7 +40,7 @@ import { User } from './users/entities/user.entity';
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'expenses_db',
+      database: 'expenses_db2',
       entities: [Expense, Category, Location, User],
       synchronize: true, // Только для разработки
       autoLoadEntities: true, // Добавьте эту строку

@@ -18,18 +18,6 @@ export class Expense {
   @Column({ type: 'timestamp' })
   datetime: Date;
 
-  // @ManyToOne(() => User, user => user.expenses, { nullable: false })
-  // @JoinColumn({ name: 'user_id' })
-  // user: User;
-
-  // @ManyToOne(() => Category, { eager: true, nullable: false })
-  // @JoinColumn({ name: 'category_id' })
-  // category: Category;
-
-  // @ManyToOne(() => Location, { eager: true, nullable: false })
-  // @JoinColumn({ name: 'location_id' })
-  // location: Location;
-
   @ManyToOne(() => User, user => user.expenses)
   user: User;
 

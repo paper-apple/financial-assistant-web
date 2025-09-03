@@ -62,7 +62,8 @@ type SortField = "title" | "category" | "price" | "location" | "datetime";
 
 export type SortParams = {
   field: SortField;
-  direction: "asc" | "desc";
+  // direction: "asc" | "desc";
+  direction: "ASC" | "DESC";
 };
 
 export type FormState = {

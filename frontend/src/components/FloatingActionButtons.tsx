@@ -4,13 +4,15 @@ type Props = {
   onFilter: () => void;
   onSort: () => void;
   onStats: () => void;
+  // logout: () => void;
 };
 
 export const FloatingActionButtons = ({ 
   onAdd, 
   onFilter, 
   onSort, 
-  onStats 
+  onStats,
+  // logout
 }: Props) => (
   <>
     <button
@@ -23,7 +25,7 @@ export const FloatingActionButtons = ({
     
     <button
       onClick={onFilter}
-      className="fixed bottom-4 right-20 bg-blue-600 hover:bg-blue-700 text-white
+      className="fixed bottom-4 right-28 bg-blue-600 hover:bg-blue-700 text-white
       font-bold py-2 px-3.5 rounded-full z-50"
     >
       Фильтры
@@ -31,7 +33,7 @@ export const FloatingActionButtons = ({
     
     <button
       onClick={onSort}
-      className="fixed bottom-4 right-36 bg-blue-600 hover:bg-blue-700 text-white
+      className="fixed bottom-4 right-52 bg-blue-600 hover:bg-blue-700 text-white
       font-bold py-2 px-3.5 rounded-full z-50"
     >
       Сортировка
@@ -39,10 +41,18 @@ export const FloatingActionButtons = ({
     
     <button
       onClick={onStats}
-      className="fixed bottom-4 right-52 bg-blue-600 hover:bg-blue-700 text-white
+      className="fixed bottom-4 right-76 bg-blue-600 hover:bg-blue-700 text-white
       font-bold py-2 px-3.5 rounded-full z-50"
     >
       Статистика
     </button>
+
+    {/* <button
+      onClick={logout}
+      className="fixed bottom-4 right-100 bg-blue-600 hover:bg-blue-700 text-white
+      font-bold py-2 px-3.5 rounded-full z-50"
+    >
+      Выход
+    </button> */}
   </>
 );

@@ -16,10 +16,41 @@ export class ExpensesController {
     return this.expensesService.create(createExpenseDto, req.userId);
   }
 
+  // @Get()
+  // findAll(@Req() req) {
+  //   return this.expensesService.findAll(req.userId);
+  // }
+
   @Get()
-  findAll(@Req() req) {
-    return this.expensesService.findAll(req.userId);
-  }
+    findAll(
+      @Req() req,
+      // @Query('category') category?: string,
+      // @Query('location') location?: string,
+      @Query('minPrice') minPrice?: number,
+      @Query('maxPrice') maxPrice?: number,
+      @Query('startDate') startDate?: Date,
+      @Query('endDate') endDate?: Date,
+      @Query('sortField') sortField?: string,
+      @Query('sortDirection') sortDirection?: 'ASC' | 'DESC',
+      @Query('keywords') keywords?: string[], // Массив ключевых слов
+    ) {
+      const filters = {
+        // category,
+        // location,
+        minPrice: minPrice ? Number(minPrice) : undefined,
+        maxPrice: maxPrice ? Number(maxPrice) : undefined,
+        startDate: startDate ? new Date(startDate) : undefined,
+        endDate: endDate ? new Date(endDate) : undefined,
+        keywords: keywords || [],
+      };
+
+      const sortParams = sortField ? {
+        field: sortField,
+        direction: sortDirection || 'ASC'
+      } : undefined;
+
+      return this.expensesService.findAll(req.userId, filters, sortParams);
+    }
 
   @Get(':id')
   findOne(@Param('id') id: number, @Req() req) {

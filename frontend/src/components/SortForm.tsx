@@ -9,10 +9,13 @@ type Props = {
 };
 
 export function SortForm({ initialValues, onApply, onClose }: Props) {
-  const [field, setField]         = useState<SortParams["field"]>(initialValues.field);
-  const [direction, setDirection] = useState<SortParams["direction"]>(
-    initialValues.direction
-  );
+  // const [field, setField]         = useState<SortParams["field"]>(initialValues.field);
+  // const [direction, setDirection] = useState<SortParams["direction"]>(
+  //   initialValues.direction
+  // );
+
+  const [field, setField] = useState(initialValues.field);
+  const [direction, setDirection] = useState(initialValues.direction);
 
   const handleApply = () => {
     onApply({ field, direction })
@@ -76,16 +79,16 @@ export function SortForm({ initialValues, onApply, onClose }: Props) {
           <label className="flex items-center gap-1">
             <input
               type="radio"
-              checked={direction === "asc"}
-              onChange={() => setDirection("asc")}
+              checked={direction === "ASC"}
+              onChange={() => setDirection("ASC")}
             />
             По возрастанию
           </label>
           <label className="flex items-center gap-1">
             <input
               type="radio"
-              checked={direction === "desc"}
-              onChange={() => setDirection("desc")}
+              checked={direction === "DESC"}
+              onChange={() => setDirection("DESC")}
             />
             По убыванию
           </label>

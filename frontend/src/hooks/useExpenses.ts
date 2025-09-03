@@ -1,24 +1,49 @@
 // hooks/useExpenses.ts
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { deleteExpense, fetchExpenses } from "../api";
-import type { Expense } from "../types";
+import type { SortParams, Expense } from "../types";
+
+// export const useExpenses = () => {
+//   const [expenses, setExpenses] = useState<Expense[]>([]);
+//   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
+
+  // const loadExpenses = async () => {
+  //   try {
+  //     const response = await fetchExpenses();
+  //     setExpenses(response.data);
+  //   } catch (error) {
+  //     console.error("Ошибка загрузки расходов:", error);
+  //   }
+  // };
 
 export const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({});
+  const [sortParams, setSortParams] = useState<SortParams>({
+    field: 'datetime',
+    // direction: 'DESC' as 'ASC' | 'DESC'
+    direction: 'DESC'
+  });
 
-  // const loadExpenses = async () => {
-  //   const res = await fetchExpenses();
-  //   setExpenses(res.data);
-  // };
-  const loadExpenses = async () => {
+  const loadExpenses = useCallback(async (newFilters?: any, newSortParams?: any) => {
     try {
-      const response = await fetchExpenses();
+      setLoading(true);
+      const currentFilters = newFilters || filters;
+      const currentSortParams = newSortParams || sortParams;
+      
+      if (newFilters) setFilters(newFilters);
+      if (newSortParams) setSortParams(newSortParams);
+      
+      const response = await fetchExpenses(currentFilters, currentSortParams);
       setExpenses(response.data);
     } catch (error) {
-      console.error("Ошибка загрузки расходов:", error);
+      console.error('Ошибка загрузки расходов:', error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [filters, sortParams]);
 
   useEffect(() => {
     loadExpenses();

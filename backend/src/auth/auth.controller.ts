@@ -67,8 +67,6 @@ export class AuthController {
       httpOnly: true,
       sameSite: 'none',
       secure: true, // false для localhost, true для production
-      // maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
-      // domain: 'http://localhost:3000' // явно указываем домен
     });
     
     return res.json({ success: true, user: { id: user.id, username: user.username } });
@@ -82,7 +80,14 @@ export class AuthController {
 
   @Post('logout')
   async logout(@Res() res: Response) {
-    res.clearCookie('userId');
+    res.clearCookie('userId', {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      path: '/',
+    });
+    console.log('clear');
     return res.json({ success: true });
-  }
+}
+
 }

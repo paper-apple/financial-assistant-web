@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, FindManyOptions, FindOptionsWhere, ILike, Like, Repository } from 'typeorm';
 import { Expense } from './entities/expense.entity';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
@@ -32,11 +32,108 @@ export class ExpensesService {
     return this.expenseRepository.save(expense);
   }
 
-  async findAll(userId: number): Promise<Expense[]> {
-    return this.expenseRepository.find({
-      where: { user: { id: userId } },
+  // async findAll(userId: number): Promise<Expense[]> {
+  //   return this.expenseRepository.find({
+  //     where: { user: { id: userId } },
+  //     relations: ['user', 'category', 'location'],
+  //   });
+  // }
+
+  async findAll(
+    userId: number,
+    filters?: {
+      minPrice?: number;
+      maxPrice?: number;
+      startDate?: Date;
+      endDate?: Date;
+      keywords?: string[];
+    },
+    sortParams?: {
+      field: string;
+      direction: 'ASC' | 'DESC';
+    }
+  ): Promise<Expense[]> {
+    // Создаем условия для фильтрации
+    const where: FindOptionsWhere<Expense>[] = [{ user: { id: userId } }];
+    
+    if (filters) {
+      if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
+        where[0].price = Between(
+          filters.minPrice || 0,
+          filters.maxPrice || Number.MAX_SAFE_INTEGER
+        );
+      }
+      if (filters.startDate || filters.endDate) {
+        where[0].datetime = Between(
+          filters.startDate || new Date(0),
+          filters.endDate || new Date()
+        );
+      }
+
+      // Поиск по ключевым словам
+      if (filters.keywords !== undefined && filters.keywords.length > 0) {
+        // Создаем условия для каждого ключевого слова
+        const keywordConditions = filters.keywords.flatMap(keyword => [
+          // Поиск по названию
+          { 
+            user: { id: userId },
+            title: ILike(`%${keyword}%`)
+          },
+          // Поиск по категории
+          { 
+            user: { id: userId },
+            category: { name: ILike(`%${keyword}%`) }
+          },
+          // Поиск по месту
+          { 
+            user: { id: userId },
+            location: { name: ILike(`%${keyword}%`) }
+          }
+        ]);
+
+        // Объединяем все условия поиска
+        where.push(...keywordConditions);
+      }
+    }
+
+    // Определяем порядок сортировки
+    let order: any = {};
+    if (sortParams) {
+      // Преобразуем поле для сортировки в правильный формат
+      // let fieldName: string;
+      // switch (sortParams.field) {
+      //   case 'category':
+      //     fieldName = 'category.name';
+      //     break;
+      //   case 'location':
+      //     fieldName = 'location.name';
+      //     break;
+      //   default:
+      //     fieldName = `expense.${sortParams.field}`;
+      // }
+
+      switch (sortParams.field) {
+    case 'category':
+      order = { category: { name: sortParams.direction } };
+      break;
+    case 'location':
+      order = { location: { name: sortParams.direction } };
+      break;
+    default:
+      order = { [sortParams.field]: sortParams.direction };
+  }
+    } else {
+      // Сортировка по умолчанию
+      order = { datetime: 'DESC' };
+    }
+
+    const options: FindManyOptions<Expense> = {
+      where: where.length > 1 ? where : where[0],
       relations: ['user', 'category', 'location'],
-    });
+      order,
+    };
+
+    return this.expenseRepository.find(options);
   }
 
   async findOne(id: number, userId: number): Promise<Expense> {

@@ -12,6 +12,14 @@ const api = axios.create({
   withCredentials: true, // ✅ Это заставляет axios отправлять cookies
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const login = (username: string, password: string) =>
   api.post('/auth/login', { username, password });
 
@@ -19,9 +27,40 @@ export const register = (username: string, password: string) =>
   api.post('/auth/register', { username, password });
 
 export const logout = () => api.post('/auth/logout');
+
 // GET /expenses/
-export const fetchExpenses = () => 
-  api.get("/expenses"); // Убрал ${API_BASE} - он уже в baseURL
+// export const fetchExpenses = () => 
+//   api.get("/expenses"); // Убрал ${API_BASE} - он уже в baseURL
+
+export const fetchExpenses = (filters?: any, sortParams?: any) => {
+  const params = new URLSearchParams();
+  
+// Добавляем фильтры
+  if (filters) {
+    Object.keys(filters).forEach(key => {
+      if (filters[key] !== undefined && filters[key] !== null && filters[key] !== '') {
+        if (key === 'keywords' && Array.isArray(filters[key])) {
+          // Для массива ключевых слов добавляем каждый элемент отдельно
+          // filters[key].forEach((keyword: string, index: number) => {
+          //   params.append(`keywords[${index}]`, keyword);
+          filters[key].forEach((keyword: string) => {
+            params.append(`keywords[]`, keyword);
+          });
+        } else {
+          params.append(key, filters[key].toString());
+        }
+      }
+    });
+  }
+  
+  // Добавляем параметры сортировки
+  if (sortParams) {
+    params.append('sortField', sortParams.field);
+    params.append('sortDirection', sortParams.direction);
+  }
+  
+  return api.get(`/expenses?${params.toString()}`);
+};
 
 // POST /expenses/
 export const createExpense = async (data: ExpenseCreate): Promise<Expense> => {
