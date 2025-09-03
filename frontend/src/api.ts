@@ -1,11 +1,20 @@
 import axios from "axios";
 import { type Expense, type ExpenseCreate, type ExpenseUpdate, type Category, type Location } from "./types"
 
-const API_BASE = "https://192.168.100.4:3000";
+// Динамическое определение адреса API
+const getApiBase = () => {
+  // Для продакшена используйте env переменную
+  // if (import.meta.env.PROD) {
+  //   return import.meta.env.VITE_API_URL || "http://localhost:3000";
+  // }
+  
+  // Для разработки используем текущий hostname
+  const { hostname } = window.location;
+  console.log(hostname)
+  return `http://${hostname}:3000`;
+};
 
-// const api = axios.create({
-//   baseURL: API_BASE,
-// });
+export const API_BASE = getApiBase();
 
 const api = axios.create({
   baseURL: API_BASE || "https://localhost:3000",
@@ -27,10 +36,6 @@ export const register = (username: string, password: string) =>
   api.post('/auth/register', { username, password });
 
 export const logout = () => api.post('/auth/logout');
-
-// GET /expenses/
-// export const fetchExpenses = () => 
-//   api.get("/expenses"); // Убрал ${API_BASE} - он уже в baseURL
 
 export const fetchExpenses = (filters?: any, sortParams?: any) => {
   const params = new URLSearchParams();

@@ -32,13 +32,6 @@ export class ExpensesService {
     return this.expenseRepository.save(expense);
   }
 
-  // async findAll(userId: number): Promise<Expense[]> {
-  //   return this.expenseRepository.find({
-  //     where: { user: { id: userId } },
-  //     relations: ['user', 'category', 'location'],
-  //   });
-  // }
-
   async findAll(
     userId: number,
     filters?: {
@@ -56,6 +49,7 @@ export class ExpensesService {
     // Создаем условия для фильтрации
     const where: FindOptionsWhere<Expense>[] = [{ user: { id: userId } }];
     
+    console.log('get')
     if (filters) {
       if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
         where[0].price = Between(

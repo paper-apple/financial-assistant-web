@@ -1,7 +1,6 @@
 import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
-import { Expense } from './entities/expense.entity';
 import { AuthGuard } from '../auth/auth.guard';
 import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req, Query } from '@nestjs/common';
 
@@ -16,27 +15,19 @@ export class ExpensesController {
     return this.expensesService.create(createExpenseDto, req.userId);
   }
 
-  // @Get()
-  // findAll(@Req() req) {
-  //   return this.expensesService.findAll(req.userId);
-  // }
-
   @Get()
     findAll(
       @Req() req,
-      // @Query('category') category?: string,
-      // @Query('location') location?: string,
       @Query('minPrice') minPrice?: number,
       @Query('maxPrice') maxPrice?: number,
       @Query('startDate') startDate?: Date,
       @Query('endDate') endDate?: Date,
       @Query('sortField') sortField?: string,
       @Query('sortDirection') sortDirection?: 'ASC' | 'DESC',
-      @Query('keywords') keywords?: string[], // Массив ключевых слов
+      @Query('keywords') keywords?: string[],
     ) {
+      console.log('contr')
       const filters = {
-        // category,
-        // location,
         minPrice: minPrice ? Number(minPrice) : undefined,
         maxPrice: maxPrice ? Number(maxPrice) : undefined,
         startDate: startDate ? new Date(startDate) : undefined,

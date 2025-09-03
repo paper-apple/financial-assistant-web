@@ -10,6 +10,16 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
   },
+  // server: {
+  //   host: '0.0.0.0',
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://192.168.100.4:3000',
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/api/, ''),
+  //     },
+  //   },
+  // },
   test: {
     globals: true,
     environment: "jsdom",

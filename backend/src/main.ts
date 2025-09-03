@@ -2,27 +2,24 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import * as fs from 'fs';
+import { ValidationPipe } from '@nestjs/common';
+import * as os from 'os'
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync('../certs/localhost+2-key.pem'),
-    cert: fs.readFileSync('../certs/localhost+2.pem'),
-  };
+  const app = await NestFactory.create(AppModule);
 
-  const app = await NestFactory.create(AppModule, { httpsOptions });
-  
   app.use(cookieParser());
 
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Set-Cookie'],
-    // origin: '*',
-    // methods: '*',
-    // allowedHeaders: '*',
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   });
 
-  await app.listen(3000, '0.0.0.0');
+  await app.listen(3000);
+  // console.log(`Server running on: http://${localIp}:3000`);
+  // console.log(`CORS enabled for: http://${localIp}:5173`);
 }
+
 bootstrap();

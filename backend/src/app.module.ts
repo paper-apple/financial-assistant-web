@@ -43,7 +43,7 @@ import { User } from './users/entities/user.entity';
       database: 'expenses_db2',
       entities: [Expense, Category, Location, User],
       synchronize: true, // Только для разработки
-      autoLoadEntities: true, // Добавьте эту строку
+      autoLoadEntities: true,
     }),
     ExpensesModule,
     CategoriesModule,
