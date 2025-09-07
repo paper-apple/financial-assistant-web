@@ -46,24 +46,46 @@ export const fetchExpenses = (filters?: any, sortParams?: any) => {
       if (filters[key] !== undefined && filters[key] !== null && filters[key] !== '') {
         if (key === 'keywords' && Array.isArray(filters[key])) {
           // Для массива ключевых слов добавляем каждый элемент отдельно
-          // filters[key].forEach((keyword: string, index: number) => {
-          //   params.append(`keywords[${index}]`, keyword);
-          filters[key].forEach((keyword: string) => {
-            params.append(`keywords[]`, keyword);
+          filters[key].forEach((keyword: string, index: number) => {
+            params.append(`keywords`, keyword);
+          // console.log('key')
+          // filters[key].forEach((keyword: string) => {
+          //   params.append(`keywords`, keyword);
           });
+          
+        // params.append('keywords', filters[key].join(','));
+
+
         } else {
           params.append(key, filters[key].toString());
+
+          // params.append(key, filters[key].toString());
         }
       }
     });
   }
+
+  // if (filters) {
+  //   Object.keys(filters).forEach(key => {
+  //     const value = filters[key];
+  //     if (value !== undefined && value !== null && value !== '') {
+  //       if (key === 'keywords' && Array.isArray(value) && value.length > 0) {
+  //         // Сериализуем массив в строку через запятую
+  //         console.log('key')
+  //         params.append('keywords', value.join(','));
+  //       } else {
+  //         params.append(key, value.toString());
+  //       }
+  //     }
+  //   });
+  // }
   
   // Добавляем параметры сортировки
   if (sortParams) {
     params.append('sortField', sortParams.field);
     params.append('sortDirection', sortParams.direction);
   }
-  
+  console.log(params.toString())
   return api.get(`/expenses?${params.toString()}`);
 };
 
@@ -83,6 +105,11 @@ export const updateExpense = async (id: number, updated: ExpenseUpdate): Promise
 export const deleteExpense = async (id: number): Promise<void> => {
   await api.delete(`/expenses/${id}`);
 };
+
+export const suggestKeywords = async (query: string) => {
+  return api.get(`/expenses/keywords/suggest?query=${encodeURIComponent(query)}`);
+}
+// const res = await api.get(`/expenses/keywords/suggest?query=${encodeURIComponent(value)}`);
 
 // export const fetchCategories = (): Promise<Category[]> =>
 //   api.get<Category[]>("/categories").then(res => res.data);

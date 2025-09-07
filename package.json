@@ -3,9 +3,11 @@
     "@nestjs/mapped-types": "^2.1.0",
     "cookie-parser": "^1.4.7",
     "fs": "^0.0.1-security",
+    "lodash.debounce": "^4.0.8",
     "os": "^0.1.2"
   },
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.9"
+    "@types/cookie-parser": "^1.4.9",
+    "@types/lodash.debounce": "^4.0.9"
   }
 }

@@ -2,7 +2,7 @@ import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { AuthGuard } from '../auth/auth.guard';
-import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req, Query, ParseArrayPipe } from '@nestjs/common';
 
 
 @Controller('expenses')
@@ -16,32 +16,64 @@ export class ExpensesController {
   }
 
   @Get()
-    findAll(
-      @Req() req,
-      @Query('minPrice') minPrice?: number,
-      @Query('maxPrice') maxPrice?: number,
-      @Query('startDate') startDate?: Date,
-      @Query('endDate') endDate?: Date,
-      @Query('sortField') sortField?: string,
-      @Query('sortDirection') sortDirection?: 'ASC' | 'DESC',
-      @Query('keywords') keywords?: string[],
-    ) {
-      console.log('contr')
-      const filters = {
-        minPrice: minPrice ? Number(minPrice) : undefined,
-        maxPrice: maxPrice ? Number(maxPrice) : undefined,
-        startDate: startDate ? new Date(startDate) : undefined,
-        endDate: endDate ? new Date(endDate) : undefined,
-        keywords: keywords || [],
-      };
+  findAll(
+    @Req() req,
+    @Query('minPrice') minPrice?: number,
+    @Query('maxPrice') maxPrice?: number,
+    @Query('startDate') startDate?: Date,
+    @Query('endDate') endDate?: Date,
+    @Query('sortField') sortField?: string,
+    @Query('sortDirection') sortDirection?: 'ASC' | 'DESC',
+    // @Query('keywords') keywords?: string[],
+    @Query('keywords') keywords?: string[],
+  ) {
+    const filters = {
+      minPrice: minPrice ? Number(minPrice) : undefined,
+      maxPrice: maxPrice ? Number(maxPrice) : undefined,
+      startDate: startDate ? new Date(startDate) : undefined,
+      endDate: endDate ? new Date(endDate) : undefined,
+      keywords: keywords || [],
+    };
 
-      const sortParams = sortField ? {
-        field: sortField,
-        direction: sortDirection || 'ASC'
-      } : undefined;
+    const sortParams = sortField ? {
+      field: sortField,
+      direction: sortDirection || 'ASC'
+    } : undefined;
 
-      return this.expensesService.findAll(req.userId, filters, sortParams);
-    }
+    // console.log(filters)
+    return this.expensesService.findAll(req.userId, filters, sortParams);
+  }
+
+//   @Get()
+// findAll(@Req() req, @Query() query: Record<string, any>) {
+//   const rawKeywords = query.keywords;
+//     console.log(rawKeywords)
+
+//   const keywords = Array.isArray(rawKeywords)
+//     ? rawKeywords
+//     : typeof rawKeywords === 'string'
+//       ? [rawKeywords]
+//       : [];
+
+//   const filters = {
+//     minPrice: query.minPrice ? Number(query.minPrice) : undefined,
+//     maxPrice: query.maxPrice ? Number(query.maxPrice) : undefined,
+//     startDate: query.startDate ? new Date(query.startDate) : undefined,
+//     endDate: query.endDate ? new Date(query.endDate) : undefined,
+//     keywords,
+//   };
+
+//   const sortParams = query.sortField
+//     ? {
+//         field: query.sortField,
+//         direction: query.sortDirection || 'ASC',
+//       }
+//     : undefined;
+  
+//   console.log(filters)
+//   return this.expensesService.findAll(req.userId, filters, sortParams);
+// }
+
 
   @Get(':id')
   findOne(@Param('id') id: number, @Req() req) {
@@ -56,5 +88,10 @@ export class ExpensesController {
   @Delete(':id')
   remove(@Param('id') id: number, @Req() req) {
     return this.expensesService.remove(id, req.userId);
+  }
+
+  @Get('keywords/suggest')
+  suggestKeywords(@Query('query') query: string, @Req() req) {
+    return this.expensesService.suggestKeywords(query, req.userId);
   }
 }
