@@ -106,8 +106,11 @@ export const deleteExpense = async (id: number): Promise<void> => {
   await api.delete(`/expenses/${id}`);
 };
 
-export const suggestKeywords = async (query: string) => {
-  return api.get(`/expenses/keywords/suggest?query=${encodeURIComponent(query)}`);
+export const suggestKeywords = async (
+  query: string,
+  field?: 'title' | 'category' | 'location'
+) => {
+  return api.get(`/expenses/keywords/suggest?field=${field}&query=${encodeURIComponent(query)}`);
 }
 // const res = await api.get(`/expenses/keywords/suggest?query=${encodeURIComponent(value)}`);
 

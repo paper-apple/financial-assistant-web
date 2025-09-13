@@ -1,6 +1,10 @@
 // App.tsx
 import { ExpensesPage } from "./pages/ExpensesPage";
 
+window.addEventListener('online', () => {
+  console.log('Сеть восстановлена');
+  window.location.reload();
+});
 
 export function App() {
   return (

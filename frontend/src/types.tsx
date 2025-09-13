@@ -44,9 +44,9 @@ export interface ExpenseCreate {
 
 export interface ExpenseUpdate {
   title?: string;
-  category?: string; // При обновлении передаем строку
+  category?: string;
   price?: number;
-  location?: string; // При обновлении передаем строку
+  location?: string;
   datetime?: string;
 }
 
@@ -55,7 +55,31 @@ export type FilterParams = {
   endDate: Date | null;
   minPrice: number | null;
   maxPrice: number | null;
-  keywords:  string[];      // добавили опциональное ключевое слово
+  keywords:  string[];
+};
+
+export type FiltersState = {
+  keywordInput: string;
+  setKeywordInput: React.Dispatch<React.SetStateAction<string>>;
+  keywordsList: string[];
+  setKeywordsList: React.Dispatch<React.SetStateAction<string[]>>;
+  startDate: Date | null;
+  setStartDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  endDate: Date | null;
+  setEndDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  minPrice: string;
+  setMinPrice: React.Dispatch<React.SetStateAction<string>>;
+  maxPrice: string;
+  setMaxPrice: React.Dispatch<React.SetStateAction<string>>;
+  dateError: boolean;
+  priceError: boolean;
+};
+
+export type SortState = {
+  sortField: SortParams['field'];
+  setSortField: React.Dispatch<React.SetStateAction<SortParams['field']>>;
+  sortDirection: SortParams['direction'];
+  setSortDirection: React.Dispatch<React.SetStateAction<SortParams['direction']>>;
 };
 
 type SortField = "title" | "category" | "price" | "location" | "datetime";

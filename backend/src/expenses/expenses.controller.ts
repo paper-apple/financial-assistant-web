@@ -91,7 +91,10 @@ export class ExpensesController {
   }
 
   @Get('keywords/suggest')
-  suggestKeywords(@Query('query') query: string, @Req() req) {
-    return this.expensesService.suggestKeywords(query, req.userId);
+  suggestKeywords(
+    @Req() req,
+    @Query('query') query: string, 
+    @Query('field') field?: 'title' | 'category' | 'location') {
+      return this.expensesService.suggestKeywords(query, req.userId, field);
   }
 }

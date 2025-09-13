@@ -16,7 +16,7 @@ describe("SortForm", () => {
       <SortForm
         // isOpen={true}
         initialValues={initialValues}
-        onApply={vi.fn()}
+        applySorts={vi.fn()}
         onClose={vi.fn()}
       />
     );
@@ -37,7 +37,7 @@ describe("SortForm", () => {
     render(
       <SortForm
         initialValues={initialValues}
-        onApply={vi.fn()}
+        applySorts={vi.fn()}
         onClose={onClose}
       />
     );
@@ -51,7 +51,7 @@ describe("SortForm", () => {
     render(
       <SortForm
         initialValues={initialValues}
-        onApply={onApply}
+        applySorts={onApply}
         onClose={vi.fn()}
       />
     );
@@ -66,7 +66,7 @@ describe("SortForm", () => {
     render(
       <SortForm
         initialValues={initialValues}
-        onApply={onApply}
+        applySorts={onApply}
         onClose={vi.fn()}
       />
     );

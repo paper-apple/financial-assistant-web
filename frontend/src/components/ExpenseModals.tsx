@@ -8,8 +8,10 @@ import { CalendarModal } from "./CalendarModal";
 import type { 
   Expense, 
   FilterParams, 
+  FiltersState,
   SortParams,
-  FormState
+  FormState,
+  SortState
 } from "../types";
 
 type Props = {
@@ -22,31 +24,37 @@ type Props = {
     calendar: boolean;
   };
   editingExpense: Expense | null;
-  form: FormState;
-  filters: FilterParams;
-  sortParams: SortParams;
   sortedExpenses: Expense[];
+  form: FormState;
+  filtersState: FiltersState;
+  sortState: SortState;
+  suggestions: string[];
+  handleReset: () => void;
+  applyFilters: () => void;
+  applySorts: () => void;
   closeModal: (modal: keyof Props["modals"]) => void;
   openModal: (modal: keyof Props["modals"]) => void;
   handleCreated: (expense: Expense) => void;
   handleUpdated: (expense: Expense) => void;
-  handleFilters: (filters: FilterParams) => void;
-  handleSortApply: (sort: SortParams) => void;
+  handleAddKeyword: (word: string) => void;
   updateFormField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;};
 
 export const ExpenseModals = ({
   modals,
+  suggestions,
   form,
   editingExpense,
-  filters,
-  sortParams,
+  filtersState,
+  sortState,
+  handleReset,
   sortedExpenses,
   closeModal,
   openModal,
   handleCreated,
   handleUpdated,
-  handleFilters,
-  handleSortApply,
+  applyFilters,
+  applySorts,
+  handleAddKeyword,
   updateFormField
 }: Props) => (
   <>
@@ -82,12 +90,14 @@ export const ExpenseModals = ({
           />
       </Modal>
     )}
-    
     {modals.filters && (
       <Modal onClose={() => closeModal("filters")} title="Фильтры">
         <FilterForm 
-          initialValues={filters} 
-          onApply={handleFilters} 
+          suggestions={suggestions}
+          filtersState={filtersState}
+          handleAddKeyword={handleAddKeyword}
+          applyFilters={applyFilters} 
+          handleReset={handleReset}
           onClose={() => closeModal("filters")}
         />
       </Modal>
@@ -96,8 +106,9 @@ export const ExpenseModals = ({
     {modals.sort && (
       <Modal onClose={() => closeModal("sort")} title="Сортировка">
         <SortForm 
-          initialValues={sortParams} 
-          onApply={handleSortApply} 
+          // initialValues={sortParams} 
+          sortState={sortState}
+          applySorts={applySorts} 
           onClose={() => closeModal("sort")}
         />
       </Modal>

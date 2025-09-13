@@ -1,9 +1,11 @@
 // hooks/useFilterSort.ts
-import { useState, useMemo, useCallback } from "react";
-import type { Expense, FilterParams, SortParams } from "../types";
+import { useState, useCallback, useEffect } from "react";
+import type { FilterParams, SortParams } from "../types";
+import { useKeywordSuggestions } from "./useKeywordSuggestions";
 
-// export const useFilterSort = (expenses: Expense[]) => {
-//   const [filters, setFilters] = useState<FilterParams>({
+
+// export const useFilterSort = (loadExpenses: (filters: FilterParams, sortParams: SortParams) => void) => {
+//   const [sortFilters, setSortFilters] = useState<FilterParams>({
 //     startDate: null,
 //     endDate: null,
 //     minPrice: null,
@@ -11,96 +13,221 @@ import type { Expense, FilterParams, SortParams } from "../types";
 //     keywords: [],
 //   });
 
+//   const [keywordInput, setKeywordInput] = useState('');
+//   const [keywordsList, setKeywordsList] = useState<string[]>(sortFilters.keywords);
+//   const [startDate, setStartDate] = useState<Date | null>(sortFilters.startDate)
+//   const [endDate,   setEndDate]   = useState<Date | null>(sortFilters.endDate)
+//   const [minPrice,  setMinPrice]  = useState(sortFilters.minPrice?.toString() ?? "")
+//   const [maxPrice,  setMaxPrice]  = useState(sortFilters.maxPrice?.toString() ?? "")
+//   const [dateError, setDateError]   = useState(false);
+//   const [priceError, setPriceError] = useState(false);
+  
+//   const filtersState = {
+//     keywordInput, setKeywordInput,
+//     keywordsList, setKeywordsList,
+//     startDate, setStartDate,
+//     endDate, setEndDate,
+//     minPrice, setMinPrice,
+//     maxPrice, setMaxPrice,
+//     dateError,
+//     priceError,
+//   };
+
+//   const { suggestions, clearSuggestions } = useKeywordSuggestions({ input: keywordInput }); // ✅ корректно
+
 //   const [sortParams, setSortParams] = useState<SortParams>({
-//     field: "datetime",
-//     direction: "desc",
+//     field: 'datetime',
+//     direction: 'DESC' as 'ASC' | 'DESC'
 //   });
 
-//   const comparators = useMemo(() => ({
-//     title: (a: Expense, b: Expense) => a.title.localeCompare(b.title),
-//     category: (a: Expense, b: Expense) => a.category.name.localeCompare(b.category.name),
-//     price: (a: Expense, b: Expense) => Number(a.price) - Number(b.price),
-//     location: (a: Expense, b: Expense) => a.location.name.localeCompare(b.location.name),
-//     datetime: (a: Expense, b: Expense) => 
-//       new Date(a.datetime).getTime() - new Date(b.datetime).getTime(),
-//   }), []);
+//   // const handleAddKeyword = (word: string) => {
+//   //   if (!keywordsList.includes(word)) {
+//   //     setKeywordsList(prev => [...prev, word]);
+//   //   }
+//   //   setKeywordInput('');
+//   //   clearSuggestions();
+//   // };
 
-//   const filteredExpenses = useMemo(() => {
-//     return expenses.filter(exp => {
-//       const date = new Date(exp.datetime);
-//       const price = Number(exp.price);
+//   const handleAddKeyword = (word: string) => {
+//     const trimmed = word.trim();
+//     if (trimmed && !keywordsList.includes(trimmed)) {
+//       setKeywordsList(prev => [...prev, trimmed]);
+//     }
+//     setKeywordInput('');
+//     clearSuggestions();
+//   };
 
-//       return (
-//         (!filters.startDate || date >= filters.startDate) &&
-//         (!filters.endDate || date <= filters.endDate) &&
-//         (!filters.minPrice || price >= filters.minPrice) &&
-//         (!filters.maxPrice || price <= filters.maxPrice) &&
-//         (filters.keywords.length === 0 || 
-//           filters.keywords.some(term => 
-//             exp.title.toLowerCase().includes(term) ||
-//             exp.category.name.toLowerCase().includes(term) ||
-//             exp.location.name.toLowerCase().includes(term)
-//           )
-//         )
-//       );
-//     });
-//   }, [expenses, filters]);
 
-//   const sortedExpenses = useMemo(() => {
-//     return [...filteredExpenses].sort((a, b) => {
-//       const cmp = comparators[sortParams.field]?.(a, b) ?? 0;
-//       return sortParams.direction === "asc" ? cmp : -cmp;
-//     });
-//   }, [filteredExpenses, sortParams, comparators]);
+//   const getCurrentFilters = useCallback((): FilterParams => ({
+//     startDate,
+//     endDate,
+//     minPrice: minPrice ? Number(minPrice) : null,
+//     maxPrice: maxPrice ? Number(maxPrice) : null,
+//     keywords: keywordsList,
+//   }), [startDate, endDate, minPrice, maxPrice, keywordsList]);
+
+//   // const applyFilters = useCallback(() => {
+//   //   const newFilters: FilterParams = {
+//   //     startDate,
+//   //     endDate,
+//   //     minPrice: minPrice ? Number(minPrice) : null,
+//   //     maxPrice: maxPrice ? Number(maxPrice) : null,
+//   //     keywords: keywordsList,
+//   //   };
+
+//   //   handleFilters(newFilters);
+//   // }, [startDate, endDate, minPrice, maxPrice, keywordsList]);
+
+//   const applyFilters = () => handleFilters(getCurrentFilters());
 
 //   const handleFilters = useCallback((newFilters: FilterParams) => {
-//     setFilters(newFilters);
-//   }, []);
+//     setSortFilters(newFilters);
+//     loadExpenses(newFilters, sortParams);
+//   }, [loadExpenses, sortParams]);
 
-//   const handleSortApply = useCallback((newSort: SortParams) => {
-//     setSortParams(newSort);
-//   }, []);
+//   const handleSortApply = useCallback((newSortParams: SortParams) => {
+//     setSortParams(newSortParams);
+//     loadExpenses(sortFilters, newSortParams);
+//   }, [loadExpenses, sortFilters]);
+
+//   // Валидация цен
+//   useEffect(() => {
+//     const min = parseFloat(minPrice);
+//     const max = parseFloat(maxPrice);
+//     setPriceError(!isNaN(min) && !isNaN(max) && min > max);
+//   }, [minPrice, maxPrice]);
+
+//   useEffect(() => {
+//     if (startDate && endDate) {
+//       setDateError(startDate > endDate);
+//     } else {
+//       setDateError(false);
+//     }
+//   }, [startDate, endDate]);
+
+//   const handleReset = () => {
+//     setKeywordInput("")
+//     setKeywordsList([])
+//     setStartDate(null)
+//     setEndDate(null)
+//     setMinPrice("")
+//     setMaxPrice("")
+//   }
 
 //   return {
-//     filters,
 //     sortParams,
-//     filteredExpenses,
-//     sortedExpenses,
-//     handleFilters,
+//     filtersState,
+//     suggestions,
+//     handleAddKeyword,
+//     applyFilters,
 //     handleSortApply,
-//     setFilters,
-//     setSortParams
+//     handleReset
 //   };
 // };
 
-export const useFilterSort = (loadExpenses: (filters: any, sortParams: any) => void) => {
-  const [filters, setFilters] = useState<FilterParams>({
-    startDate: null,
-    endDate: null,
-    minPrice: null,
-    maxPrice: null,
-    keywords: [],
-  });
-  
-  const [sortParams, setSortParams] = useState<SortParams>({
-    field: 'datetime',
-    direction: 'DESC' as 'ASC' | 'DESC'
-  });
+// useFilterSort.ts
+export const useFilterSort = (
+  loadExpenses: (filters: FilterParams, sortParams: SortParams) => void
+) => {
+  const [keywordInput, setKeywordInput] = useState('');
+  const [keywordsList, setKeywordsList] = useState<string[]>([]);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [dateError, setDateError] = useState(false);
+  const [priceError, setPriceError] = useState(false);
 
-  const handleFilters = useCallback((newFilters: any) => {
-    setFilters(newFilters);
-    loadExpenses(newFilters, sortParams);
-  }, [loadExpenses, sortParams]);
+  const { suggestions, clearSuggestions } = useKeywordSuggestions({ input: keywordInput });
 
-  const handleSortApply = useCallback((newSortParams: any) => {
-    setSortParams(newSortParams);
-    loadExpenses(filters, newSortParams);
-  }, [loadExpenses, filters]);
+  // const [sortParams, setSortParams] = useState<SortParams>({
+  //   field: 'datetime',
+  //   direction: 'DESC',
+  // });
+
+
+
+  // Собираем фильтры из текущего состояния
+  const getCurrentFilters = useCallback((): FilterParams => ({
+    startDate,
+    endDate,
+    minPrice: minPrice ? Number(minPrice) : null,
+    maxPrice: maxPrice ? Number(maxPrice) : null,
+    keywords: keywordsList,
+  }), [startDate, endDate, minPrice, maxPrice, keywordsList]);
+
+
+  // const [sortField, setSortField] = useState<SortParams['field']>(sortParams.field);
+  // const [sortDirection, setSortDirection] = useState<SortParams['direction']>(sortParams.direction);
+
+  const [sortField, setSortField] = useState<SortParams['field']>("datetime");
+  const [sortDirection, setSortDirection] = useState<SortParams['direction']>("DESC");
+
+  const getCurrentSorts = useCallback((): SortParams => ({
+    field: sortField,
+    direction: sortDirection
+  }
+  ), [sortField, sortDirection]);
+
+  const handleAddKeyword = (word: string) => {
+    const trimmed = word.trim();
+    if (trimmed && !keywordsList.includes(trimmed)) {
+      setKeywordsList(prev => [...prev, trimmed]);
+    }
+    setKeywordInput('');
+    clearSuggestions();
+  };
+
+  const applyFilters = useCallback(() => {
+    loadExpenses(getCurrentFilters(), getCurrentSorts());
+  }, [getCurrentFilters, getCurrentSorts, loadExpenses]);
+
+  const applySorts = useCallback(() => {
+    // setSortParams(newSort);
+    loadExpenses(getCurrentFilters(), getCurrentSorts());
+  }, [getCurrentFilters, getCurrentSorts, loadExpenses]);
+
+  const handleResetFilters = () => {
+    setKeywordInput('');
+    setKeywordsList([]);
+    setStartDate(null);
+    setEndDate(null);
+    setMinPrice('');
+    setMaxPrice('');
+  };
+
+  // Валидация цен
+  useEffect(() => {
+    const min = parseFloat(minPrice);
+    const max = parseFloat(maxPrice);
+    setPriceError(!isNaN(min) && !isNaN(max) && min > max);
+  }, [minPrice, maxPrice]);
+
+  // Валидация дат
+  useEffect(() => {
+    setDateError(Boolean(startDate && endDate && startDate > endDate));
+  }, [startDate, endDate]);
 
   return {
-    filters,
-    sortParams,
-    handleFilters,
-    handleSortApply
+    // sortParams,
+    sortState: {
+      sortField, setSortField,
+      sortDirection, setSortDirection,
+    },
+    filtersState: {
+      keywordInput, setKeywordInput,
+      keywordsList, setKeywordsList,
+      startDate, setStartDate,
+      endDate, setEndDate,
+      minPrice, setMinPrice,
+      maxPrice, setMaxPrice,
+      dateError,
+      priceError,
+    },
+    suggestions,
+    handleAddKeyword,
+    applyFilters,
+    applySorts,
+    handleResetFilters,
   };
 };

@@ -239,75 +239,72 @@ export class ExpensesService {
     await this.expenseRepository.remove(expense);
   }
 
-  async suggestKeywords(query: string, userId: number) {
-  // const userId = req.userId; // или откуда ты его получаешь
+  async suggestKeywords(
+    query: string,
+    userId: number,
+    field?: 'title' | 'category' | 'location'
+  ) {
+    if (!query || query.trim().length < 2) {
+      return [];
+    }
 
-  if (!query || query.trim().length < 2) {
-    return [];
-  }
+    const q = `%${query}%`;
+    const queryExact = query;
 
-  // const qb = this.expenseRepository
-  //   .createQueryBuilder('expense')
-  //   .leftJoin('expense.user', 'user')
-  //   .leftJoin('expense.category', 'category')
-  //   .leftJoin('expense.location', 'location')
-  //   .select([
-  //     'DISTINCT expense.title AS title',
-  //     'category.name AS categoryName',
-  //     'location.name AS locationName',
-  //   ])
-  //   .where('user.id = :userId', { userId })
-  //   .andWhere(
-  //     new Brackets(qb1 => {
-  //       qb1.where('expense.title ILIKE :q', { q: `%${query}%` })
-  //          .orWhere('category.name ILIKE :q', { q: `%${query}%` })
-  //          .orWhere('location.name ILIKE :q', { q: `%${query}%` });
-  //     })
-  //   )
-  //   .limit(15);
+    const fieldConfigs = {
+      title: {
+        join: null,
+        alias: 'expense',
+        column: 'title',
+      },
+      category: {
+        join: ['expense.category', 'category'],
+        alias: 'category',
+        column: 'name',
+      },
+      location: {
+        join: ['expense.location', 'location'],
+        alias: 'location',
+        column: 'name',
+      },
+    };
 
-  // const rawResults = await qb.getRawMany();
+    const fetchSuggestions = async (
+      join: string[] | null,
+      alias: string,
+      column: string
+    ) => {
+      const qb = this.expenseRepository
+        .createQueryBuilder('expense')
+        .leftJoin('expense.user', 'user')
+        .where('user.id = :userId', { userId });
 
-  // // Собираем все найденные значения в один массив
-  // const allValues = [
-  //   ...rawResults.map(r => r.title).filter(Boolean),
-  //   ...rawResults.map(r => r.categoryName).filter(Boolean),
-  //   ...rawResults.map(r => r.locationName).filter(Boolean),
-  // ];
+      if (join) {
+        qb.leftJoin(join[0], join[1]);
+      }
 
-  // Убираем дубликаты
-  // return Array.from(new Set(allValues));
-const titles = await this.expenseRepository
-  .createQueryBuilder('expense')
-  .leftJoin('expense.user', 'user')
-  .where('user.id = :userId', { userId })
-  .andWhere('expense.title ILIKE :q', { q: `%${query}%` })
-  .select('DISTINCT expense.title', 'value')
-  .getRawMany();
+      qb.andWhere(`${alias}.${column} ILIKE :q`, { q })
+        .andWhere(`LOWER(${alias}.${column}) != LOWER(:queryExact)`, { queryExact })
+        .select(`DISTINCT ${alias}.${column}`, 'value')
+        .limit(15);
 
-const categories = await this.expenseRepository
-  .createQueryBuilder('expense')
-  .leftJoin('expense.user', 'user')
-  .leftJoin('expense.category', 'category')
-  .where('user.id = :userId', { userId })
-  .andWhere('category.name ILIKE :q', { q: `%${query}%` })
-  .select('DISTINCT category.name', 'value')
-  .getRawMany();
+      const results = await qb.getRawMany();
+      return results.map(r => r.value);
+    };
 
-const locations = await this.expenseRepository
-  .createQueryBuilder('expense')
-  .leftJoin('expense.user', 'user')
-  .leftJoin('expense.location', 'location')
-  .where('user.id = :userId', { userId })
-  .andWhere('location.name ILIKE :q', { q: `%${query}%` })
-  .select('DISTINCT location.name', 'value')
-  .getRawMany();
+    if (field && field in fieldConfigs) {
+      console.log('test')
+      const config = fieldConfigs[field];
+      return await fetchSuggestions(config.join, config.alias, config.column);
+    }
 
-return Array.from(new Set([
-  ...titles.map(r => r.value),
-  ...categories.map(r => r.value),
-  ...locations.map(r => r.value),
-]));
+    const allResults = await Promise.all(
+      Object.values(fieldConfigs).map(cfg =>
+        fetchSuggestions(cfg.join, cfg.alias, cfg.column)
+      )
+    );
 
+
+    return Array.from(new Set(allResults.flat()));
   }
 }
