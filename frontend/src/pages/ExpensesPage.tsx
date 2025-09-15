@@ -8,17 +8,10 @@ import { FloatingActionButtons } from "../components/FloatingActionButtons";
 import { ExpenseModals } from "../components/ExpenseModals";
 import { TopActionBar } from "../components/TopActionBar";
 import { AuthModal } from "../components/AuthModal";
-import { login, register, logout, fetchExpenses } from "../api";
-import type{ Expense, ExpenseCreate } from "../types";
+import type{ Expense } from "../types";
 import { useAuth } from "../hooks/useAuth";
 
-const PAGE_TITLE = "Ваши расходы";
-
 export const ExpensesPage = () => {
-  // const [user, setUser] = useState<{ username: string } | null>(null);
-
-  // const [authError, setAuthError] = useState("");
-
   const {
     user,
     error: authError, setError,
@@ -135,7 +128,7 @@ export const ExpensesPage = () => {
     updateExpense(updated);
     closeModal("update");
   }, [updateExpense, closeModal]);
-  // console.log(user);
+
   return (
     <section>
       <AuthModal
@@ -159,20 +152,7 @@ export const ExpensesPage = () => {
             />
           )}
 
-          <div className={`${selectionMode ? 'mt-12' : 'mt-6'} flex justify-between items-center`}>
-            <h2 className="text-xl font-semibold">{PAGE_TITLE}</h2>
-            <div className="flex items-center">
-              <span className="mr-2">Привет, {user.username}!</span>
-              <button 
-                onClick={handleLogout}
-                className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
-              >
-                Выйти
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+          <div className="mt-4 mx-auto">
             <ExpenseList
               expenses={expenses}
               onEdit={handleEditClick}
@@ -183,13 +163,16 @@ export const ExpensesPage = () => {
               lastUpdatedId={lastUpdatedId}
             />
           </div>
-
+          
+          {/* <div className="mt-4 mx-auto"> */}
           <FloatingActionButtons
             onAdd={() => openModal("add")}
             onFilter={() => openModal("filters")}
             onSort={() => openModal("sort")}
             onStats={() => openModal("stats")}
+            onLogout={() => handleLogout()}
           />
+          {/* </div> */}
 
           <ExpenseModals
             form={form}

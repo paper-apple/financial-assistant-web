@@ -36,17 +36,22 @@ export const ExpenseForm = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    let sanitizedValue = value;
+    let sanitizedValue = value.slice(0, 30);;
 
     if (name === "price") {
       sanitizedValue = value
         .replace(/[^\d.,]/g, "")      // разрешаем только цифры, точку и запятую
         .replace(",", ".")            // нормализуем запятую
         .replace(/^(\d*\.\d{0,2}).*$/, "$1"); // ограничиваем до 2 знаков после точки
+
+      // Ограничиваем целую часть до 10 цифр
+      const [integerPart, decimalPart] = sanitizedValue.split(".");
+      if (integerPart.length > 10) {
+        sanitizedValue = integerPart.slice(0, 10) + (decimalPart !== undefined ? "." + decimalPart : "");
+      }
     }
     updateField(name as keyof FormState, sanitizedValue);
   };
-
 
   // Отправка формы
   const handleSubmit = async () => {
@@ -89,107 +94,6 @@ export const ExpenseForm = ({
         ))}
       </ul>
     );
-
-  // return (
-  //   <div className="bg-white p-4 rounded shadow-md">
-  //     <div className="grid grid-cols-1 sm:grid-cols-0 gap-2">  
-  //       <div className="mb-2">
-  //         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-  //           Название
-  //         </label>
-  //         <input
-  //           name="title"
-  //           value={form.title}
-  //           onChange={handleChange}
-  //           placeholder="Название"
-  //           className={`border rounded px-3 py-2 focus:ring-2 ${
-  //             wasSubmitted && !form.title.trim()
-  //               ? "border-red-500 ring-red-300"
-  //               : "focus:ring-blue-400"}`}/>
-  //       </div>
-  //       <div className="mb-2">
-  //         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-  //           Категория
-  //         </label>
-  //         <input
-  //           name="category"
-  //           value={form.category}
-  //           onChange={handleChange}
-  //           placeholder="Категория"
-  //           className={`border rounded px-3 py-2 focus:ring-2 ${
-  //             wasSubmitted && !form.category.trim()
-  //               ? "border-red-500 ring-red-300"
-  //               : "focus:ring-blue-400"}`}
-  //         />
-  //       </div>
-  //       <div className="mb-2">
-  //         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-  //           Стоимость
-  //         </label>
-  //         <input
-  //           name="price"
-  //           type="text"
-  //           inputMode="decimal"
-  //           pattern="[0-9]*"
-  //           value={form.price}
-  //           onChange={handleChange}
-  //           placeholder="Сумма"
-  //           className={`border rounded px-3 py-2 focus:ring-2 ${
-  //             wasSubmitted && !form.price.trim()
-  //               ? "border-red-500 ring-red-300"
-  //               : "focus:ring-blue-400"}`}
-  //         />
-  //       </div>
-  //       <div className="mb-2">
-  //         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-  //           Место
-  //         </label>
-  //         <input
-  //           name="location"
-  //           value={form.location}
-  //           onChange={handleChange}
-  //           placeholder="Место"
-  //           className={`border rounded px-3 py-2 focus:ring-2 ${
-  //             wasSubmitted && !form.location.trim()
-  //               ? "border-red-500 ring-red-300"
-  //               : "focus:ring-blue-400"}`}
-  //         />
-  //       </div>
-  //       <div className="mb-2">
-  //         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-  //           Дата
-  //         </label>
-  //         <button
-  //           onClick={onOpen}
-  //           className="w-full border rounded px-3 py-2 text-left"
-  //           data-testid="calendar-button"
-  //         >
-  //           {form.datetime
-  //             ? new Date(form.datetime).toLocaleString("ru-RU", {
-  //                 day: "2-digit",
-  //                 month: "2-digit",
-  //                 year: "numeric",
-  //                 hour: "2-digit",
-  //                 minute: "2-digit",
-  //               })
-  //             : "Выберите дату и время"}
-  //         </button>
-  //       </div>
-  //     </div>
-  //     <div className="min-h-[1.25rem] text-sm text-red-500 mt-1">
-  //       {wasSubmitted && 
-  //       (!form.title.trim() || !form.category.trim() || !form.price.trim() || !form.location.trim())
-  //       && "Заполните поля"}
-  //     </div>
-  //     <button
-  //       onClick={handleSubmit}
-  //       className="mt-3 w-full bg-red-400 hover:bg-blue-600 text-white py-2 rounded"
-  //     >
-  //       {initialData ? "Сохранить" : "Добавить"}
-  //     </button>
-  //   </div>
-  // );
-
 
   return (
     <div className="bg-white p-4 rounded shadow-md">

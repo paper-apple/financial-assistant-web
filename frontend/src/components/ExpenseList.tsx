@@ -21,7 +21,11 @@ export const ExpenseList = ({
   lastUpdatedId,
 }: Props) => {
   return (
-    <ul className="space-y-2 w-full">
+    // <ul className="space-y-1 w-full">
+    <ul className="
+      grid grid-cols-1 gap-1 w-full
+      sm:grid-cols-2
+    ">
       {expenses.map((e) => (
         <ExpenseCard
           key={e.id}
