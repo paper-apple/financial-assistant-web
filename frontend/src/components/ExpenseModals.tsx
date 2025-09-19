@@ -7,22 +7,14 @@ import { StatsModal } from "./StatsModal";
 import { CalendarModal } from "./CalendarModal";
 import type { 
   Expense, 
-  FilterParams, 
   FiltersState,
-  SortParams,
   FormState,
-  SortState
+  SortState,
+  Modals
 } from "../types";
 
 type Props = {
-  modals: {
-    add: boolean;
-    update: boolean;
-    filters: boolean;
-    sort: boolean;
-    stats: boolean;
-    calendar: boolean;
-  };
+  modals: Modals;
   editingExpense: Expense | null;
   sortedExpenses: Expense[];
   form: FormState;
@@ -32,8 +24,8 @@ type Props = {
   handleReset: () => void;
   applyFilters: () => void;
   applySorts: () => void;
-  closeModal: (modal: keyof Props["modals"]) => void;
-  openModal: (modal: keyof Props["modals"]) => void;
+  closeModal: (modal: keyof Modals) => void;
+  openModal: (modal: keyof Modals) => void;
   handleCreated: (expense: Expense) => void;
   handleUpdated: (expense: Expense) => void;
   handleAddKeyword: (word: string) => void;
@@ -59,52 +51,77 @@ export const ExpenseModals = ({
 }: Props) => (
   <>
     {modals.add && (
-      <Modal onClose={() => closeModal("add")} title="Добавить расход">
+      <Modal onModalClose={() => closeModal("add")} title="Добавить расход">
         <ExpenseForm 
           form={form} 
           onCreated={handleCreated} 
           updateField={updateFormField}
-          onOpen={() => openModal("calendar")}
+          onCalendaropen={() => openModal("calendar")}
+          onModalClose={() => closeModal("add")}
           />
       </Modal>
     )}
 
     {modals.update && editingExpense && (
-      <Modal onClose={() => closeModal("update")} title="Редактировать расход">
+      <Modal onModalClose={() => closeModal("update")} title="Редактировать расход">
         <ExpenseForm 
           form={form}
           initialData={editingExpense}
           onUpdated={handleUpdated} 
           updateField={updateFormField}
-          onOpen={() => openModal("calendar")}
+          onCalendaropen={() => openModal("calendar")}
+          onModalClose={() => closeModal("update")}
           />
       </Modal>
     )}
 
-    {modals.calendar && form &&(
-      <Modal onClose={() => closeModal("calendar")} title="Календарь">
-        <CalendarModal 
-          currentExpense={form} 
-          updateField={updateFormField}
-          onClose={() => closeModal("calendar")}
-          />
-      </Modal>
-    )}
     {modals.filters && (
-      <Modal onClose={() => closeModal("filters")} title="Фильтры">
+      <Modal onModalClose={() => closeModal("filters")} title="Фильтры">
         <FilterForm 
           suggestions={suggestions}
           filtersState={filtersState}
           handleAddKeyword={handleAddKeyword}
           applyFilters={applyFilters} 
           handleReset={handleReset}
-          onClose={() => closeModal("filters")}
+          onModalOpen={openModal}
+          onModalClose={() => closeModal("filters")}
         />
       </Modal>
     )}
 
+    {modals.calendar && form &&(
+      <Modal onModalClose={() => closeModal("calendar")}>
+        <CalendarModal 
+          value={form.datetime ? new Date(form.datetime) : null}          
+          onSave={(date) => updateFormField("datetime", date.toISOString())}          
+          onClose={() => closeModal("calendar")}
+          />
+      </Modal>
+    )}
+
+    {modals.startDate && (
+      <Modal onModalClose={() => closeModal("startDate")}>
+        <CalendarModal 
+          value={filtersState.startDate} 
+          onSave={(date) => filtersState.setStartDate(date)}          
+          onClose={() => closeModal("startDate")}
+          />
+      </Modal>
+    )}
+
+    {modals.endDate && form &&(
+      <Modal onModalClose={() => closeModal("endDate")}>
+        <CalendarModal 
+          value={filtersState.endDate}
+          onSave={(date) => filtersState.setEndDate(date)}          
+          onClose={() => closeModal("endDate")}
+          />
+      </Modal>
+    )}
+
+
     {modals.sort && (
-      <Modal onClose={() => closeModal("sort")} title="Сортировка">
+      <Modal onModalClose={() => closeModal("sort")} title="Сортировка">
         <SortForm 
           // initialValues={sortParams} 
           sortState={sortState}
@@ -115,7 +132,7 @@ export const ExpenseModals = ({
     )}
 
     {modals.stats && (
-      <Modal onClose={() => closeModal("stats")} title="Статистика">
+      <Modal onModalClose={() => closeModal("stats")} title="Статистика">
         <StatsModal 
           expenses={sortedExpenses} 
           initialField="category" 

@@ -49,7 +49,7 @@ describe("FilterForm", () => {
 
   it("рендерит начальные значения", () => {
     render(<FilterForm 
-      onClose={onClose} 
+      onModalClose={onClose} 
       initialValues={initialValues} 
       onApply={onApply} />);
 
@@ -67,7 +67,7 @@ describe("FilterForm", () => {
 
   it("добавляет и удаляет ключевое слово", async () => {
     render(<FilterForm 
-      onClose={onClose} 
+      onModalClose={onClose} 
       initialValues={{ ...initialValues, keywords: [] }} 
       onApply={onApply} />);
     const input = screen.getByPlaceholderText("Введите ключевое слово");
@@ -88,7 +88,7 @@ describe("FilterForm", () => {
 
   it("показывает ошибку, если minPrice > maxPrice", async () => {
     render(<FilterForm 
-      onClose={onClose} 
+      onModalClose={onClose} 
       initialValues={initialValues} 
       onApply={onApply} />);
 
@@ -107,7 +107,7 @@ describe("FilterForm", () => {
   it("показывает ошибку, если startDate > endDate", async () => {
     render(
       <FilterForm
-        onClose={onClose}
+        onModalClose={onClose}
         initialValues={{ ...initialValues, startDate: new Date("2025-02-02T12:00:00"), endDate: new Date("2025-02-01T12:00:00") }}
         onApply={onApply}
       />
@@ -121,7 +121,7 @@ describe("FilterForm", () => {
 
   it("вызывает onApply с корректными фильтрами", async () => {
     render(<FilterForm 
-      onClose={onClose}
+      onModalClose={onClose}
       initialValues={initialValues} 
       onApply={onApply} />);
 
@@ -150,7 +150,7 @@ describe("FilterForm", () => {
 
   it("сбрасывает все поля по нажатию Reset", async () => {
     render(<FilterForm 
-      onClose={onClose}
+      onModalClose={onClose}
       initialValues={initialValues} 
       onApply={onApply} />);
 

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-.react-datepicker__time-list-item {
+/* .react-datepicker__time-list-item {
   padding: 6px 8px;
   font-size: 0.85rem;
 }
@@ -8,7 +8,7 @@
 .react-datepicker__month {
   min-height: 200px;
   padding-top: 5px;
-}
+} */
 
 .ios-calendar {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;

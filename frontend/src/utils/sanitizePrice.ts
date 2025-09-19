@@ -6,12 +6,21 @@
  */
 
 export function handlePriceChange(value: string, setter: (v: string) => void) {
-  setter(sanitizePriceInput(value));
+  setter(sanitizePrice(value));
 }
 
-export function sanitizePriceInput(value: string): string {
-  return value
-    .replace(/[^\d.,]/g, "")       // Удаляет всё, кроме цифр, точки и запятой
-    .replace(",", ".")             // Заменяет запятую на точку
-    .replace(/^(\d*\.\d{0,2}).*$/, "$1"); // Ограничивает до двух знаков после точки
+export function sanitizePrice(value: string): string {
+  let sanitizedValue = value.slice(0, 30);
+    sanitizedValue = value
+    .replace(/[^\d.,]/g, "")
+    .replace(",", ".")
+    .replace(/^(\d*\.\d{0,2}).*$/, "$1");
+
+  const [integerPart, decimalPart] = sanitizedValue.split(".");
+  if (integerPart.length > 10) {
+    sanitizedValue =
+      integerPart.slice(0, 10) +
+      (decimalPart !== undefined ? "." + decimalPart : "");
+  }
+  return sanitizedValue
 }

@@ -1,18 +1,27 @@
 // src/components/ExpenseForm.tsx
-import { useState } from "react";
 import { createExpense, updateExpense } from "../api";
-import type { Expense, FormState } from "../types"
-import "react-datepicker/dist/react-datepicker.css";
+import type { Expense, FormState, Modals } from "../types";
 import { useKeywordSuggestions } from "../hooks/useKeywordSuggestions";
+import { useExpenseFormValidation } from "../hooks/useExpenseFormValidation";
+import { sanitizePrice } from "../utils/sanitizePrice";
+import { FormField } from "./ui/FormField";
 
 type Props = {
-  form: FormState
-  initialData?: Expense
-  onCreated?: (created: Expense) => void
-  onUpdated?: (updated: Expense) => void
+  form: FormState;
+  initialData?: Expense;
+  onCreated?: (created: Expense) => void;
+  onUpdated?: (updated: Expense) => void;
   updateField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
-  onOpen: () => void
+  onCalendaropen: () => void;
+  onModalClose: () => void;
 };
+
+const FIELDS_CONFIG: { key: keyof FormState; label: string; placeholder: string }[] = [
+  { key: "title", label: "Название", placeholder: "Введите название расхода" },
+  { key: "category", label: "Категория", placeholder: "Введите категорию расхода" },
+  { key: "price", label: "Стоимость", placeholder: "Введите стоимость расхода" },
+  { key: "location", label: "Место", placeholder: "Введите место оплаты расхода" },
+];
 
 export const ExpenseForm = ({
   form,
@@ -20,169 +29,80 @@ export const ExpenseForm = ({
   onCreated,
   onUpdated,
   updateField,
-  onOpen,
+  onModalClose: closeModal,
+  onCalendaropen: openCalendar,
 }: Props) => {
-  const [wasSubmitted, setWasSubmitted] = useState(false);
+  const suggestionsMap = {
+    title: useKeywordSuggestions({ field: "title", input: form.title }),
+    category: useKeywordSuggestions({ field: "category", input: form.category }),
+    location: useKeywordSuggestions({ field: "location", input: form.location }),
+  };
 
-  // Подсказки для каждого поля
-  const { suggestions: titleSuggestions, clearSuggestions: clearTitle } =
-    useKeywordSuggestions({ field: "title", input: form.title });
-  const { suggestions: categorySuggestions, clearSuggestions: clearCategory } =
-    useKeywordSuggestions({ field: "category", input: form.category });
-  const { suggestions: locationSuggestions, clearSuggestions: clearLocation } =
-    useKeywordSuggestions({ field: "location", input: form.location });
+  const { getFieldError, validateAndSubmit, isValid, wasSubmitted } =
+    useExpenseFormValidation(form);
 
-  // Универсальный onChange для всех input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    let sanitizedValue = value.slice(0, 30);;
-
-    if (name === "price") {
-      sanitizedValue = value
-        .replace(/[^\d.,]/g, "")      // разрешаем только цифры, точку и запятую
-        .replace(",", ".")            // нормализуем запятую
-        .replace(/^(\d*\.\d{0,2}).*$/, "$1"); // ограничиваем до 2 знаков после точки
-
-      // Ограничиваем целую часть до 10 цифр
-      const [integerPart, decimalPart] = sanitizedValue.split(".");
-      if (integerPart.length > 10) {
-        sanitizedValue = integerPart.slice(0, 10) + (decimalPart !== undefined ? "." + decimalPart : "");
-      }
-    }
-    updateField(name as keyof FormState, sanitizedValue);
+    const finalValue = name === "price" ? sanitizePrice(value) : value.slice(0, 30);
+    updateField(name as keyof FormState, finalValue);
   };
 
-  // Отправка формы
   const handleSubmit = async () => {
-    setWasSubmitted(true);
-
-    if (!form.title || !form.category || !form.price || !form.location) return; // простая валидация
-
-    try {
-      if (initialData && onUpdated) {
-        const updated = await updateExpense(
-          initialData.id,
-          { ...form, price: +form.price }
-        );
-        onUpdated(updated);
-      } else if (!initialData && onCreated) {
-        const created = await createExpense(
-          { ...form, price: +form.price }
-        );
-        onCreated(created);
+    validateAndSubmit(async () => {
+      try {
+        if (initialData && onUpdated) {
+          const updated = await updateExpense(initialData.id, {
+            ...form,
+            price: +form.price,
+          });
+          onUpdated(updated);
+        } else if (!initialData && onCreated) {
+          const created = await createExpense({
+            ...form,
+            price: +form.price,
+          });
+          onCreated(created);
+        }
+      } catch (err) {
+        console.error("Ошибка при сохранении:", err);
       }
-    } catch (err) {
-      console.error("Ошибка при сохранении:", err);
-    }
+    });
   };
-
-  const renderSuggestions = (
-    list: string[],
-    onSelect: (value: string) => void
-  ) =>
-    list.length > 0 && (
-      <ul className="absolute bg-white border rounded shadow w-full z-10">
-        {list.map((s) => (
-          <li
-            key={s}
-            onClick={() => onSelect(s)}
-            className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-          >
-            {s}
-          </li>
-        ))}
-      </ul>
-    );
 
   return (
-    <div className="bg-white p-4 rounded shadow-md">
+    <div className="bg-white">
       <div className="grid grid-cols-1 gap-2">
-        {/* Название */}
-        <div className="mb-2 relative">
-          <label className="block text-sm font-medium mb-1">Название</label>
-          <input
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            placeholder="Название"
-            className={`border rounded px-3 py-2 focus:ring-2 ${
-              wasSubmitted && !form.title.trim()
-                ? "border-red-500 ring-red-300"
-                : "focus:ring-blue-400"
-            }`}
-          />
-          {renderSuggestions(titleSuggestions, (val) => {
-            updateField("title", val);
-            clearTitle();
-          })}
-        </div>
-
-        {/* Категория */}
-        <div className="mb-2 relative">
-          <label className="block text-sm font-medium mb-1">Категория</label>
-          <input
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            placeholder="Категория"
-            className={`border rounded px-3 py-2 focus:ring-2 ${
-              wasSubmitted && !form.category.trim()
-                ? "border-red-500 ring-red-300"
-                : "focus:ring-blue-400"
-            }`}
-          />
-          {renderSuggestions(categorySuggestions, (val) => {
-            updateField("category", val);
-            clearCategory();
-          })}
-        </div>
-
-        {/* Цена */}
-        <div className="mb-2">
-          <label className="block text-sm font-medium mb-1">Стоимость</label>
-          <input
-            name="price"
-            type="text"
-            inputMode="decimal"
-            pattern="[0-9]*"
-            value={form.price}
-            onChange={handleChange}
-            placeholder="Сумма"
-            className={`border rounded px-3 py-2 focus:ring-2 ${
-              wasSubmitted && !form.price.trim()
-                ? "border-red-500 ring-red-300"
-                : "focus:ring-blue-400"
-            }`}
-          />
-        </div>
-
-        {/* Локация */}
-        <div className="mb-2 relative">
-          <label className="block text-sm font-medium mb-1">Место</label>
-          <input
-            name="location"
-            value={form.location}
-            onChange={handleChange}
-            placeholder="Место"
-            className={`border rounded px-3 py-2 focus:ring-2 ${
-              wasSubmitted && !form.location.trim()
-                ? "border-red-500 ring-red-300"
-                : "focus:ring-blue-400"
-            }`}
-          />
-          {renderSuggestions(locationSuggestions, (val) => {
-            updateField("location", val);
-            clearLocation();
-          })}
-        </div>
+        {FIELDS_CONFIG.map(({ key, label, placeholder }) => {
+          const sugg = suggestionsMap[key as keyof typeof suggestionsMap];
+          return (
+            <FormField
+              key={key}
+              label={label}
+              name={key}
+              value={form[key]}
+              onChange={handleChange}
+              placeholder={placeholder}
+              error={getFieldError(key)}
+              suggestions={sugg?.suggestions}
+              onSuggestionSelect={
+                sugg
+                  ? val => {
+                      updateField(key, val);
+                      sugg.clearSuggestions();
+                    }
+                  : undefined
+              }
+            />
+          );
+        })}
 
         {/* Дата */}
-        <div className="mb-2">
+        <div className="mb-1">
           <label className="block text-sm font-medium mb-1">Дата</label>
           <button
-            onClick={onOpen}
-            className="w-full border rounded px-3 py-2 text-left"
+            // onClick={onCalendarOpen}
+            onClick={openCalendar}
+            className="w-full border rounded px-3 py-1 text-left"
           >
             {form.datetime
               ? new Date(form.datetime).toLocaleString("ru-RU", {
@@ -197,23 +117,31 @@ export const ExpenseForm = ({
         </div>
       </div>
 
-      {/* Ошибки */}
-      <div className="min-h-[1.25rem] text-sm text-red-500 mt-1">
-        {wasSubmitted &&
-          (!form.title.trim() ||
-            !form.category.trim() ||
-            !form.price.trim() ||
-            !form.location.trim()) &&
-          "Заполните поля"}
+      <div className="my-1 min-h-[26px] max-h-[26px] overflow-y-auto text-red-400 text-center">
+        {wasSubmitted && !isValid() && (
+          <p>Заполните поля</p>
+        )}
       </div>
 
       {/* Кнопка */}
-      <button
-        onClick={handleSubmit}
-        className="mt-3 w-full bg-red-400 hover:bg-blue-600 text-white py-2 rounded"
-      >
-        {initialData ? "Сохранить" : "Добавить"}
-      </button>
+      <div className="flex justify-end gap-2">
+        <button
+          onClick={closeModal}
+          className="w-full px-4 py-2 border rounded text-sm hover:bg-gray-100"
+        >
+          Отменить
+        </button>
+         <button onClick={handleSubmit} className={`w-full px-4 py-2 border rounded text-sm text-white 
+          ${ isValid() ? "bg-blue-300 hover:bg-blue-700" : "bg-gray-200 hover:bg-gray-200"}`}>
+            Применить
+        </button>
+        {/* <button
+          onClick={handleSubmit}
+          className="mt-3 w-full text-sm bg-blue-300 hover:bg-blue-500 text-white py-2 border border-blue-300 rounded-md"
+        >
+          {initialData ? "Сохранить" : "Добавить"}
+        </button> */}
+      </div>
     </div>
   );
 };

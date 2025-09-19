@@ -6,7 +6,7 @@ import { Modal } from "../../../components/Modal";
 describe("Модальное окно", () => {
   test("Рендер", () => {
     render(
-      <Modal onClose={() => {}}>
+      <Modal onModalClose={() => {}}>
         <span>Modal Content</span>
       </Modal>
     );
@@ -17,7 +17,7 @@ describe("Модальное окно", () => {
   test("Вызов onClose при нажатии на фон", () => {
     const onClose = vi.fn();
     render(
-      <Modal onClose={onClose}>
+      <Modal onModalClose={onClose}>
         <span>Modal Content</span>
       </Modal>
     );
@@ -29,7 +29,7 @@ describe("Модальное окно", () => {
   test("Вызов onClose не должен происходить при нажатии на модальном окне", () => {
     const onClose = vi.fn();
     render(
-      <Modal onClose={onClose}>
+      <Modal onModalClose={onClose}>
         <span>Modal Content</span>
       </Modal>
     );
@@ -41,7 +41,7 @@ describe("Модальное окно", () => {
   test("Закрытие модального окна при нажатии Esc", () => {
     const onClose = vi.fn();
     render(
-      <Modal onClose={onClose}>
+      <Modal onModalClose={onClose}>
         <span>Modal Content</span>
       </Modal>
     );

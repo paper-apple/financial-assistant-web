@@ -4,12 +4,12 @@ import { addModalToStack, removeModalFromStack, getTopModalId } from "../utils/m
 import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
 type Props = {
-  onClose: () => void;
+  onModalClose: () => void;
   children: ReactNode;
   title?: string;
 };
 
-export const Modal = ({ onClose, title, children }: Props) => {
+export const Modal = ({ onModalClose: onClose, title, children }: Props) => {
   const titleId = useId(); // Генерируем уникальный ID
   useBodyScrollLock();
   const modalIdRef = useRef<number | null>(null);
@@ -40,11 +40,11 @@ export const Modal = ({ onClose, title, children }: Props) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center"
+      className="fixed inset-0 bg-gray-900/70 bg-opacity-30 z-50 flex items-center justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-4 w-full max-w-md mx-auto shadow-lg"
+        className="bg-white rounded-lg p-4 w-full max-w-sm mx-auto shadow-lg"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

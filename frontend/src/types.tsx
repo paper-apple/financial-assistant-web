@@ -33,6 +33,14 @@ export interface Expense {
   // user: User;
 }
 
+export interface ExpenseFormType {
+  initialData?: Expense;
+  onCreated?: (created: Expense) => void;
+  onUpdated?: (updated: Expense) => void;
+  onCalendarOpen: () => void;
+  onModalClose: () => void;
+};
+
 // Типы для создания/обновления расходов
 export interface ExpenseCreate {
   title: string;
@@ -97,3 +105,14 @@ export type FormState = {
   location: string;
   datetime: string;   // ISO-строка
 };
+
+  export type Modals = {
+    add: boolean;
+    update: boolean;
+    filters: boolean;
+    sort: boolean;
+    stats: boolean;
+    calendar: boolean;
+    startDate: boolean;
+    endDate: boolean;
+  };

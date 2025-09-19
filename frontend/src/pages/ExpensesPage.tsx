@@ -67,6 +67,8 @@ export const ExpensesPage = () => {
     sort: false,
     stats: false,
     calendar: false,
+    startDate: false,
+    endDate: false,
   });
 
   // Проверка авторизации при загрузке компонента

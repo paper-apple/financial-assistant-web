@@ -10,7 +10,7 @@ type Props = {
 };
 
 const btnClass =
-  "bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-3.5 rounded-full";
+  "bg-blue-300 hover:bg-blue-500 text-white font-bold py-3.5 px-3.5 rounded-full border-1";
 
 export const FloatingActionButtons = ({
   onAdd,
@@ -27,25 +27,14 @@ export const FloatingActionButtons = ({
     { onClick: onLogout, icon: ArrowLeftStartOnRectangleIcon },
   ];
 
-  // return (
-  //   <div className="fixed bottom-1 left-0 w-full px-5 z-50">
-  //     <div className="flex justify-between">
-  //       {buttons.map(({ onClick, icon: Icon }, idx) => (
-  //         <button key={idx} onClick={onClick} className={btnClass}>
-  //           <Icon className="w-4 h-7" />
-  //         </button>
-  //       ))}
-  //     </div>
-  //   </div>
-  // );
   return (
-    // <div className="fixed bottom-1 left-0 right-0 z-50">
-    <div className="fixed bottom-0 left-0 right-0 z-40 p-2 px-5 max-w-screen-sm mx-auto bg-white border-t shadow-md">
+    // <div className="fixed bottom-0 left-0 right-0 z-40 p-2 px-5 max-w-screen-sm mx-auto bg-white border-t shadow-md">
+    <div className="fixed bottom-0 left-0 right-0 z-40 p-2 px-5 max-w-screen-sm mx-auto">
       <div className="max-w-screen-sm mx-auto">
         <div className="flex justify-between">
           {buttons.map(({ onClick, icon: Icon }, idx) => (
             <button key={idx} onClick={onClick} className={btnClass}>
-              <Icon className="w-7 h-4" />
+              <Icon className="w-4 h-4" />
             </button>
           ))}
         </div>

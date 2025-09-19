@@ -39,7 +39,7 @@ describe("ExpenseForm", () => {
       <ExpenseForm
         form={form}
         updateField={mockUpdateField}
-        onOpen={mockOnOpen}
+        onCalendarOpen={mockOnOpen}
         onCreated={mockOnCreated}
         onUpdated={mockOnUpdated}
       />
@@ -81,7 +81,7 @@ describe("ExpenseForm", () => {
           location: "Место"
         }}
         updateField={mockUpdateField}
-        onOpen={mockOnOpen}
+        onCalendarOpen={mockOnOpen}
         onCreated={mockOnCreated}
         onUpdated={mockOnUpdated}
         initialData={existingExpense}
