@@ -21,7 +21,7 @@ type Props = {
   filtersState: FiltersState;
   sortState: SortState;
   suggestions: string[];
-  handleReset: () => void;
+  // handleReset: () => void;
   applyFilters: () => void;
   applySorts: () => void;
   closeModal: (modal: keyof Modals) => void;
@@ -38,7 +38,7 @@ export const ExpenseModals = ({
   editingExpense,
   filtersState,
   sortState,
-  handleReset,
+  // handleReset,
   sortedExpenses,
   closeModal,
   openModal,
@@ -82,7 +82,7 @@ export const ExpenseModals = ({
           filtersState={filtersState}
           handleAddKeyword={handleAddKeyword}
           applyFilters={applyFilters} 
-          handleReset={handleReset}
+          // handleReset={handleReset}
           onModalOpen={openModal}
           onModalClose={() => closeModal("filters")}
         />

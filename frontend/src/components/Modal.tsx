@@ -44,14 +44,14 @@ export const Modal = ({ onModalClose: onClose, title, children }: Props) => {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-4 w-full max-w-sm mx-auto shadow-lg"
+        className="bg-white rounded-lg p-3 w-full max-w-sm mx-auto shadow-lg"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
       >
         {title && (
-          <h3 id={titleId} className="text-lg font-semibold mb-3 text-center">
+          <h3 id={titleId} className="text-lg font-semibold pb-2 mb-2 text-center border-b text-gray-700">
             {title}
           </h3>
         )}

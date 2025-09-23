@@ -22,21 +22,30 @@ export const ExpenseList = ({
 }: Props) => {
   return (
     // <ul className="space-y-1 w-full">
-    <ul className="
-      grid grid-cols-1 gap-1 w-full
-      sm:grid-cols-2
-    ">
-      {expenses.map((e) => (
-        <ExpenseCard
-          key={e.id}
-          expense={e}
-          onEdit={onEdit}
-          onLongPress={onLongPress}
-          onSelect={onSelect}
-          selectionMode={selectionMode}
-          selected={selectedIds.includes(e.id)}
-          highlight={e.id === lastUpdatedId}
-      />))}
-    </ul>
+    <div>
+      { (expenses.length > 0) ? (
+        <ul className="
+          grid grid-cols-1 gap-1 w-full
+          sm:grid-cols-2
+        ">
+          {expenses.map((e) => (
+            <ExpenseCard
+              key={e.id}
+              expense={e}
+              onEdit={onEdit}
+              onLongPress={onLongPress}
+              onSelect={onSelect}
+              selectionMode={selectionMode}
+              selected={selectedIds.includes(e.id)}
+              highlight={e.id === lastUpdatedId}
+          />))}
+        </ul>
+      ) : (
+        <div className="w-full min-h-110 flex items-center justify-center">
+          <p className="text-2xl text-gray-500 font-medium">Записей нет</p>
+        </div>
+      )
+      }
+    </div>
   );
 };

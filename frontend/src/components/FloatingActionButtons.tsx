@@ -7,10 +7,11 @@ type Props = {
   onSort: () => void;
   onStats: () => void;
   onLogout: () => void;
+  closeSelection: () => void;
 };
 
 const btnClass =
-  "bg-blue-300 hover:bg-blue-500 text-white font-bold py-3.5 px-3.5 rounded-full border-1";
+  "bg-blue-300 hover:bg-blue-500 text-white font-bold py-3.5 px-3.5 rounded-full border-1 transition-colors";
 
 export const FloatingActionButtons = ({
   onAdd,
@@ -18,13 +19,19 @@ export const FloatingActionButtons = ({
   onSort,
   onStats,
   onLogout,
+  closeSelection,
 }: Props) => {
+  const withClose = (fn: () => void) => () => {
+    closeSelection();
+    fn();
+  };
+
   const buttons = [
-    { onClick: onAdd, icon: PlusIcon },
-    { onClick: onFilter, icon: FunnelIcon },
-    { onClick: onSort, icon: ArrowsUpDownIcon },
-    { onClick: onStats, icon: ChartBarIcon },
-    { onClick: onLogout, icon: ArrowLeftStartOnRectangleIcon },
+    { onClick: withClose(onAdd), icon: PlusIcon },
+    { onClick: withClose(onFilter), icon: FunnelIcon },
+    { onClick: withClose(onSort), icon: ArrowsUpDownIcon },
+    { onClick: withClose(onStats), icon: ChartBarIcon },
+    { onClick: withClose(onLogout), icon: ArrowLeftStartOnRectangleIcon },
   ];
 
   return (

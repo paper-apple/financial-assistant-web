@@ -5,6 +5,7 @@ import { useKeywordSuggestions } from "../hooks/useKeywordSuggestions";
 import { useExpenseFormValidation } from "../hooks/useExpenseFormValidation";
 import { sanitizePrice } from "../utils/sanitizePrice";
 import { FormField } from "./ui/FormField";
+import { useState } from "react";
 
 type Props = {
   form: FormState;
@@ -17,10 +18,10 @@ type Props = {
 };
 
 const FIELDS_CONFIG: { key: keyof FormState; label: string; placeholder: string }[] = [
-  { key: "title", label: "Название", placeholder: "Введите название расхода" },
-  { key: "category", label: "Категория", placeholder: "Введите категорию расхода" },
-  { key: "price", label: "Стоимость", placeholder: "Введите стоимость расхода" },
-  { key: "location", label: "Место", placeholder: "Введите место оплаты расхода" },
+  { key: "title", label: "Название", placeholder: "...введите название расхода" },
+  { key: "category", label: "Категория", placeholder: "...введите категорию расхода" },
+  { key: "price", label: "Стоимость", placeholder: "...введите стоимость расхода" },
+  { key: "location", label: "Место", placeholder: "...введите место оплаты расхода" },
 ];
 
 export const ExpenseForm = ({
@@ -69,6 +70,8 @@ export const ExpenseForm = ({
     });
   };
 
+  const [isFocused, setIsFocused] = useState(false);  
+  
   return (
     <div className="bg-white">
       <div className="grid grid-cols-1 gap-2">
@@ -97,8 +100,8 @@ export const ExpenseForm = ({
         })}
 
         {/* Дата */}
-        <div className="mb-1">
-          <label className="block text-sm font-medium mb-1">Дата</label>
+        <div className="">
+          <label className="label-text">Дата</label>
           <button
             // onClick={onCalendarOpen}
             onClick={openCalendar}
@@ -127,20 +130,14 @@ export const ExpenseForm = ({
       <div className="flex justify-end gap-2">
         <button
           onClick={closeModal}
-          className="w-full px-4 py-2 border rounded text-sm hover:bg-gray-100"
+          className="btn-base btn-cancel"
         >
           Отменить
         </button>
-         <button onClick={handleSubmit} className={`w-full px-4 py-2 border rounded text-sm text-white 
-          ${ isValid() ? "bg-blue-300 hover:bg-blue-700" : "bg-gray-200 hover:bg-gray-200"}`}>
-            Применить
+         <button onClick={handleSubmit} className={`btn-base
+          ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
+          Применить
         </button>
-        {/* <button
-          onClick={handleSubmit}
-          className="mt-3 w-full text-sm bg-blue-300 hover:bg-blue-500 text-white py-2 border border-blue-300 rounded-md"
-        >
-          {initialData ? "Сохранить" : "Добавить"}
-        </button> */}
       </div>
     </div>
   );

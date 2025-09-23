@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuthValidation } from "../hooks/useAuthValidation";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -19,9 +20,21 @@ export const AuthModal = ({
 }: AuthModalProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [localError, setLocalError] = useState("");
+
+  const { validateUsername, validatePassword, isValid } = useAuthValidation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const usernameError = validateUsername(username);
+    const passwordError = validatePassword(password);
+
+    // if (usernameError || passwordError) {
+    //   setLocalError(usernameError || passwordError);
+    //   return;
+    // }
+
     onAuth(username, password);
   };
 
@@ -33,13 +46,13 @@ export const AuthModal = ({
         <h2 className="text-xl font-semibold mb-4">
           {isLoginMode ? "Вход" : "Регистрация"}
         </h2>
-        
-        {error && (
+
+        {(error || localError) && (
           <div className="bg-red-100 text-red-700 p-2 rounded mb-4">
-            {error}
+            {error || localError}
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
@@ -53,7 +66,7 @@ export const AuthModal = ({
               required
             />
           </div>
-          
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
               Пароль
@@ -66,15 +79,19 @@ export const AuthModal = ({
               required
             />
           </div>
-          
+
           <div className="flex justify-between items-center">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              // className={`px-4 py-2 rounded text-white ${
+              //   isValid(username, password)
+              //     ? "bg-blue-500 hover:bg-blue-600"
+              //     : "bg-gray-300 cursor-not-allowed"
+              // }`}
             >
               {isLoginMode ? "Войти" : "Зарегистрироваться"}
             </button>
-            
+
             <button
               type="button"
               onClick={onToggleMode}
@@ -84,7 +101,7 @@ export const AuthModal = ({
             </button>
           </div>
         </form>
-        
+
         <button
           onClick={onClose}
           className="mt-4 text-gray-500 hover:text-gray-700"

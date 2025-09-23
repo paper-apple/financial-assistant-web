@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { ru } from 'date-fns/locale';
 import type { FiltersState, Modals } from '../types';
@@ -12,7 +12,7 @@ interface FilterFormProps {
   filtersState: FiltersState;
   handleAddKeyword: (word: string) => void;
   applyFilters: () => void;
-  handleReset: () => void;
+  // handleReset: () => void;
   onModalOpen: (modal: keyof Modals) => void;
   onModalClose: () => void;
 }
@@ -22,7 +22,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
   filtersState,
   applyFilters,
   handleAddKeyword,
-  handleReset,
+  // handleReset,
   onModalOpen: openModal,
   onModalClose: onClose
 }) => {
@@ -33,54 +33,61 @@ export const FilterForm: React.FC<FilterFormProps> = ({
     endDate, setEndDate,
     minPrice, setMinPrice,
     maxPrice, setMaxPrice,
+    backup,
+    restoreInitialValues,
+    handleResetFilters,
   } = filtersState;
 
-  const initialValuesRef = useRef<{
-    keywordsList: string[];
-    startDate: Date | null;
-    endDate: Date | null;
-    minPrice: string;
-    maxPrice: string;
-  } | null>(null);
-
-
   useEffect(() => {
-    initialValuesRef.current = {
-      keywordsList: [...keywordsList], // копия массива
-      startDate,
-      endDate,
-      minPrice,
-      maxPrice,
-    };
+    backup();
   }, []);
-
 
   const { dateError, priceError, validateAndSubmit, isValid } =
     useFilterFormValidation({startDate, endDate, minPrice, maxPrice});
 
+  const wasAppliedRef = useRef(false);
+
   const handleApply = () => {
     validateAndSubmit(() => {
+      wasAppliedRef.current = true;
       applyFilters();
       onClose();
     });
   };
 
+  // Восстановление кэшированных данных при закрытии окна 
+  useEffect(() => {
+    return () => {
+      if (!wasAppliedRef.current) {
+        restoreInitialValues();
+      };
+    }
+  },[]);
+
   return (
     <div>
       {/* Ключевые слова */}
       <div className="mb-2 relative border-b-1">
-        <div className="flex items-end gap-2 mb-2">
+        <div className="flex items-end gap-2 pb-2">
           <FormField
             label="Ключевые слова"
             name="keyword"
             value={keywordInput}
             onChange={(e) => setKeywordInput(e.target.value)}
-            placeholder="Введите ключевое слово"
+            placeholder="...введите ключевое слово"
             suggestions={suggestions}
             onSuggestionSelect={(val) => handleAddKeyword(val)}
             onKeywordAdd={() => handleAddKeyword(keywordInput)} // 👈 передаём сюда
           />
         </div>
+        <div className="flex gap-2">
+          <button onClick={() => setKeywordsList([])} className="w-full btn-base btn-cancel">
+            Очистить список
+          </button>
+          <button onClick={() => handleAddKeyword(keywordInput)} className="w-full btn-base btn-confirm">
+            Добавить слово
+        </button>
+      </div>
         <div className="rounded mt-2 flex flex-wrap items-start gap-1 min-h-[88px] max-h-[88px] overflow-y-auto">
           {keywordsList.length > 0 ? (
             keywordsList.map((word) => (
@@ -100,16 +107,17 @@ export const FilterForm: React.FC<FilterFormProps> = ({
               </span>
             ))
           ) : (
-            <span className="text-gray-400 text-sm">Ключевые слова не добавлены</span>
+            <span className="text-gray-400 text-sm w-full text-center pt-7">Ключевые слова не добавлены</span>
           )}
         </div>
       </div>
 
       {/* Даты */}
       <div className="mb-2 border-b">
-        <label className="block text-sm font-medium mb-1">Интервал времени</label>
-        <div className="grid grid-cols-1 gap-2">
+        <label className="label-text">Интервал времени</label>
+        <div className="grid grid-cols-2 gap-2">
           <FormField
+            // label="Интервал времени"
             name="startDate"
             value={
               startDate
@@ -160,24 +168,24 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 
       {/* Цены */}
       <div className="mb-2">
-        <label className="block text-sm font-medium mb-1">Диапазон цен</label>
+        <label className="label-text">Диапазон цен</label>
           <div className="grid grid-cols-2 gap-2">
-          <FormField
-            name="startDate"
-            value={minPrice}
-            onChange={e => handlePriceChange(e.target.value, setMinPrice)}
-            placeholder={'От'}
-            error={priceError}
-          />
+            <FormField
+              name="startDate"
+              value={minPrice}
+              onChange={e => handlePriceChange(e.target.value, setMinPrice)}
+              placeholder={'От'}
+              error={priceError}
+            />
 
-          <FormField
-            name="endDate"
-            value={maxPrice}
-            onChange={e => handlePriceChange(e.target.value, setMaxPrice)}
-            placeholder={'До'}
-            error={priceError}
-          />
-        </div>
+            <FormField
+              name="endDate"
+              value={maxPrice}
+              onChange={e => handlePriceChange(e.target.value, setMaxPrice)}
+              placeholder={'До'}
+              error={priceError}
+            />
+          </div>
         <div className="my-1 min-h-[26px] max-h-[26px] overflow-y-auto text-red-400 text-center">
           {priceError && (
             <p>Минимальная цена больше максимальной</p>
@@ -187,10 +195,10 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 
       {/* Кнопки */}
       <div className="flex justify-end gap-2">
-        <button onClick={onClose} className="w-full px-4 py-2 border rounded text-sm hover:bg-gray-100">Отмена</button>
-        <button onClick={handleReset} className="w-full px-4 py-2 border rounded text-sm hover:bg-gray-100">Сбросить</button>
-        <button onClick={handleApply} className={`w-full px-4 py-2 text-white rounded 
-          ${ isValid() ? "bg-blue-300 hover:bg-blue-700" : "bg-gray-200 hover:bg-gray-200"}`}>
+        <button onClick={onClose} className="btn-base btn-cancel">Отмена</button>
+        <button onClick={handleResetFilters} className="btn-base btn-cancel">Сбросить</button>
+        <button onClick={handleApply} className={`btn-base
+          ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
             Применить
         </button>
       </div>

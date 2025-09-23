@@ -40,40 +40,8 @@ export class ExpensesController {
       direction: sortDirection || 'ASC'
     } : undefined;
 
-    // console.log(filters)
     return this.expensesService.findAll(req.userId, filters, sortParams);
   }
-
-//   @Get()
-// findAll(@Req() req, @Query() query: Record<string, any>) {
-//   const rawKeywords = query.keywords;
-//     console.log(rawKeywords)
-
-//   const keywords = Array.isArray(rawKeywords)
-//     ? rawKeywords
-//     : typeof rawKeywords === 'string'
-//       ? [rawKeywords]
-//       : [];
-
-//   const filters = {
-//     minPrice: query.minPrice ? Number(query.minPrice) : undefined,
-//     maxPrice: query.maxPrice ? Number(query.maxPrice) : undefined,
-//     startDate: query.startDate ? new Date(query.startDate) : undefined,
-//     endDate: query.endDate ? new Date(query.endDate) : undefined,
-//     keywords,
-//   };
-
-//   const sortParams = query.sortField
-//     ? {
-//         field: query.sortField,
-//         direction: query.sortDirection || 'ASC',
-//       }
-//     : undefined;
-  
-//   console.log(filters)
-//   return this.expensesService.findAll(req.userId, filters, sortParams);
-// }
-
 
   @Get(':id')
   findOne(@Param('id') id: number, @Req() req) {

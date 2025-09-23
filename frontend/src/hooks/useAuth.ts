@@ -20,7 +20,6 @@ export function useAuth() {
   const loginUser = async (username: string, password: string) => {
     try {
       await login(username, password);
-      console.log('eeeee2')
       setUser({ username });
     } catch (err: any) {
       setError(err.response?.data?.message || "Ошибка входа");

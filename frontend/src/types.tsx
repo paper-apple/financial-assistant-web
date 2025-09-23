@@ -81,6 +81,9 @@ export type FiltersState = {
   setMaxPrice: React.Dispatch<React.SetStateAction<string>>;
   dateError: boolean;
   priceError: boolean;
+  backup: () => void;
+  restoreInitialValues: () => void;
+  handleResetFilters: () => void;
 };
 
 export type SortState = {

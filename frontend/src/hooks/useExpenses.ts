@@ -3,19 +3,6 @@ import { useState, useEffect, useCallback } from "react";
 import { deleteExpense, fetchExpenses } from "../api";
 import type { SortParams, Expense } from "../types";
 
-// export const useExpenses = () => {
-//   const [expenses, setExpenses] = useState<Expense[]>([]);
-//   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
-
-  // const loadExpenses = async () => {
-  //   try {
-  //     const response = await fetchExpenses();
-  //     setExpenses(response.data);
-  //   } catch (error) {
-  //     console.error("Ошибка загрузки расходов:", error);
-  //   }
-  // };
-
 export const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);

@@ -12,7 +12,7 @@ export class Expense {
   @Column({ length: 30 })
   title: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'decimal', precision: 12, scale: 2 })
   price: number;
 
   @Column({ type: 'timestamp' })

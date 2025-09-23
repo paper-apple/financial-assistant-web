@@ -1,48 +1,94 @@
 // src/components/SortForm.tsx
 import type { SortParams, SortState } from '../types';
+import {
+  TagIcon,
+  RectangleStackIcon,
+  CurrencyDollarIcon,
+  MapPinIcon,
+  CalendarDaysIcon,
+  ArrowUpIcon,
+  ArrowDownIcon
+} from '@heroicons/react/24/solid';
 
 type Props = {
   sortState: SortState;
+  // icon: React.ElementType <any>;
   applySorts: () => void;
   onClose: () => void;
 };
 
 // Вынесем константы наружу, чтобы не пересоздавались при каждом рендере
-const FIELD_OPTIONS: { value: SortParams['field']; label: string }[] = [
-  { value: 'title', label: 'Название' },
-  { value: 'category', label: 'Категория' },
-  { value: 'price', label: 'Стоимость' },
-  { value: 'location', label: 'Место' },
-  { value: 'datetime', label: 'Дата' },
+const FIELD_OPTIONS: { value: SortParams['field']; label: string; icon: React.ElementType }[] = [
+  { value: 'title', label: 'Название', icon: TagIcon },
+  { value: 'category', label: 'Категория', icon: RectangleStackIcon },
+  { value: 'price', label: 'Стоимость', icon: CurrencyDollarIcon },
+  { value: 'location', label: 'Место', icon: MapPinIcon },
+  { value: 'datetime', label: 'Дата', icon: CalendarDaysIcon },
 ];
 
-const DIRECTION_OPTIONS: { value: SortParams['direction']; label: string }[] = [
-  { value: 'ASC', label: 'По возрастанию' },
-  { value: 'DESC', label: 'По убыванию' },
+const DIRECTION_OPTIONS: { value: SortParams['direction']; label: string; icon: React.ElementType }[] = [
+  { value: 'ASC', label: 'По возрастанию', icon: ArrowUpIcon },
+  { value: 'DESC', label: 'По убыванию', icon: ArrowDownIcon },
 ];
+
 
 // Вынесем RadioGroup в отдельный компонент для лучшей читаемости
+// const RadioGroup = <T extends string>({
+//   options,
+//   selected,
+//   onChange,
+// }: {
+//   options: { value: T; label: string }[];
+//   selected: T;
+//   onChange: (val: T) => void;
+// }) => (
+//   <div className="gap-2 sm:flex-row sm:gap-4">
+//     {options.map(opt => (
+//       <label key={opt.value} className="flex items-center gap-2 p-2 rounded hover:bg-gray-50 cursor-pointer">
+//         <input
+//           type="radio"
+//           checked={selected === opt.value}
+//           onChange={() => onChange(opt.value)}
+//           className="text-blue-600 focus:ring-blue-500"
+//         />
+//         <span className="text-sm">{opt.label}</span>
+//       </label>
+//     ))}
+//   </div>
+// );
+
+
 const RadioGroup = <T extends string>({
   options,
   selected,
   onChange,
 }: {
-  options: { value: T; label: string }[];
+  options: { value: T; label: string; icon: React.ElementType }[];
+  // icon: React.ElementType <any>;
   selected: T;
   onChange: (val: T) => void;
 }) => (
-  <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
-    {options.map(opt => (
-      <label key={opt.value} className="flex items-center gap-2 p-2 rounded hover:bg-gray-50 cursor-pointer">
-        <input
-          type="radio"
-          checked={selected === opt.value}
-          onChange={() => onChange(opt.value)}
-          className="text-blue-600 focus:ring-blue-500"
-        />
-        <span className="text-sm">{opt.label}</span>
-      </label>
-    ))}
+  <div className="">
+    {options.map(opt => {
+      const isActive = selected === opt.value;
+      const Icon = opt.icon;
+      return (
+        <button
+          key={opt.value}
+          type="button"
+          onClick={() => onChange(opt.value)}
+          className={`w-full flex items-center gap-2 px-3 py-2 rounded transition-colors
+            ${isActive 
+              ? 'bg-blue-100 ' 
+              : 'bg-white  hover:bg-gray-50'
+            }`}
+        >
+          <Icon className="w-4 h-4 text-blue-300" />
+          {/* <div>{icon}</div> */}
+          <span className="text-sm text-gray-800">{opt.label}</span>
+        </button>
+      );
+    })}
   </div>
 );
 
@@ -55,12 +101,11 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md mx-4">
-      <h2 className="text-lg font-semibold mb-6">Сортировка</h2>
+    <div className="">
       
       {/* Выбор поля */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium mb-3 text-gray-700">Поле для сортировки</label>
+      <div className="mb-2 pb-2 border-b border-gray-700">
+        <label className="label-text">Поле для сортировки</label>
         <RadioGroup 
           options={FIELD_OPTIONS} 
           selected={sortField} 
@@ -69,8 +114,8 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
       </div>
 
       {/* Направление */}
-      <div className="mb-8">
-        <label className="block text-sm font-medium mb-3 text-gray-700">Направление сортировки</label>
+      <div className="mb-4">
+        <label className="label-text">Направление сортировки</label>
         <RadioGroup 
           options={DIRECTION_OPTIONS} 
           selected={sortDirection} 
@@ -83,13 +128,13 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
         <div className="flex justify-end gap-2">
         <button
           onClick={onClose}
-          className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+          className="btn-base btn-cancel"
         >
-          Отмена
+          Отменить
         </button>
         <button
           onClick={handleApply}
-          className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="btn-base btn-confirm"
         >
           Применить
         </button>

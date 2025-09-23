@@ -62,8 +62,8 @@ export const ExpenseCard = ({
     <li
       key={expense.id}
       data-testid={`expense-card-${expense.id}`}
-      className={`relative cursor-pointer p-3 rounded-lg border overflow-hidden
-        shadow-md hover:bg-blue-50 transition-shadow duration-300 select-none
+      className={`relative transition-colors cursor-pointer p-3 rounded-lg border overflow-hidden
+        shadow-md hover:bg-blue-50 duration-300 select-none
         ${selected ? "bg-blue-50 border-blue-500" : "bg-white border-gray-200"}`}
       onMouseDown={start}
       onTouchStart={start}
@@ -87,7 +87,7 @@ export const ExpenseCard = ({
         <InfoRow
           // icon={TagIcon}
           text={expense.title}
-          className="font-bold text-sm"
+          className="font-bold text-sm text-gray-700"
         />
 
         <div className="hidden sm:block space-y-2">

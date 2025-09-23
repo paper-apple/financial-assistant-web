@@ -6,7 +6,7 @@ export const SuggestionsList = ({
   onSelect: (value: string) => void;
 }) =>
   list.length > 0 && (
-    <ul className="absolute bg-white border rounded shadow w-full z-10">
+    <ul className="absolute w-full bg-white border rounded shadow z-10">
       {list.map((s) => (
         <li
           key={s}

@@ -49,7 +49,6 @@ export const ExpensesPage = () => {
     applyFilters,
     applySorts,
     handleAddKeyword,
-    handleResetFilters,
   } = useFilterSort(loadExpenses);
 
   const {
@@ -82,7 +81,7 @@ export const ExpensesPage = () => {
       const fn = isLoginMode ? loginUser : registerUser;
       await fn(username, password);
       loadExpenses();
-      console.log('qweqwe')
+
       setAuthModalOpen(false);
     } catch (error: any) {
       console.error("Ошибка:", error);
@@ -173,6 +172,7 @@ export const ExpensesPage = () => {
             onSort={() => openModal("sort")}
             onStats={() => openModal("stats")}
             onLogout={() => handleLogout()}
+            closeSelection={() => handleCancelSelection()} 
           />
           {/* </div> */}
 
@@ -184,7 +184,7 @@ export const ExpensesPage = () => {
             filtersState={filtersState}
             sortState={sortState}
             suggestions={suggestions}
-            handleReset={handleResetFilters}
+            // handleReset={handleResetFilters}
             closeModal={closeModal}
             openModal={openModal}
             handleCreated={handleCreated}

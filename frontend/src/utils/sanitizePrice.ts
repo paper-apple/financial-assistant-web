@@ -10,11 +10,16 @@ export function handlePriceChange(value: string, setter: (v: string) => void) {
 }
 
 export function sanitizePrice(value: string): string {
-  let sanitizedValue = value.slice(0, 30);
-    sanitizedValue = value
+  let sanitizedValue = value.slice(0, 30)
     .replace(/[^\d.,]/g, "")
-    .replace(",", ".")
-    .replace(/^(\d*\.\d{0,2}).*$/, "$1");
+    .replace(",", ".");
+
+  // Удаляем ведущие нули, кроме случая "0" или "0.12"
+  sanitizedValue = sanitizedValue.replace(/^0{2,}/, "0"); // → "00" → "0"
+  sanitizedValue = sanitizedValue.replace(/^0+(\d)/, "$1"); // → "012" → "12"
+
+  // Ограничиваем до двух знаков после точки
+  sanitizedValue = sanitizedValue.replace(/^(\d*\.\d{0,2}).*$/, "$1");
 
   const [integerPart, decimalPart] = sanitizedValue.split(".");
   if (integerPart.length > 10) {
@@ -22,5 +27,6 @@ export function sanitizePrice(value: string): string {
       integerPart.slice(0, 10) +
       (decimalPart !== undefined ? "." + decimalPart : "");
   }
-  return sanitizedValue
+
+  return sanitizedValue;
 }
