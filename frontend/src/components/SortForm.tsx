@@ -31,33 +31,6 @@ const DIRECTION_OPTIONS: { value: SortParams['direction']; label: string; icon: 
   { value: 'DESC', label: 'По убыванию', icon: ArrowDownIcon },
 ];
 
-
-// Вынесем RadioGroup в отдельный компонент для лучшей читаемости
-// const RadioGroup = <T extends string>({
-//   options,
-//   selected,
-//   onChange,
-// }: {
-//   options: { value: T; label: string }[];
-//   selected: T;
-//   onChange: (val: T) => void;
-// }) => (
-//   <div className="gap-2 sm:flex-row sm:gap-4">
-//     {options.map(opt => (
-//       <label key={opt.value} className="flex items-center gap-2 p-2 rounded hover:bg-gray-50 cursor-pointer">
-//         <input
-//           type="radio"
-//           checked={selected === opt.value}
-//           onChange={() => onChange(opt.value)}
-//           className="text-blue-600 focus:ring-blue-500"
-//         />
-//         <span className="text-sm">{opt.label}</span>
-//       </label>
-//     ))}
-//   </div>
-// );
-
-
 const RadioGroup = <T extends string>({
   options,
   selected,

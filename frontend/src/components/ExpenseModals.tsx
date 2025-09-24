@@ -13,6 +13,12 @@ import type {
   Modals
 } from "../types";
 
+const sampleExpenses = [
+  { category: "Еда", total: 120 },
+  { category: "Транспорт", total: 80 },
+  { category: "Развлечения", total: 50 },
+];
+
 type Props = {
   modals: Modals;
   editingExpense: Expense | null;
@@ -134,10 +140,10 @@ export const ExpenseModals = ({
     {modals.stats && (
       <Modal onModalClose={() => closeModal("stats")} title="Статистика">
         <StatsModal 
-          expenses={sortedExpenses} 
-          initialField="category" 
-          currency="BYN"
-          onClose={() => closeModal("stats")} 
+          // expenses={sampleExpenses} 
+          // initialField="category" 
+          // currency="BYN"
+          // onClose={() => closeModal("stats")} 
         />
       </Modal>
     )}
