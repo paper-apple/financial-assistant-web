@@ -38,68 +38,103 @@ export const FormField: React.FC<FormFieldProps> = ({
   
   const [isFocused, setIsFocused] = useState(false);
 
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!suggestions || suggestions.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : 0
+      );
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev > 0 ? prev - 1 : suggestions.length - 1
+      );
+    } else if (e.key === "Enter") {
+      if (highlightedIndex >= 0) {
+        e.preventDefault();
+        onSuggestionSelect?.(suggestions[highlightedIndex]);
+        setIsFocused(false);
+        setHighlightedIndex(-1);
+      }
+    }
+  };
+
   return (
-  <div className="relative w-full">
-    {/* className={`w-full border rounded px-3 py-2 ${priceError ? 'border-red-500 bg-red-50' : 'border-gray-300'}`} */}
-    {/* Заголовок и ошибка */}
-    {/* <div className="mb-2 pb-2"> */}
-      <label className="label-text mb-2">{label}</label>
-      {/* {error && <span className="text-sm text-red-500">{error}</span>} */}
-    {/* </div> */}
+    <div className="relative w-full">
+      {/* className={`w-full border rounded px-3 py-2 ${priceError ? 'border-red-500 bg-red-50' : 'border-gray-300'}`} */}
+      {/* Заголовок и ошибка */}
+      {/* <div className="mb-2 pb-2"> */}
+        <label className="label-text mb-2">{label}</label>
+        {/* {error && <span className="text-sm text-red-500">{error}</span>} */}
+      {/* </div> */}
 
-    {/* Поле */}
-    {/* <div className="relative w-full"> */}
-      <div className="flex items-center border rounded w-full">
+      {/* Поле */}
+      {/* <div className="relative w-full"> */}
+        <div className="flex items-center border border-neutral-500 rounded w-full">
 
-        {/* Само поле */}
-        <input
-          name={name}
-          value={value}
-          onChange={onChange}
-          readOnly={readOnly}
-          placeholder={placeholder}
-          onClick={readOnly && onFieldClick ? onFieldClick : undefined}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          className={`flex-1 min-w-0 px-2 py-1 outline-none ${
-            readOnly ? "cursor-pointer" : ""
-          } ${ error ? "bg-red-100" : ""}`}
-        />
+          {/* Само поле */}
+          <input
+            name={name}
+            value={value}
+            onChange={onChange}
+            readOnly={readOnly}
+            placeholder={placeholder}
+            onClick={readOnly && onFieldClick ? onFieldClick : undefined}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => {setIsFocused(false), setHighlightedIndex(-1)}}
+            onKeyDown={handleKeyDown}
+            className={`flex-1 min-w-0 px-2 py-1 outline-none ${
+              readOnly ? "cursor-pointer" : ""
+            } ${ error ? "bg-red-100" : ""}`}
+          />
 
-        {/* Кнопка очистки */}
-        {!readOnly && onChange && (
-          <button
-            type="button"
-            onClick={() =>
-              onChange({
-                target: { name, value: "" },
-              } as React.ChangeEvent<HTMLInputElement>)
-            }
-            className="input-delete"
-          >
-            ×
-          </button>
-        )}
+          {/* Кнопка очистки */}
+          {!readOnly && onChange && (
+            <button
+              type="button"
+              onClick={() =>
+                onChange({
+                  target: { name, value: "" },
+                } as React.ChangeEvent<HTMLInputElement>)
+              }
+              className="input-delete"
+            >
+              ×
+            </button>
+          )}
 
-        {/* <div className="flex items-center border rounded w-full overflow-hidden"> */}
-        {/* Кнопка очистки */}
-        {onClear && showCalendarIcon && (
-          <button
-            type="button"
-            onClick={onClear}
-            className="input-delete"
-          >
-            ×
-          </button>
-        )}
-      </div>
-    {/* </div> */}
+          {/* <div className="flex items-center border rounded w-full overflow-hidden"> */}
+          {/* Кнопка очистки */}
+          {onClear && showCalendarIcon && (
+            <button
+              type="button"
+              onClick={onClear}
+              className="input-delete"
+            >
+              ×
+            </button>
+          )}
+        </div>
+      {/* </div> */}
 
-    {/* Подсказки */}
-    {isFocused && suggestions && onSuggestionSelect && (
-      <SuggestionsList list={suggestions} onSelect={onSuggestionSelect} />
-    )}
-  </div>
+      {/* Подсказки */}
+      {isFocused && suggestions && suggestions.length > 0 && (
+        <SuggestionsList 
+          list={suggestions} 
+          // onSelect={onSuggestionSelect} 
+          onSelect={(val) => {
+            onSuggestionSelect?.(val);
+            setIsFocused(false);
+            setHighlightedIndex(-1);
+          }}
+          highlightedIndex={highlightedIndex}
+          />
+      )}
+    </div>
   )
 };
 

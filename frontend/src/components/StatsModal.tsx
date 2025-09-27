@@ -146,25 +146,32 @@
 // }
 
 
-// import { useMemo, useState } from "react";
-// import { Doughnut  } from "react-chartjs-2";
-// import {
-//   Chart as ChartJS,
-//   ArcElement,
-//   Tooltip,
-//   Legend,
-// } from "chart.js";
-// import type { Expense } from "../types";
-// import { groupExpenses, type GroupField } from "../utils/groupExpenses";
+import { useMemo, useState } from "react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  type ChartData,
+  Tooltip,
+  Legend
+} from "chart.js";
+import type { Expense } from "../types";
+import { groupExpenses, type GroupField } from "../utils/groupExpenses";
+import { StatsChart } from "./StatsChart";
+import { StatsTable } from "./StatsTable";
+import { Pie } from "react-chartjs-2";
+import { buildChartData } from "../utils/buildChartData";
+import { TagIcon, RectangleStackIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { RadioGroup } from "./ui/RadioGroup";
+import 'simplebar-react/dist/simplebar.min.css';
+import SimpleBar from 'simplebar-react';
 
-// ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-// type Props = {
-//   onClose: () => void;
-//   expenses: Expense[];
-//   initialField?: GroupField;
-//   currency?: string;
-// };
+type Props = {
+  onClose: () => void;
+  expenses: Expense[];
+  initialField?: GroupField;
+};
 
 // const groupFieldLabels: Record<GroupField, string> = {
 //   title: "Название",
@@ -172,130 +179,103 @@
 //   location: "Место",
 // };
 
-// export function StatsModal({
-//   onClose,
-//   expenses,
-//   initialField = "category",
-//   currency = "BYN",
-// }: Props) {
-//   const [field, setField] = useState<GroupField>(initialField);
+const GROUP_OPTIONS: { value: GroupField; label: string; icon: React.ElementType }[] = [
+  { value: "title", label: "Название", icon: TagIcon },
+  { value: "category", label: "Категория", icon: RectangleStackIcon },
+  { value: "location", label: "Место", icon: MapPinIcon },
+];
 
-//   const rows = useMemo(() => groupExpenses(expenses, field), [expenses, field]);
-//   const grandTotal = useMemo(() => rows.reduce((s, r) => s + r.total, 0), [rows]);
+export function StatsModal({
+  onClose,
+  expenses,
+  initialField = "category",
+}: Props) {
+  const [field, setField] = useState<GroupField>(initialField);
+  const [tableMode, setTableMode] = useState(true);
 
-//   const chartData = {
-//     labels: rows.map(r => r.key),
-//     datasets: [
-//       {
-//         label: `Сумма (${currency})`,
-//         data: rows.map(r => r.total),
-//         backgroundColor: [
-//           "#3b82f6", // blue
-//           "#10b981", // green
-//           "#f59e0b", // amber
-//           "#ef4444", // red
-//           "#8b5cf6", // violet
-//           "#06b6d4", // cyan
-//         ],
-//         borderWidth: 1,
-//       },
-//     ],
-//   };
+  const rows = useMemo(() => groupExpenses(expenses, field), [expenses, field]);
 
-//   return (
-//     <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg">
-//       <div className="flex items-center justify-between p-4 border-b">
-//         <h2 className="text-lg font-semibold">Диаграмма по корзине</h2>
-//         <button
-//           onClick={onClose}
-//           className="p-2 rounded hover:bg-gray-100"
-//           aria-label="Закрыть"
-//         >
-//           ✕
-//         </button>
-//       </div>
+  const grandTotal = useMemo(() => Math.round(rows.reduce((s, r) => s + r.total, 0) * 100) / 100, [rows]);
+  // const grandTotal = useMemo(() => rows.reduce((s, r) => s + r.total, 0), [rows]);
+  const totalCount = useMemo(() => rows.reduce((s, r) => s + r.count, 0), [rows]);
 
-//       <div className="p-4">
-//         {/* Controls */}
-//         <div className="mb-4 flex flex-wrap items-center gap-3">
-//           <label className="text-sm font-medium">Группировать по:</label>
-//           <select
-//             value={field}
-//             onChange={e => setField(e.target.value as GroupField)}
-//             className="border rounded px-3 py-2"
-//           >
-//             <option value="title">{groupFieldLabels.title}</option>
-//             <option value="category">{groupFieldLabels.category}</option>
-//             <option value="location">{groupFieldLabels.location}</option>
-//           </select>
+  const threshold = 0.02;
 
-//           <div className="ml-auto text-sm text-gray-600">
-//             Сумма: <span className="font-medium">
-//               {new Intl.NumberFormat("ru-RU", {
-//                 style: "currency",
-//                 currency,
-//                 maximumFractionDigits: 2,
-//               }).format(grandTotal)}
-//             </span>
-//           </div>
-//         </div>
+  const chartData = useMemo(
+    () => buildChartData(rows, grandTotal, threshold),
+    [rows, grandTotal]
+  );
 
-//         {/* Chart */}
-//         {rows.length > 0 ? (
-//           <Doughnut data={chartData} />
-//         ) : (
-//           <div className="p-6 text-center text-gray-500">
-//             Нет данных для выбранных фильтров
-//           </div>
-//         )}
-//       </div>
+  return (
+    <div className="w-full bg-white rounded-lg">
+      <div className="pb-2">
 
-//       <div className="p-4 border-t flex justify-end">
-//         <button
-//           onClick={onClose}
-//           className="px-4 py-2 border rounded hover:bg-gray-100"
-//         >
-//           Закрыть
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
+        {/* Controls */}
+        <div className="relative mb-2 flex flex-wrap items-center gap-3">
+          <label className="text-sm text-center w-full font-medium">Группировать по:</label>
+          {/* <select
+            value={field}
+            onChange={e => setField(e.target.value as GroupField)}
+            className="border rounded px-3 py-2"
+          >
+            <option value="title">{groupFieldLabels.title}</option>
+            <option value="category">{groupFieldLabels.category}</option>
+            <option value="location">{groupFieldLabels.location}</option>
+          </select> */}
+          <RadioGroup 
+            options={GROUP_OPTIONS} 
+            selected={field} 
+            onChange={setField} 
+            orientation="horizontal"
+          />
+          {/* <div className="ml-auto text-sm text-gray-600">
+            <span className="font-medium">Расходов: {totalCount}</span>
+            <span className="font-medium"> | Сумма: {grandTotal}</span>
+          </div> */}
+        </div>
 
+        {/* Таблица/диаграмма */}
+        {/* {rows.length > 0 ? (tableMode ? (
+          <StatsTable
+            field={field}
+            rows={rows}
+          />
+        ) : (
+          <StatsChart
+            chartData={chartData}
+          />
+        )) : (
+          <div className="p-6 text-center text-gray-500">
+            Нет данных для выбранных фильтров
+          </div>
+        )} */}
+        <div className="h-85"> {/* фиксируем высоту */}
+          {rows.length > 0 ? (
+            tableMode ? (
+              <StatsTable field={field} rows={rows} grandTotal={grandTotal} totalCount={totalCount}/>
+            ) : (
+              <StatsChart chartData={chartData} />
+            )
+          ) : (
+            <p>Нет данных</p>
+          )}
+        </div>
+      </div>
 
-import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-export const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  datasets: [
-    {
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
-
-export function StatsModal() {
-  return <Pie data={data} />
+      <div className="flex justify-end gap-2">
+        <button
+          className="btn-base"
+          onClick={() => tableMode ? setTableMode(false) : setTableMode(true)}
+        >
+          {tableMode ? "Диаграмма" : "Таблица"}
+        </button>
+        <button
+          onClick={onClose}
+          className="btn-base btn-cancel"
+        >
+          Закрыть
+        </button>
+      </div>
+    </div>
+  );
 }
