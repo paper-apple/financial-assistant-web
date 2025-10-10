@@ -138,7 +138,6 @@ export const ExpensesPage = () => {
         error={authError}
         onAuth={handleAuth}
         onToggleMode={() => setIsLoginMode(!isLoginMode)}
-        onClose={() => setAuthModalOpen(false)}
       />
 
       {user && (

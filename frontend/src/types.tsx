@@ -30,7 +30,6 @@ export interface Expense {
   price: number;
   location: Location; // Теперь это объект, а не строка
   datetime: string;
-  // user: User;
 }
 
 export interface ExpenseFormType {
@@ -93,7 +92,15 @@ export type SortState = {
   setSortDirection: React.Dispatch<React.SetStateAction<SortParams['direction']>>;
 };
 
-type SortField = "title" | "category" | "price" | "location" | "datetime";
+// export type GroupField = "title" | "category" | "location";
+
+// type SortField = "title" | "category" | "price" | "location" | "datetime";
+
+export type GroupField = "title" | "category" | "location";
+
+// export type GroupField = CommonField;
+
+type SortField = GroupField | "price" | "datetime";
 
 export type SortParams = {
   field: SortField;

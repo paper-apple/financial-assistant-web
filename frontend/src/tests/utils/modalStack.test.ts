@@ -5,15 +5,15 @@ import {
   removeModalFromStack,
   getTopModalId,
   getModalStack
-} from "../..//utils/modalStack";
+} from "../../utils/modalStack";
 
-// Чтобы каждый тест начинал с чистого стека, можем использовать beforeEach + removeModalFromStack
+// Чтобы каждый тест начинал с чистого стека, используется beforeEach + removeModalFromStack
 beforeEach(() => {
   const ids = getModalStack();
   ids.forEach(id => removeModalFromStack(id));
 });
 
-describe("modalStack utils", () => {
+describe("modalStack", () => {
   it("addModalToStack добавляет новый id и возвращает его", () => {
     const id = addModalToStack();
     expect(typeof id).toBe("number");

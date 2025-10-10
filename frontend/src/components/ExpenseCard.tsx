@@ -85,7 +85,6 @@ export const ExpenseCard = ({
       <div className="relative z-10 space-y-2">
 
         <InfoRow
-          // icon={TagIcon}
           text={expense.title}
           className="font-bold text-sm text-gray-700"
         />

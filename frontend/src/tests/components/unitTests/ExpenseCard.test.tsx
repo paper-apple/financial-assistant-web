@@ -3,22 +3,23 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ExpenseCard } from "../../../components/ExpenseCard";
 import { type Expense } from "../../../types"
+import { makeCategory, makeLocation } from "../../createCategoryAndLocationFields";
 
 function makeExpense(overrides: Partial<Expense> = {}): Expense {
   const base = {
     id: 1,
-    title: "Хлеб и молоко",
-    category: "Продукты",
-    location: "Магазин у дома",
-    price: 123.45,
-    datetime: "2024-01-02T10:30:00.000Z",
+    title: "Фисташки",
+    category: makeCategory(1, "Продукты"),
+    location: makeLocation(1, "Магазин у дома"),
+    price: 12.34,
+    datetime: "2024-01-02T10:30:00",
   };
   return { ...base, ...overrides };
 }
 
 function getItem() {
   // Находим <li> по тексту заголовка
-  const li = screen.getByText("Хлеб и молоко").closest("li");
+  const li = screen.getByText("Фисташки").closest("li");
   if (!li) throw new Error("ExpenseCard list item not found");
   return li;
 }
@@ -45,12 +46,18 @@ describe("ExpenseCard", () => {
       </ul>
     );
 
-    expect(screen.getByText("Хлеб и молоко")).toBeInTheDocument();
+    expect(screen.getByText("Фисташки")).toBeInTheDocument();
     expect(screen.getByText("Продукты")).toBeInTheDocument();
     expect(screen.getByText("Магазин у дома")).toBeInTheDocument();
-    expect(screen.getByText("123.45 ₽")).toBeInTheDocument();
+    expect(screen.getByText("12.34")).toBeInTheDocument();
 
-    const expectedDate = new Date(expense.datetime).toLocaleString();
+    const expectedDate = new Date(expense.datetime).toLocaleString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     expect(screen.getByText(expectedDate)).toBeInTheDocument();
   });
 

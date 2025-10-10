@@ -7,7 +7,6 @@ interface AuthModalProps {
   error: string;
   onAuth: (username: string, password: string) => void;
   onToggleMode: () => void;
-  onClose: () => void;
 }
 
 export const AuthModal = ({
@@ -16,7 +15,7 @@ export const AuthModal = ({
   error,
   onAuth,
   onToggleMode,
-  onClose,
+  // onClose,
 }: AuthModalProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -43,22 +42,17 @@ export const AuthModal = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg w-96">
-        <h2 className="text-xl font-semibold mb-4">
+        <h2 className="text-xl font-semibold text-center mb-4">
           {isLoginMode ? "Вход" : "Регистрация"}
         </h2>
 
-        {(error || localError) && (
-          <div className="bg-red-100 text-red-700 p-2 rounded mb-4">
-            {error || localError}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">
+            <label htmlFor="username" className="block text-sm font-medium mb-1">
               Имя пользователя
             </label>
             <input
+              id="username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -68,10 +62,11 @@ export const AuthModal = ({
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">
+            <label htmlFor="password" className="block text-sm font-medium mb-1">
               Пароль
             </label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -80,14 +75,17 @@ export const AuthModal = ({
             />
           </div>
 
+          <div
+            className={`p-2 rounded mb-4 min-h-[64px] max-h-[64px]
+              ${error || localError ? "bg-red-100 text-red-700" : "bg-transparent"}`}
+          >
+            {error || localError}
+          </div>
+
           <div className="flex justify-between items-center">
             <button
               type="submit"
-              // className={`px-4 py-2 rounded text-white ${
-              //   isValid(username, password)
-              //     ? "bg-blue-500 hover:bg-blue-600"
-              //     : "bg-gray-300 cursor-not-allowed"
-              // }`}
+              className="btn-base btn-confirm"
             >
               {isLoginMode ? "Войти" : "Зарегистрироваться"}
             </button>
@@ -102,12 +100,12 @@ export const AuthModal = ({
           </div>
         </form>
 
-        <button
+        {/* <button
           onClick={onClose}
           className="mt-4 text-gray-500 hover:text-gray-700"
         >
           Закрыть
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -1,148 +1,143 @@
-import { type Mock, describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+// useFilterSort.test.tsx
+import { renderHook, act, waitFor } from "@testing-library/react";
 import { useFilterSort } from "../../hooks/useFilterSort";
-import type { Expense, FilterParams, SortParams } from "../../types";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const mockExpenses: Expense[] = [
-  {
-    id: 1,
-    title: "Coffee",
-    category: "Food",
-    price: 3,
-    location: "Cafe",
-    datetime: "2024-05-01T10:00:00Z",
-  },
-  {
-    id: 2,
-    title: "Book",
-    category: "Education",
-    price: 15,
-    location: "Bookstore",
-    datetime: "2024-04-25T09:00:00Z",
-  },
-  {
-    id: 3,
-    title: "Tea",
-    category: "Food",
-    price: 2,
-    location: "Cafe",
-    datetime: "2024-05-03T15:00:00Z",
-  },
-];
+vi.mock("../../hooks/useKeywordSuggestions", () => ({
+  useKeywordSuggestions: () => ({
+    suggestions: ["mock1", "mock2"],
+    clearSuggestions: vi.fn(),
+  }),
+}));
 
 describe("useFilterSort", () => {
-  it("возвращает все расходы без фильтров", () => {
-    const { result } = renderHook(() => useFilterSort(mockExpenses));
+  const loadExpenses = vi.fn();
 
-    expect(result.current.filteredExpenses).toHaveLength(3);
-    expect(result.current.sortedExpenses[0].id).toBe(3); // сортировка по datetime desc по умолчанию
+  beforeEach(() => {
+    loadExpenses.mockClear();
   });
 
-  it("фильтрует по дате", () => {
-    const { result } = renderHook(() => useFilterSort(mockExpenses));
+  it("инициализируется с дефолтными значениями", () => {
+    const { result } = renderHook(() => useFilterSort(loadExpenses));
 
-    act(() => {
-      result.current.handleFilters({
-        ...result.current.filters,
-        startDate: new Date("2024-05-01T00:00:00Z"),
-      });
-    });
-
-    expect(result.current.filteredExpenses).toHaveLength(2);
-    expect(result.current.filteredExpenses.map(e => e.id)).toEqual([1, 3]);
+    expect(result.current.filtersState.keywordInput).toBe("");
+    expect(result.current.filtersState.keywordsList).toEqual([]);
+    expect(result.current.filtersState.startDate).toBeNull();
+    expect(result.current.filtersState.endDate).toBeNull();
+    expect(result.current.filtersState.minPrice).toBe("");
+    expect(result.current.filtersState.maxPrice).toBe("");
+    expect(result.current.sortState.sortField).toBe("datetime");
+    expect(result.current.sortState.sortDirection).toBe("DESC");
   });
 
-  it("фильтрует по цене", () => {
-    const { result } = renderHook(() => useFilterSort(mockExpenses));
+  it("handleAddKeyword добавляет новое слово и очищает input", () => {
+    const { result } = renderHook(() => useFilterSort(loadExpenses));
 
     act(() => {
-      result.current.handleFilters({
-        ...result.current.filters,
-        minPrice: 3,
-        maxPrice: 15,
-      });
+      result.current.filtersState.setKeywordInput("Еда");
+      result.current.handleAddKeyword("Еда");
     });
 
-    expect(result.current.filteredExpenses.map(e => e.id)).toEqual([1, 2]);
+    expect(result.current.filtersState.keywordsList).toContain("Еда");
+    expect(result.current.filtersState.keywordInput).toBe("");
   });
 
-  it("фильтрует по ключевым словам (title/category/location)", () => {
-    const { result } = renderHook(() => useFilterSort(mockExpenses));
+  it("backup и restoreInitialValues сохраняют и восстанавливают состояние", async () => {
+    const { result } = renderHook(() => useFilterSort(loadExpenses));
 
     act(() => {
-      result.current.handleFilters({
-        ...result.current.filters,
-        keywords: ["cafe"],
-      });
+      result.current.filtersState.setMinPrice("10");
+      result.current.filtersState.setMaxPrice("20");
     });
 
-    expect(result.current.filteredExpenses.map(e => e.id)).toEqual([1, 3]);
+    act(() => {
+      result.current.filtersState.backup();
+    });
+
+    act(() => {
+      result.current.filtersState.setMinPrice("100");
+      result.current.filtersState.setMaxPrice("200");
+    });
+
+    act(() => {
+      result.current.filtersState.restoreInitialValues();
+    });
+
+    await waitFor(() => {
+      expect(result.current.filtersState.minPrice).toBe("10");
+      expect(result.current.filtersState.maxPrice).toBe("20");
+    });
   });
 
-  it("сортирует по цене asc", () => {
-    const { result } = renderHook(() => useFilterSort(mockExpenses));
+
+  it("handleResetFilters сбрасывает все значения", () => {
+    const { result } = renderHook(() => useFilterSort(loadExpenses));
 
     act(() => {
-      result.current.handleSortApply({
-        field: "price",
-        direction: "asc",
-      });
+      result.current.filtersState.setKeywordInput("abc");
+      result.current.filtersState.setKeywordsList(["a", "b"]);
+      result.current.filtersState.setStartDate(new Date());
+      result.current.filtersState.setEndDate(new Date());
+      result.current.filtersState.setMinPrice("10");
+      result.current.filtersState.setMaxPrice("20");
+      result.current.filtersState.handleResetFilters();
     });
 
-    expect(result.current.sortedExpenses.map(e => e.price)).toEqual([2, 3, 15]);
+    expect(result.current.filtersState.keywordInput).toBe("");
+    expect(result.current.filtersState.keywordsList).toEqual([]);
+    expect(result.current.filtersState.startDate).toBeNull();
+    expect(result.current.filtersState.endDate).toBeNull();
+    expect(result.current.filtersState.minPrice).toBe("");
+    expect(result.current.filtersState.maxPrice).toBe("");
   });
 
-  it("сортирует по заголовку desc", () => {
-    const { result } = renderHook(() => useFilterSort(mockExpenses));
+  it("applyFilters вызывает loadExpenses с текущими фильтрами и сортировкой", async () => {
+    const { result } = renderHook(() => useFilterSort(loadExpenses));
 
     act(() => {
-      result.current.handleSortApply({
-        field: "title",
-        direction: "desc",
-      });
+      result.current.filtersState.setMinPrice("5");
+      result.current.filtersState.setMaxPrice("15");
+      result.current.sortState.setSortField("price" as any);
+      result.current.sortState.setSortDirection("ASC");
     });
 
-    expect(result.current.sortedExpenses.map(e => e.title))
-      .toEqual(["Tea", "Coffee", "Book"]);
+    // ждём, пока стейт обновится
+    await waitFor(() => {
+      expect(result.current.filtersState.minPrice).toBe("5");
+      expect(result.current.filtersState.maxPrice).toBe("15");
+      expect(result.current.sortState.sortField).toBe("price");
+      expect(result.current.sortState.sortDirection).toBe("ASC");
+    });
+
+    act(() => {
+      result.current.applyFilters();
+    });
+
+    expect(loadExpenses).toHaveBeenCalledWith(
+      expect.objectContaining({ minPrice: 5, maxPrice: 15 }),
+      { field: "price", direction: "ASC" }
+    );
   });
 
-  it("позволяет напрямую изменять filters и sortParams", () => {
-    const { result } = renderHook(() => useFilterSort(mockExpenses));
+  it("валидирует цену: min > max → priceError = true", () => {
+    const { result } = renderHook(() => useFilterSort(loadExpenses));
 
     act(() => {
-      result.current.setFilters({
-        ...result.current.filters,
-        keywords: ["book"],
-      });
+      result.current.filtersState.setMinPrice("20");
+      result.current.filtersState.setMaxPrice("10");
     });
 
-    expect(result.current.filteredExpenses.map(e => e.id)).toEqual([2]);
-
-    act(() => {
-      result.current.setSortParams({
-        field: "price",
-        direction: "desc",
-      });
-    });
-
-    expect(result.current.sortedExpenses[0].price).toBe(15);
+    expect(result.current.filtersState.priceError).toBe(true);
   });
 
-  it("применяет фильтры и сортировку одновременно", () => {
-    const { result } = renderHook(() => useFilterSort(mockExpenses));
+  it("валидирует даты: startDate > endDate → dateError = true", () => {
+    const { result } = renderHook(() => useFilterSort(loadExpenses));
 
     act(() => {
-      result.current.handleFilters({
-        ...result.current.filters,
-        keywords: ["food"],
-      });
-      result.current.handleSortApply({
-        field: "price",
-        direction: "asc",
-      });
+      result.current.filtersState.setStartDate(new Date("2025-02-01"));
+      result.current.filtersState.setEndDate(new Date("2025-01-01"));
     });
 
-    expect(result.current.filteredExpenses.map(e => e.id)).toEqual([1, 3]);
-    expect(result.current.sortedExpenses.map(e => e.price)).toEqual([2, 3]);
+    expect(result.current.filtersState.dateError).toBe(true);
   });
 });

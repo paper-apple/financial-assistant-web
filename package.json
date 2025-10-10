@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.9",
-    "@types/lodash.debounce": "^4.0.9"
+    "@types/lodash.debounce": "^4.0.9",
+    "jsdom": "^27.0.0"
   }
 }

@@ -1,20 +1,15 @@
 // utils/priceSanitizer.ts
-
-/**
- * Очищает строку цены от лишних символов, приводит к формату с максимум двумя знаками после точки.
- * Пример: "12,345руб" → "12.34"
- */
-
+// Очищает строку цены от лишних символов, приводит к формату с максимум двумя знаками после точки
 export function handlePriceChange(value: string, setter: (v: string) => void) {
   setter(sanitizePrice(value));
 }
 
 export function sanitizePrice(value: string): string {
-  let sanitizedValue = value.slice(0, 30)
+  let sanitizedValue = value
     .replace(/[^\d.,]/g, "")
     .replace(",", ".");
 
-  // Удаляем ведущие нули, кроме случая "0" или "0.12"
+  // Удаление ведущих нулей, кроме случая "0" или "0.12"
   sanitizedValue = sanitizedValue.replace(/^0{2,}/, "0"); // → "00" → "0"
   sanitizedValue = sanitizedValue.replace(/^0+(\d)/, "$1"); // → "012" → "12"
 

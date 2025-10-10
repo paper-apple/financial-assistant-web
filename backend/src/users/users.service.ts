@@ -51,7 +51,7 @@
 //   }
 // }
 
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -80,10 +80,19 @@ export class UsersService {
   }
 
   async validateUser(username: string, password: string): Promise<User | null> {
+    // const user = await this.findOne(username);
+    // if (user && await bcrypt.compare(password, user.password)) {
+    //   return user;
+    // }
+    // return null;
     const user = await this.findOne(username);
-    if (user && await bcrypt.compare(password, user.password)) {
-      return user;
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден');
     }
-    return null;
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      throw new UnauthorizedException('Неверный пароль');
+    }
+    return user;
   }
 }

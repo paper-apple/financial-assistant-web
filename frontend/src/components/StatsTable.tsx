@@ -1,8 +1,7 @@
-import type { ChartData } from "chart.js"
-import React from "react";
-import type { GroupField, StatRow } from "../utils/groupExpenses";
+import type { StatRow } from "../utils/groupExpenses";
 import 'simplebar-react/dist/simplebar.min.css';
-import SimpleBar from 'simplebar-react';
+import type { GroupField } from "../types";
+import { isSafari } from "../tests/utils/isSafari";
 
 type Props = {
   field: GroupField, 
@@ -22,7 +21,7 @@ const groupFieldLabels: Record<GroupField, string> = {
 
 export const StatsTable = ({ field, rows, totalCount, grandTotal }: Props) => 
 {          
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  // const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   return (
   // <div className="max-h-80 text-sm overflow-y-auto border rounded relative">      
@@ -95,12 +94,8 @@ export const StatsTable = ({ field, rows, totalCount, grandTotal }: Props) =>
   //     </div>
   //   </div>
 
-<div className="border rounded-lg"> 
-{/* <div className="border bg-amber-400">   */}
-  <div className="flex sticky bottom-0 z-20 border-b">
-    {/* <span className="bg-green-300 p-1 text-sm text-left font-medium w-[50%]">{groupFieldLabels[field]}</span>
-    <span className="bg-orange-300 p-1 text-sm text-center font-medium w-[17%]">Кол-во</span>
-    <span className="bg-red-300 p-1 pr-4.5 text-sm text-right font-medium w-[34%]">Сумма</span> */}
+<div className="border border-neutral-500 rounded-lg"> 
+  <div className="flex sticky bottom-0 z-20 border-b border-neutral-500">
     <span className="first-column">{groupFieldLabels[field]}</span>
     <span className="second-column">Кол-во</span>
     <span className={
@@ -115,9 +110,6 @@ export const StatsTable = ({ field, rows, totalCount, grandTotal }: Props) =>
       <tbody>
         {rows.map(row => (
           <tr key={row.key} className="odd:bg-white even:bg-blue-50">
-            {/* <td className="bg-green-300 p-1 w-[53%] truncate">{row.key}</td>
-            <td className="bg-orange-300 p-1 text-center w-[18%]">{row.count}</td>
-            <td className="bg-red-300 p-1 text-right w-[31.5%]">{row.total}</td> */}
             <td className="p-1 w-[46.5%] truncate">{row.key}</td>
             <td className="p-1 text-center w-[16%]">{row.count}</td>
             <td className="p-1 text-right w-[31.5%]">{row.total}</td>
@@ -126,7 +118,7 @@ export const StatsTable = ({ field, rows, totalCount, grandTotal }: Props) =>
       </tbody>
     </table>
     </div>
-    <div className="flex sticky bottom-0 z-20 border-t">
+    <div className="flex sticky bottom-0 z-20 border-t border-neutral-500">
       <span className="first-column">Итого</span>
       <span className="second-column">{totalCount}</span>
           <span className={

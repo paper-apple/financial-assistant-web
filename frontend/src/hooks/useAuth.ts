@@ -48,7 +48,7 @@ export function useAuth() {
   };
 
   return {
-    user,
+    user, setUser,
     error, setError,
     authModalOpen, setAuthModalOpen,
     isLoginMode, setIsLoginMode,

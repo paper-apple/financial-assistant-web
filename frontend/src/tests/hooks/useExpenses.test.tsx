@@ -1,18 +1,32 @@
-// src/tests/hooks/useExpenses.test.ts
+// useExpenses.test.ts
 import { type Mock, describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useExpenses } from "../../hooks/useExpenses";
 import { fetchExpenses, deleteExpense } from "../../api";
 import type { Expense } from "../../types";
+import { makeCategory, makeLocation } from "../createCategoryAndLocationFields";
 
 vi.mock("../../api", () => ({
   fetchExpenses: vi.fn(),
   deleteExpense: vi.fn(),
 }));
 
-const mockData: Expense[] = [
-  { id: 1, title: "Хлеб", category: "Еда", price: 50, location: "Магазин", datetime: "2025-08-18T10:00:00.000Z" },
-  { id: 2, title: "Такси", category: "Транспорт", price: 300, location: "Город", datetime: "2025-08-18T12:00:00.000Z" },
+const mockData: Expense[] = [{ 
+    id: 1, 
+    title: "Хлеб", 
+    category: makeCategory(1, "Еда"), 
+    price: 3,
+    location: makeLocation(1, "Магазин"),
+    datetime: "2025-08-18T10:00:00.000Z" 
+  },
+  { 
+    id: 2,
+    title: "Такси",
+    category: makeCategory(1, "Транспорт"), 
+    price: 10,
+    location: makeLocation(1, "Город"),
+    datetime: "2025-08-18T12:00:00.000Z" 
+  },
 ];
 
 describe("useExpenses", () => {
@@ -53,7 +67,14 @@ describe("useExpenses", () => {
   it("updateExpense заменяет элемент и устанавливает lastUpdatedId", () => {
     const { result } = renderHook(() => useExpenses());
 
-    const updated: Expense = { id: 1, title: "Хлебцы", category: "Еда", price: 60, location: "Магазин", datetime: "2025-08-18T10:00:00.000Z" };
+    const updated: Expense = { 
+      id: 1, 
+      title: "Хлебцы", 
+      category: makeCategory(1, "Еда"), 
+      price: 5, 
+      location: makeLocation(1, "Магазин"), 
+      datetime: "2025-08-18T10:00:00.000Z" 
+    };
 
     // сначала положим что-то в стейт
     act(() => {

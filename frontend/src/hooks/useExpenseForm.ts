@@ -81,9 +81,9 @@ export const useExpenseForm = () => {
   const initFormFromExpense = useCallback((expense?: Expense) => {
     return {
       title: expense?.title || "",
-      category: expense?.category.name || "",
+      category: expense?.category?.name || "",
       price: expense ? String(expense.price) : "",
-      location: expense?.location.name || "",
+      location: expense?.location?.name || "",
       datetime: expense?.datetime || new Date().toISOString(),
     };
   }, []);

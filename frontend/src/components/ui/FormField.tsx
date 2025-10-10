@@ -6,6 +6,7 @@ type FormFieldProps = {
   label?: string;
   name: keyof FormState | 'keyword' | 'startDate' | 'endDate';
   value: string;
+  testId: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
   suggestions?: string[];
@@ -18,12 +19,11 @@ type FormFieldProps = {
   onClear?: () => void; // 👈 новый проп
 };
 
-// const [isFocused, setIsFocused] = useState(false);
-
 export const FormField: React.FC<FormFieldProps> = ({
   label,
   name,
   value,
+  testId,
   onChange,
   error,
   suggestions,
@@ -65,22 +65,17 @@ export const FormField: React.FC<FormFieldProps> = ({
 
   return (
     <div className="relative w-full">
-      {/* className={`w-full border rounded px-3 py-2 ${priceError ? 'border-red-500 bg-red-50' : 'border-gray-300'}`} */}
       {/* Заголовок и ошибка */}
-      {/* <div className="mb-2 pb-2"> */}
         <label className="label-text mb-2">{label}</label>
-        {/* {error && <span className="text-sm text-red-500">{error}</span>} */}
-      {/* </div> */}
 
       {/* Поле */}
-      {/* <div className="relative w-full"> */}
         <div className="flex items-center border border-neutral-500 rounded w-full">
-
           {/* Само поле */}
           <input
             name={name}
             value={value}
             onChange={onChange}
+            data-testid={testId}
             readOnly={readOnly}
             placeholder={placeholder}
             onClick={readOnly && onFieldClick ? onFieldClick : undefined}
@@ -107,7 +102,6 @@ export const FormField: React.FC<FormFieldProps> = ({
             </button>
           )}
 
-          {/* <div className="flex items-center border rounded w-full overflow-hidden"> */}
           {/* Кнопка очистки */}
           {onClear && showCalendarIcon && (
             <button
@@ -119,13 +113,11 @@ export const FormField: React.FC<FormFieldProps> = ({
             </button>
           )}
         </div>
-      {/* </div> */}
 
       {/* Подсказки */}
       {isFocused && suggestions && suggestions.length > 0 && (
         <SuggestionsList 
           list={suggestions} 
-          // onSelect={onSuggestionSelect} 
           onSelect={(val) => {
             onSuggestionSelect?.(val);
             setIsFocused(false);
@@ -137,24 +129,3 @@ export const FormField: React.FC<FormFieldProps> = ({
     </div>
   )
 };
-
-        {/* Иконка календаря */}
-        {/* {readOnly && showCalendarIcon && (
-          <div
-            className={`px-2 text-gray-500 hover:text-gray-700 cursor-pointer ${ error ? "bg-red-100" : ""}`}
-            onClick={onFieldClick}
-          >
-            <CalendarDaysIcon className="w-5 h-8" />
-          </div>
-        )} */}
-
-        {/* Кнопка "+" для keyword */}
-        {/* {name === "keyword" && onKeywordAdd && (
-          <button
-            type="button"
-            onClick={onKeywordAdd}
-            className="px-3 py-1 text-black hover:text-gray-600 bg-green-200 border-l-1"
-          >
-            +
-          </button>
-        )} */}

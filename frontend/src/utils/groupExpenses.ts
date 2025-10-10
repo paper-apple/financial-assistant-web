@@ -1,6 +1,6 @@
 // src/utils/groupExpenses.ts
-import { type Expense } from "../types"
-export type GroupField = "title" | "category" | "location";
+// Формирует объект для статистики, в зависимости от выбранного поля
+import { type Category, type Expense, type GroupField } from "../types"
 
 export type StatRow = {
   key: string;     // Отображаемое значение группы
@@ -16,7 +16,8 @@ export function groupExpenses(expenses: Expense[], field: GroupField): StatRow[]
 
     // Если это объект — достаём читаемое имя
     if (value && typeof value === "object") {
-      value = (value as any).name || (value as any).title || "";
+      // value = (value as any).name || (value as any).title || "";
+      value = (value as Category || Location).name || "";
     }
 
     const raw = String(value ?? "").trim();

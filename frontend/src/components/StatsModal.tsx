@@ -146,26 +146,134 @@
 // }
 
 
+//     <div className="w-full bg-white rounded-lg">
+//       <div className="pb-2">
+
+//         {/* Controls */}
+//         <div className="relative mb-2 flex flex-wrap items-center gap-3">
+//           <label className="text-sm text-center w-full font-medium">Группировать по:</label>
+//           {/* <select
+//             value={field}
+//             onChange={e => setField(e.target.value as GroupField)}
+//             className="border rounded px-3 py-2"
+//           >
+//             <option value="title">{groupFieldLabels.title}</option>
+//             <option value="category">{groupFieldLabels.category}</option>
+//             <option value="location">{groupFieldLabels.location}</option>
+//           </select> */}
+//           <RadioGroup 
+//             options={GROUP_OPTIONS} 
+//             selected={field} 
+//             onChange={setField} 
+//             orientation="horizontal"
+//           />
+//           {/* <div className="ml-auto text-sm text-gray-600">
+//             <span className="font-medium">Расходов: {totalCount}</span>
+//             <span className="font-medium"> | Сумма: {grandTotal}</span>
+//           </div> */}
+//         </div>
+
+//         {/* Таблица/диаграмма */}
+//         {/* {rows.length > 0 ? (tableMode ? (
+//           <StatsTable
+//             field={field}
+//             rows={rows}
+//           />
+//         ) : (
+//           <StatsChart
+//             chartData={chartData}
+//           />
+//         )) : (
+//           <div className="p-6 text-center text-gray-500">
+//             Нет данных для выбранных фильтров
+//           </div>
+//         )} */}
+
+        
+//         {/* <div className="h-85">
+//           {rows.length > 0 ? (
+//             tableMode ? (
+//               <StatsTable field={field} rows={rows} grandTotal={grandTotal} totalCount={totalCount}/>
+//             ) : (
+//               <StatsChart chartData={chartData} />
+//             )
+//           ) : (
+//             <p>Нет данных</p>
+//           )}
+//         </div> */}
+//         <div className="h-85">
+//   {rows.length > 0 ? (
+//     mode === "table" ? (
+//       <StatsTable field={field} rows={rows} grandTotal={grandTotal} totalCount={totalCount}/>
+//     ) : mode === "pie" ? (
+//       <StatsChart chartData={chartData} />
+//     ) : (
+//       <TimeSeriesChart expenses={expenses} period="month" />
+//     )
+//   ) : (
+//     <p>Нет данных</p>
+//   )}
+// </div>
+//       </div>
+
+//       <div className="flex justify-end gap-2">
+//         {/* <button
+//           className="btn-base"
+//           onClick={() => tableMode ? setTableMode(false) : setTableMode(true)}
+//         >
+//           {tableMode ? "Диаграмма" : "Таблица"}
+//         </button> */}
+//         <button onClick={() => setMode("table")} className="btn-base">Таблица</button>
+//         <button onClick={() => setMode("pie")} className="btn-base">Диаграмма</button>
+//         <button onClick={() => setMode("time")} className="btn-base">Динамика</button>
+//         <button
+//           onClick={onClose}
+//           className="btn-base btn-cancel"
+//         >
+//           Закрыть
+//         </button>
+//       </div>
+//     </div>
+//   );
+
+
+
 import { useMemo, useState } from "react";
 import {
   Chart as ChartJS,
   ArcElement,
   type ChartData,
+  CategoryScale,   // ось X
+  LinearScale,    // ось Y
+  PointElement,   // точки на линии
+  LineElement,    // сама линия
+  BarElement,     // если используешь Bar
+  Title,
   Tooltip,
-  Legend
+  Legend,
+  TimeScale,
 } from "chart.js";
-import type { Expense } from "../types";
-import { groupExpenses, type GroupField } from "../utils/groupExpenses";
+import type { Expense, GroupField } from "../types";
+import { groupExpenses } from "../utils/groupExpenses";
 import { StatsChart } from "./StatsChart";
 import { StatsTable } from "./StatsTable";
-import { Pie } from "react-chartjs-2";
 import { buildChartData } from "../utils/buildChartData";
 import { TagIcon, RectangleStackIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { RadioGroup } from "./ui/RadioGroup";
 import 'simplebar-react/dist/simplebar.min.css';
-import SimpleBar from 'simplebar-react';
+import { TimeSeriesChart } from "./TimeSeriesChart";
+import type { Period } from "../utils/groupByPeriod";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  TimeScale,
+);
 
 type Props = {
   onClose: () => void;
@@ -173,108 +281,188 @@ type Props = {
   initialField?: GroupField;
 };
 
-// const groupFieldLabels: Record<GroupField, string> = {
-//   title: "Название",
-//   category: "Категория",
-//   location: "Место",
-// };
-
 const GROUP_OPTIONS: { value: GroupField; label: string; icon: React.ElementType }[] = [
   { value: "title", label: "Название", icon: TagIcon },
   { value: "category", label: "Категория", icon: RectangleStackIcon },
   { value: "location", label: "Место", icon: MapPinIcon },
 ];
 
-export function StatsModal({
-  onClose,
-  expenses,
-  initialField = "category",
-}: Props) {
+// export function StatsModal({
+//   onClose,
+//   expenses,
+//   initialField = "category",
+// }: Props) {
+//   const [field, setField] = useState<GroupField>(initialField);
+//   // const [tableMode, setTableMode] = useState(true);
+//   const [mode, setMode] = useState<"table" | "pie" | "time">("table");
+//   const [period, setPeriod] = useState<Period>("month"); // 👈 новое состояние
+
+//   const rows = useMemo(() => groupExpenses(expenses, field), [expenses, field]);
+
+//   const grandTotal = useMemo(() => Math.round(rows.reduce((s, r) => s + r.total, 0) * 100) / 100, [rows]);
+//   const totalCount = useMemo(() => rows.reduce((s, r) => s + r.count, 0), [rows]);
+
+//   const threshold = 0.02;
+
+//   const chartData = useMemo(
+//     () => buildChartData(rows, grandTotal, threshold),
+//     [rows, grandTotal]
+//   );
+
+//   return (
+//     <div className="w-full bg-white rounded-lg">
+//       <div className="pb-2">
+//         {/* Controls */}
+//         <div className="relative mb-2 flex flex-wrap items-center gap-3">
+//           {mode !== "time" && (
+//             <>
+//               <label className="text-sm text-center w-full font-medium">
+//                 Группировать по:
+//               </label>
+//               <RadioGroup
+//                 options={GROUP_OPTIONS}
+//                 selected={field}
+//                 onChange={setField}
+//                 orientation="horizontal"
+//               />
+//             </>
+//           )}
+
+//           {mode === "time" && (
+//             <>
+//               <label className="text-sm text-center w-full font-medium">
+//                 Период:
+//               </label>
+//               <RadioGroup
+//                 options={[
+//                   { value: "day", label: "День", icon: TagIcon },
+//                   { value: "week", label: "Неделя", icon: TagIcon },
+//                   { value: "month", label: "Месяц", icon: TagIcon },
+//                 ]}
+//                 selected={period}
+//                 onChange={setPeriod}
+//                 orientation="horizontal"
+//               />
+//             </>
+//           )}
+
+//           <div className="h-85 w-full">
+//             {rows.length > 0 ? (
+//               mode === "table" ? (
+//                 <StatsTable
+//                   field={field}
+//                   rows={rows}
+//                   grandTotal={grandTotal}
+//                   totalCount={totalCount}
+//                 />
+//               ) : mode === "pie" ? (
+//                 <StatsChart chartData={chartData} />
+//               ) : (
+//                 <TimeSeriesChart expenses={expenses} period={period} />
+//               )
+//             ) : (
+//               <p>Нет данных</p>
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Buttons */}
+//         <div className="flex justify-end gap-2">
+//           <button onClick={() => setMode("table")} className="btn-base">
+//             Таблица
+//           </button>
+//           <button onClick={() => setMode("pie")} className="btn-base">
+//             Диаграмма
+//           </button>
+//           <button onClick={() => setMode("time")} className="btn-base">
+//             Динамика
+//           </button>
+//           <button onClick={onClose} className="btn-base btn-cancel">
+//             Закрыть
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+// StatsModal.tsx (фрагмент изменений)
+export function StatsModal({ onClose, expenses, initialField = "category" }: Props) {
   const [field, setField] = useState<GroupField>(initialField);
-  const [tableMode, setTableMode] = useState(true);
+  const [mode, setMode] = useState<"table" | "pie" | "time">("table");
 
   const rows = useMemo(() => groupExpenses(expenses, field), [expenses, field]);
-
-  const grandTotal = useMemo(() => Math.round(rows.reduce((s, r) => s + r.total, 0) * 100) / 100, [rows]);
-  // const grandTotal = useMemo(() => rows.reduce((s, r) => s + r.total, 0), [rows]);
+  const grandTotal = useMemo(
+    () => Math.round(rows.reduce((s, r) => s + r.total, 0) * 100) / 100,
+    [rows]
+  );
   const totalCount = useMemo(() => rows.reduce((s, r) => s + r.count, 0), [rows]);
 
   const threshold = 0.02;
-
-  const chartData = useMemo(
-    () => buildChartData(rows, grandTotal, threshold),
-    [rows, grandTotal]
-  );
+  const chartData = useMemo(() => buildChartData(rows, grandTotal, threshold), [rows, grandTotal]);
 
   return (
     <div className="w-full bg-white rounded-lg">
       <div className="pb-2">
-
-        {/* Controls */}
-        <div className="relative mb-2 flex flex-wrap items-center gap-3">
-          <label className="text-sm text-center w-full font-medium">Группировать по:</label>
-          {/* <select
-            value={field}
-            onChange={e => setField(e.target.value as GroupField)}
-            className="border rounded px-3 py-2"
-          >
-            <option value="title">{groupFieldLabels.title}</option>
-            <option value="category">{groupFieldLabels.category}</option>
-            <option value="location">{groupFieldLabels.location}</option>
-          </select> */}
-          <RadioGroup 
-            options={GROUP_OPTIONS} 
-            selected={field} 
-            onChange={setField} 
-            orientation="horizontal"
-          />
-          {/* <div className="ml-auto text-sm text-gray-600">
-            <span className="font-medium">Расходов: {totalCount}</span>
-            <span className="font-medium"> | Сумма: {grandTotal}</span>
-          </div> */}
-        </div>
-
-        {/* Таблица/диаграмма */}
-        {/* {rows.length > 0 ? (tableMode ? (
-          <StatsTable
-            field={field}
-            rows={rows}
-          />
-        ) : (
-          <StatsChart
-            chartData={chartData}
-          />
-        )) : (
-          <div className="p-6 text-center text-gray-500">
-            Нет данных для выбранных фильтров
-          </div>
-        )} */}
-        <div className="h-85"> {/* фиксируем высоту */}
-          {rows.length > 0 ? (
-            tableMode ? (
-              <StatsTable field={field} rows={rows} grandTotal={grandTotal} totalCount={totalCount}/>
-            ) : (
-              <StatsChart chartData={chartData} />
-            )
+        <div className="relative mb-2 flex flex-wrap items-center gap-3 min-h-[80px]">
+          {mode !== "time" ? (
+            <>
+              <label className="text-sm text-center w-full font-medium">
+                Группировать по:
+              </label>
+              <RadioGroup
+                options={GROUP_OPTIONS}
+                selected={field}
+                onChange={setField}
+                orientation="horizontal"
+              />
+            </>
           ) : (
-            <p>Нет данных</p>
+            // 👇 пустой блок-заглушка той же высоты
+            <div className="" /> 
           )}
-        </div>
-      </div>
 
-      <div className="flex justify-end gap-2">
-        <button
-          className="btn-base"
-          onClick={() => tableMode ? setTableMode(false) : setTableMode(true)}
-        >
-          {tableMode ? "Диаграмма" : "Таблица"}
-        </button>
-        <button
-          onClick={onClose}
-          className="btn-base btn-cancel"
-        >
-          Закрыть
-        </button>
+          <div
+            className={`w-full ${
+              mode === "time" ? "h-102" : "h-85"
+            }`}
+          >
+            {rows.length > 0 ? (
+              mode === "table" ? (
+                <StatsTable field={field} rows={rows} grandTotal={grandTotal} totalCount={totalCount} />
+              ) : mode === "pie" ? (
+                <StatsChart chartData={chartData} />
+              ) : (
+                <TimeSeriesChart expenses={expenses} />
+              )
+            ) : (
+              <p>Нет данных</p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-2">
+  {mode !== "table" && (
+    <button onClick={() => setMode("table")} className="btn-base">
+      Таблица
+    </button>
+  )}
+  {mode !== "pie" && (
+    <button onClick={() => setMode("pie")} className="btn-base">
+      Диаграмма
+    </button>
+  )}
+  {mode !== "time" && (
+    <button onClick={() => setMode("time")} className="btn-base">
+      График
+    </button>
+  )}
+  <button onClick={onClose} className="btn-base btn-cancel">
+    Закрыть
+  </button>
+</div>
       </div>
     </div>
   );

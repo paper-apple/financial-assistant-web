@@ -1,17 +1,18 @@
-// hooks/__tests__/useExpenseForm.test.ts
-import { type Mock, describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+// useExpenseForm.test.ts
+import { describe, it, expect } from "vitest";
 import { renderHook, act } from '@testing-library/react';
 import { useExpenseForm } from '../../hooks/useExpenseForm';
 import type { Expense } from '../../types';
+import { makeCategory, makeLocation } from "../createCategoryAndLocationFields"
 
 // Моковые данные для тестов
 const mockExpense: Expense = {
   id: 1,
-  title: 'Test Expense',
-  category: 'Food',
-  price: 100,
-  location: 'Restaurant',
-  datetime: '2023-01-01T12:00:00.000Z'
+  title: 'Хлеб',
+  category: makeCategory(1, "Еда"),
+  location: makeLocation(1, "Копеечка"),
+  price: 3,
+  datetime: '2025-01-01T12:00:00.000Z'
 };
 
 describe('useExpenseForm', () => {
@@ -33,10 +34,10 @@ describe('useExpenseForm', () => {
     const { result } = renderHook(() => useExpenseForm());
     
     act(() => {
-      result.current.updateFormField('title', 'New Title');
+      result.current.updateFormField('title', 'Макароны');
     });
     
-    expect(result.current.form.title).toBe('New Title');
+    expect(result.current.form.title).toBe('Макароны');
     expect(result.current.form.category).toBe(''); // Другие поля не изменились
   });
 
@@ -44,15 +45,15 @@ describe('useExpenseForm', () => {
     const { result } = renderHook(() => useExpenseForm());
     
     act(() => {
-      result.current.updateFormField('title', 'Test Title');
-      result.current.updateFormField('price', '150');
-      result.current.updateFormField('category', 'Transport');
+      result.current.updateFormField('title', 'Кеды');
+      result.current.updateFormField('price', '99');
+      result.current.updateFormField('category', 'Обувь');
     });
     
     expect(result.current.form).toEqual({
-      title: 'Test Title',
-      category: 'Transport',
-      price: '150',
+      title: 'Кеды',
+      category: 'Обувь',
+      price: '99',
       location: '',
       datetime: expect.any(String)
     });
@@ -94,11 +95,11 @@ describe('useExpenseForm', () => {
     });
     
     expect(result.current.form).toEqual({
-      title: 'Test Expense',
-      category: 'Food',
-      price: '100',
-      location: 'Restaurant',
-      datetime: '2023-01-01T12:00:00.000Z'
+      title: 'Хлеб',
+      category: 'Еда',
+      price: '3',
+      location: 'Копеечка',
+      datetime: '2025-01-01T12:00:00.000Z'
     });
     // editingExpense не должен измениться при setFormFromExpense
     expect(result.current.editingExpense).toEqual(mockExpense);
@@ -116,7 +117,7 @@ describe('useExpenseForm', () => {
     });
     
     // Проверяем что форма заполнена
-    expect(result.current.form.title).toBe('Test Expense');
+    expect(result.current.form.title).toBe('Хлеб');
     expect(result.current.editingExpense).not.toBeNull();
     
     // Сбрасываем
@@ -158,10 +159,10 @@ describe('useExpenseForm', () => {
     });
   });
 
-  it('should handle partial expense updates', () => {
+  it('частичное заполнение формы', () => {
     const partialExpense: Partial<Expense> = {
-      title: 'Partial',
-      price: 50
+      title: 'Кресло',
+      price: 250
     };
     
     const { result } = renderHook(() => useExpenseForm());
@@ -172,9 +173,9 @@ describe('useExpenseForm', () => {
     });
     
     expect(result.current.form).toEqual({
-      title: 'Partial',
+      title: 'Кресло',
       category: '',
-      price: '50',
+      price: '250',
       location: '',
       datetime: expect.any(String)
     });

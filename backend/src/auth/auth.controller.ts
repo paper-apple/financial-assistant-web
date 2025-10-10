@@ -13,7 +13,7 @@ export class AuthController {
     @Res() res: Response
   ) {
     const user = await this.authService.validateUser(body.username, body.password);
-    if (!user) throw new UnauthorizedException('Неверные данные');
+    // if (!user) throw new UnauthorizedException('Неверный пароль');
 
     // Устанавливаем cookie
     res.cookie('userId', user.id.toString(), {

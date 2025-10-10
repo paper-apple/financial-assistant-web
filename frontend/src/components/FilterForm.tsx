@@ -4,7 +4,7 @@ import { ru } from 'date-fns/locale';
 import type { FiltersState, Modals } from '../types';
 import { handlePriceChange } from '../utils/sanitizePrice';
 import { FormField } from './ui/FormField';
-import { useKeywordSuggestions } from '../hooks/useKeywordSuggestions';
+// import { useKeywordSuggestions } from '../hooks/useKeywordSuggestions';
 import { useFilterFormValidation } from '../hooks/useFilterFormValidation';
 
 interface FilterFormProps {

@@ -5,7 +5,6 @@ import { useKeywordSuggestions } from "../hooks/useKeywordSuggestions";
 import { useExpenseFormValidation } from "../hooks/useExpenseFormValidation";
 import { sanitizePrice } from "../utils/sanitizePrice";
 import { FormField } from "./ui/FormField";
-import { useState } from "react";
 
 type Props = {
   form: FormState;
@@ -13,15 +12,15 @@ type Props = {
   onCreated?: (created: Expense) => void;
   onUpdated?: (updated: Expense) => void;
   updateField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
-  onCalendaropen: () => void;
+  onCalendarOpen: () => void;
   onModalClose: () => void;
 };
 
-const FIELDS_CONFIG: { key: keyof FormState; label: string; placeholder: string }[] = [
-  { key: "title", label: "Название", placeholder: "...введите название расхода" },
-  { key: "category", label: "Категория", placeholder: "...введите категорию расхода" },
-  { key: "price", label: "Стоимость", placeholder: "...введите стоимость расхода" },
-  { key: "location", label: "Место", placeholder: "...введите место оплаты расхода" },
+const FIELDS_CONFIG: { key: keyof FormState; label: string; placeholder: string, testId: string }[] = [
+  { key: "title", label: "Название", placeholder: "...введите название расхода", testId: 'input-title'},
+  { key: "category", label: "Категория", placeholder: "...введите категорию расхода", testId: 'input-category' },
+  { key: "price", label: "Стоимость", placeholder: "...введите стоимость расхода", testId: 'input-price' },
+  { key: "location", label: "Место", placeholder: "...введите место оплаты расхода", testId: 'input-location' },
 ];
 
 export const ExpenseForm = ({
@@ -31,7 +30,7 @@ export const ExpenseForm = ({
   onUpdated,
   updateField,
   onModalClose: closeModal,
-  onCalendaropen: openCalendar,
+  onCalendarOpen: openCalendar,
 }: Props) => {
   const suggestionsMap = {
     title: useKeywordSuggestions({ field: "title", input: form.title }),
@@ -69,19 +68,18 @@ export const ExpenseForm = ({
       }
     });
   };
-
-  const [isFocused, setIsFocused] = useState(false);  
   
   return (
     <div className="bg-white">
       <div className="grid grid-cols-1 gap-2">
-        {FIELDS_CONFIG.map(({ key, label, placeholder }) => {
+        {FIELDS_CONFIG.map(({ key, label, placeholder, testId }) => {
           const sugg = suggestionsMap[key as keyof typeof suggestionsMap];
           return (
             <FormField
               key={key}
               label={label}
               name={key}
+              testId={testId}
               value={form[key]}
               onChange={handleChange}
               placeholder={placeholder}
@@ -100,12 +98,12 @@ export const ExpenseForm = ({
         })}
 
         {/* Дата */}
-        <div className="">
-          <label className="label-text">Дата</label>
+        <div>
+          <label className="label-text mb-2">Дата</label>
           <button
             // onClick={onCalendarOpen}
             onClick={openCalendar}
-            className="w-full border rounded px-3 py-1 text-left"
+            className="w-full border border-neutral-500 rounded px-3 py-1 text-left"
           >
             {form.datetime
               ? new Date(form.datetime).toLocaleString("ru-RU", {
