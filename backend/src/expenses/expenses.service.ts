@@ -32,100 +32,6 @@ export class ExpensesService {
     return this.expenseRepository.save(expense);
   }
 
-  // async findAll(
-  //   userId: number,
-  //   filters?: {
-  //     minPrice?: number;
-  //     maxPrice?: number;
-  //     startDate?: Date;
-  //     endDate?: Date;
-  //     keywords?: string[];
-  //   },
-  //   sortParams?: {
-  //     field: string;
-  //     direction: 'ASC' | 'DESC';
-  //   }
-  // ): Promise<Expense[]> {
-  //   // Создаем условия для фильтрации
-  //   const where: FindOptionsWhere<Expense>[] = [{ user: { id: userId } }];
-
-  //   if (filters) {
-  //     const keywords = filters.keywords;
-      
-  //     const normalizedKeywords = Array.isArray(keywords)
-  //       ? keywords
-  //       : typeof keywords === 'string'
-  //         ? [keywords]
-  //         : [];
-          
-  //     if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
-  //       where[0].price = Between(
-  //         filters.minPrice || 0,
-  //         filters.maxPrice || Number.MAX_SAFE_INTEGER
-  //       );
-  //     }
-  //     if (filters.startDate || filters.endDate) {
-  //       where[0].datetime = Between(
-  //         filters.startDate || new Date(0),
-  //         filters.endDate || new Date()
-  //       );
-  //     }
-
-  //     // Поиск по ключевым словам
-  //     if (filters.keywords !== undefined && filters.keywords.length > 0) {
-  //       // Создаем условия для каждого ключевого слова
-  //       const keywordConditions = normalizedKeywords.flatMap(keyword => [
-  //         // Поиск по названию
-  //         { 
-  //           user: { id: userId },
-  //           title: ILike(`%${keyword}%`)
-  //         },
-  //         // Поиск по категории
-  //         { 
-  //           user: { id: userId },
-  //           category: { name: ILike(`%${keyword}%`) }
-  //         },
-  //         // Поиск по месту
-  //         { 
-  //           user: { id: userId },
-  //           location: { name: ILike(`%${keyword}%`) }
-  //         }
-  //       ]);
-
-  //       // Объединяем все условия поиска
-  //       console.log(keywordConditions)
-  //       where.push(...keywordConditions);
-  //     }
-  //   }
-
-  //   // Определяем порядок сортировки
-  //   let order: any = {};
-  //   if (sortParams) {
-  //     switch (sortParams.field) {
-  //   case 'category':
-  //     order = { category: { name: sortParams.direction } };
-  //     break;
-  //   case 'location':
-  //     order = { location: { name: sortParams.direction } };
-  //     break;
-  //   default:
-  //     order = { [sortParams.field]: sortParams.direction };
-  // }
-  //   } else {
-  //     // Сортировка по умолчанию
-  //     order = { datetime: 'DESC' };
-  //   }
-
-  //   const options: FindManyOptions<Expense> = {
-  //     where: where.length > 1 ? where : where[0],
-  //     relations: ['user', 'category', 'location'],
-  //     order,
-  //   };
-
-  //   return this.expenseRepository.find(options);
-  // }
-
-
   async findAll(
     userId: number,
     filters?: {
@@ -303,7 +209,6 @@ export class ExpensesService {
         fetchSuggestions(cfg.join, cfg.alias, cfg.column)
       )
     );
-
 
     return Array.from(new Set(allResults.flat()));
   }

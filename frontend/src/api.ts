@@ -1,5 +1,5 @@
 import axios from "axios";
-import { type Expense, type ExpenseCreate, type ExpenseUpdate, type Category, type Location } from "./types"
+import { type Expense, type ExpenseCreate, type ExpenseUpdate } from "./types"
 
 // Динамическое определение адреса API
 const getApiBase = () => {

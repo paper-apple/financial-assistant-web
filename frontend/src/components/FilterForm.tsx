@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import { ru } from 'date-fns/locale';
+// FilterForm.tsx
+import React, { useEffect, useRef } from 'react';
 import type { FiltersState, Modals } from '../types';
 import { handlePriceChange } from '../utils/sanitizePrice';
 import { FormField } from './ui/FormField';
-// import { useKeywordSuggestions } from '../hooks/useKeywordSuggestions';
 import { useFilterFormValidation } from '../hooks/useFilterFormValidation';
 
 interface FilterFormProps {
@@ -12,7 +10,6 @@ interface FilterFormProps {
   filtersState: FiltersState;
   handleAddKeyword: (word: string) => void;
   applyFilters: () => void;
-  // handleReset: () => void;
   onModalOpen: (modal: keyof Modals) => void;
   onModalClose: () => void;
 }
@@ -22,7 +19,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
   filtersState,
   applyFilters,
   handleAddKeyword,
-  // handleReset,
   onModalOpen: openModal,
   onModalClose: onClose
 }) => {
@@ -77,7 +73,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
             placeholder="...введите ключевое слово"
             suggestions={suggestions}
             onSuggestionSelect={(val) => handleAddKeyword(val)}
-            onKeywordAdd={() => handleAddKeyword(keywordInput)} // 👈 передаём сюда
           />
         </div>
         <div className="flex gap-2">
@@ -117,8 +112,8 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         <label className="label-text">Интервал времени</label>
         <div className="grid grid-cols-2 gap-2">
           <FormField
-            // label="Интервал времени"
             name="startDate"
+            testId="input-date"
             value={
               startDate
                 ? startDate.toLocaleString("ru-RU", {

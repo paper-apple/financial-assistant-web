@@ -6,13 +6,13 @@ type FormFieldProps = {
   label?: string;
   name: keyof FormState | 'keyword' | 'startDate' | 'endDate';
   value: string;
-  testId: string;
+  testId?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
   suggestions?: string[];
   placeholder?: string;
   onSuggestionSelect?: (val: string) => void;
-  onKeywordAdd?: () => void;
+  // onKeywordAdd?: () => void;
   readOnly?: boolean;
   onFieldClick?: () => void;
   showCalendarIcon?: boolean; // 👈 новый проп
@@ -29,7 +29,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   suggestions,
   placeholder,
   onSuggestionSelect,
-  onKeywordAdd,
+  // onKeywordAdd,
   readOnly = false,
   onFieldClick,
   showCalendarIcon = false,

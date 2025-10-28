@@ -5,7 +5,6 @@ export const RadioGroup = <T extends string>({
   orientation = "vertical",
 }: {
   options: { value: T; label: string; icon: React.ElementType }[];
-  // icon: React.ElementType <any>;
   selected: T;
   onChange: (val: T) => void;
   orientation?: "horizontal" | "vertical";
@@ -26,7 +25,6 @@ export const RadioGroup = <T extends string>({
             }`}
         >
           <Icon className="w-4 h-4 text-blue-300" />
-          {/* <div>{icon}</div> */}
           <span className="text-sm text-gray-800">{opt.label}</span>
         </button>
       );

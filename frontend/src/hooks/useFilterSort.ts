@@ -110,7 +110,6 @@ export const useFilterSort = (
   }, [startDate, endDate]);
 
   return {
-    // sortParams,
     sortState: {
       sortField, setSortField,
       sortDirection, setSortDirection,

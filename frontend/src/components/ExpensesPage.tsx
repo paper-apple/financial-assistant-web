@@ -3,18 +3,18 @@ import { useExpenses } from "../hooks/useExpenses";
 import { useSelection } from "../hooks/useSelection";
 import { useFilterSort } from "../hooks/useFilterSort";
 import { useExpenseForm } from "../hooks/useExpenseForm";
-import { ExpenseList } from "../components/ExpenseList";
-import { FloatingActionButtons } from "../components/FloatingActionButtons";
-import { ExpenseModals } from "../components/ExpenseModals";
-import { TopActionBar } from "../components/TopActionBar";
-import { AuthModal } from "../components/AuthModal";
-import type{ Expense } from "../types";
+import { ExpenseList } from "./ExpenseList";
+import { FloatingActionButtons } from "./FloatingActionButtons";
+import { ExpenseModals } from "./ExpenseModals";
+import { TopActionBar } from "./TopActionBar";
+import { AuthModal } from "./AuthModal";
+import type { Expense } from "../types";
 import { useAuth } from "../hooks/useAuth";
 
 export const ExpensesPage = () => {
   const {
     user,
-    error: authError, setError,
+    authError, setAuthError,
     authModalOpen, setAuthModalOpen,
     isLoginMode, setIsLoginMode,
     checkAuth,
@@ -77,12 +77,12 @@ export const ExpensesPage = () => {
 
   const handleAuth = async (username: string, password: string) => {
     try {
-      setError("");
+      setAuthError("");
       const fn = isLoginMode ? loginUser : registerUser;
       await fn(username, password);
       loadExpenses();
 
-      setAuthModalOpen(false);
+      setAuthModalOpen(false); 
     } catch (error: any) {
       console.error("Ошибка:", error);
     }
@@ -104,7 +104,10 @@ export const ExpensesPage = () => {
   const closeModal = useCallback((modal: keyof typeof modals) => {
     setModals(prev => ({ ...prev, [modal]: false }));
     if (modal === "update" || modal === "add") {
-      resetForm();
+      resetForm();     
+    }
+    else if (modal === "filters") {
+      filtersState.setKeywordInput('');
     }
   }, []);
 
@@ -183,7 +186,6 @@ export const ExpensesPage = () => {
             filtersState={filtersState}
             sortState={sortState}
             suggestions={suggestions}
-            // handleReset={handleResetFilters}
             closeModal={closeModal}
             openModal={openModal}
             handleCreated={handleCreated}

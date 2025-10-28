@@ -1,3 +1,4 @@
+// AuthModal.tsx
 import { useState } from "react";
 import { useAuthValidation } from "../hooks/useAuthValidation";
 
@@ -15,7 +16,6 @@ export const AuthModal = ({
   error,
   onAuth,
   onToggleMode,
-  // onClose,
 }: AuthModalProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -99,13 +99,6 @@ export const AuthModal = ({
             </button>
           </div>
         </form>
-
-        {/* <button
-          onClick={onClose}
-          className="mt-4 text-gray-500 hover:text-gray-700"
-        >
-          Закрыть
-        </button> */}
       </div>
     </div>
   );

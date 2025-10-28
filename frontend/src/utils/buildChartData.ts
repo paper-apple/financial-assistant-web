@@ -52,7 +52,7 @@ import type { ChartData, ChartDataset } from "chart.js";
 type Row = { key: string; total: number; count: number };
 
 interface ExtendedPieDataset extends ChartDataset<"pie", number[]> {
-  meta: { count: number; avg: number }[];
+  meta: { count: number; proportion: number }[];
 }
 
 type ExtendedChartData = ChartData<"pie", number[], string> & {
@@ -109,7 +109,7 @@ export function buildChartData(
     key: r.key,
     total: r.total,
     count: r.count,
-    avg: r.count > 0 ? +(r.total / r.count).toFixed(2) : 0,
+    proportion: +((100 / grandTotal) * r.total).toFixed(2),
   }));
 
   const dataset: ExtendedPieDataset = {
@@ -117,7 +117,7 @@ export function buildChartData(
     data: major.map(r => Math.round(r.total * 100) / 100),
     meta: major.map(r => ({
       count: r.count,
-      avg: r.count > 0 ? +(r.total / r.count).toFixed(2) : 0,
+      proportion: +((100 / grandTotal) * r.total).toFixed(2),
     })),
     backgroundColor: [
           "#3b82f6", "#10b981", "#f59e0b",

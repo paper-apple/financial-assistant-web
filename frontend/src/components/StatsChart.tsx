@@ -24,8 +24,8 @@ export const StatsChart = ({ chartData }: Props) =>
                   const ds = context.dataset as any;
                   const i = context.dataIndex;
                   const total = ds.data[i];
-                  const { count, avg } = ds.meta[i];
-                  return [`Сумма: ${total}`, `Кол-во: ${count}`, `Среднее: ${avg}`];
+                  const { count, proportion } = ds.meta[i];
+                  return [`Сумма: ${total}`, `Кол-во: ${count}`, `Доля: ${proportion} %`];
                 },
               },
             },

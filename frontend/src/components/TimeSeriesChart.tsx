@@ -4,13 +4,10 @@ import type { ChartData } from "chart.js";
 import { detectPeriod, groupByPeriod, type Period } from "../utils/groupByPeriod";
 import type { Expense } from "../types";
 import { aggregateToMaxPoints } from "../utils/aggregate";
-import { getMaxTicks } from "../utils/chart";
 
 type Props = {
   expenses: Expense[];
 };
-
-const maxTicks = getMaxTicks();
 
 export function TimeSeriesChart({ expenses }: Props) {
   if (expenses.length === 0) {
@@ -22,13 +19,13 @@ export function TimeSeriesChart({ expenses }: Props) {
 
   // Группируем только в этом диапазоне
   const rawRows = groupByPeriod(expenses, period);
-  const rows = period === "day" ? aggregateToMaxPoints(rawRows, 20) : rawRows;
-  // const rows = groupByPeriod(expenses, period);
+  // const rows = period === "day" ? aggregateToMaxPoints(rawRows, 20) : rawRows;
+  const rows = aggregateToMaxPoints(rawRows, 20);
 
   // Подписи снизу: начало диапазона = cutoff, конец = lastDate
   // start = первая точка rows, end = последняя
-  const startLabel = rows.length > 0 ? rows[0].key : "";
-  const endLabel = rows.length > 0 ? rows[rows.length - 1].key : "";
+  const startLabel = rows.length > 0 ? rows[0].key.split("–")[0] : "";
+  const endLabel = rows.length > 0 ? rows[rows.length - 1].key.split("–")[0] : "";
 
   const data: ChartData<"line"> = {
     labels: rows.map(r => r.key),
@@ -80,7 +77,6 @@ export function TimeSeriesChart({ expenses }: Props) {
             scales: {
               x: {
                 display: false,
-                ticks: { maxTicksLimit: maxTicks },
               },
               y: {
                 title: { display: true, text: "Сумма" },

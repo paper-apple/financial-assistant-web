@@ -24,7 +24,6 @@ export class ExpensesController {
     @Query('endDate') endDate?: Date,
     @Query('sortField') sortField?: string,
     @Query('sortDirection') sortDirection?: 'ASC' | 'DESC',
-    // @Query('keywords') keywords?: string[],
     @Query('keywords') keywords?: string[],
   ) {
     const filters = {

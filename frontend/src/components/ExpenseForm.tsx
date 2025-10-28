@@ -1,6 +1,6 @@
 // src/components/ExpenseForm.tsx
 import { createExpense, updateExpense } from "../api";
-import type { Expense, FormState, Modals } from "../types";
+import type { Expense, FormState } from "../types";
 import { useKeywordSuggestions } from "../hooks/useKeywordSuggestions";
 import { useExpenseFormValidation } from "../hooks/useExpenseFormValidation";
 import { sanitizePrice } from "../utils/sanitizePrice";
@@ -104,6 +104,7 @@ export const ExpenseForm = ({
             // onClick={onCalendarOpen}
             onClick={openCalendar}
             className="w-full border border-neutral-500 rounded px-3 py-1 text-left"
+            data-testid="button-date"
           >
             {form.datetime
               ? new Date(form.datetime).toLocaleString("ru-RU", {

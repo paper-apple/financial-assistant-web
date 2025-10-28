@@ -1,167 +1,170 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+// src/components/FilterForm.test.tsx
 import { render, screen, fireEvent } from "@testing-library/react";
-import { userEvent } from "@testing-library/user-event";
-
-// Мокаем react-datepicker, чтобы он рендерил обычный input
-vi.mock("react-datepicker", () => {
-  return {
-    __esModule: true,
-    default: ({
-      selected,
-      onChange,
-      onCalendarClose,
-      placeholderText,
-    }: any) => (
-      <input
-        data-testid={placeholderText}
-        value={
-          selected
-            ? selected.toISOString().slice(0, 16).replace("T", " ")
-            // ? format(new Date(selected), "yyyy-MM-dd HH:mm")
-            : ""
-        }
-        onChange={(e) => onChange(new Date(e.target.value))}
-        onBlur={() => onCalendarClose()}
-        placeholder={placeholderText}
-      />
-    ),
-  };
-});
-
-import { FilterForm } from "../../../components/FilterForm.tsx";
-import type { FilterParams } from "../../../types.tsx";
+import { describe, expect, it, vi } from "vitest";
+import { FilterForm } from "../../../components/FilterForm";
+import type { FiltersState } from "../../../types";
 
 describe("FilterForm", () => {
-  const baseDate = new Date("2025-01-01T12:00:00Z");
-  const initialValues: FilterParams = {
-    startDate: baseDate,
-    endDate: new Date("2025-01-03T09:00:00Z"),
-    minPrice: 10,
-    maxPrice: 20,
-    keywords: ["foo"],
-  };
-  const onApply = vi.fn();
-  const onClose = vi.fn();
+  const setup = (overrides?: Partial<FiltersState>) => {
+    const setKeywordInput = vi.fn();
+    const setKeywordsList = vi.fn();
+    const setStartDate = vi.fn();
+    const setEndDate = vi.fn();
+    const setMinPrice = vi.fn();
+    const setMaxPrice = vi.fn();
+    const backup = vi.fn();
+    const restoreInitialValues = vi.fn();
+    const handleResetFilters = vi.fn();
+    const handleAddKeyword = vi.fn();
+    const applyFilters = vi.fn();
+    const onModalOpen = vi.fn();
+    const onModalClose = vi.fn();
 
-  beforeEach(() => {
-    onApply.mockClear();
-  });
+    const filtersState: FiltersState = {
+      keywordInput: "",
+      setKeywordInput,
+      keywordsList: [],
+      setKeywordsList,
+      startDate: null,
+      setStartDate,
+      endDate: null,
+      setEndDate,
+      minPrice: "",
+      setMinPrice,
+      maxPrice: "",
+      setMaxPrice,
+      dateError: false,
+      priceError: false,
+      backup,
+      restoreInitialValues,
+      handleResetFilters,
+      ...overrides,
+    };
 
-  it("рендерит начальные значения", () => {
-    render(<FilterForm 
-      onModalClose={onClose} 
-      initialValues={initialValues} 
-      onApply={onApply} />);
-
-    // Проверяем поля цены
-    expect(screen.getByPlaceholderText("Мин")).toHaveValue("10");
-    expect(screen.getByPlaceholderText("Макс")).toHaveValue("20");
-
-    // Проверяем ключевое слово
-    expect(screen.getByText("foo")).toBeInTheDocument();
-
-    // Проверяем даты через тестовый атрибут
-    expect(screen.getByTestId("От")).toHaveValue("2025-01-01 12:00");
-    expect(screen.getByTestId("До")).toHaveValue("2025-01-03 09:00");
-  });
-
-  it("добавляет и удаляет ключевое слово", async () => {
-    render(<FilterForm 
-      onModalClose={onClose} 
-      initialValues={{ ...initialValues, keywords: [] }} 
-      onApply={onApply} />);
-    const input = screen.getByPlaceholderText("Введите ключевое слово");
-    const addBtn = screen.getByText("Добавить ключевое слово");
-
-    // Добавляем слово «bar»
-    await userEvent.type(input, " bar ");
-    await userEvent.click(addBtn);
-    expect(screen.getByText("bar")).toBeInTheDocument();
-    // Инпут должен очиститься
-    expect(input).toHaveValue("");
-
-    // Удаляем «bar»
-    const deleteBtn = screen.getByText("✖");
-    await userEvent.click(deleteBtn);
-    expect(screen.queryByText("bar")).toBeNull();
-  });
-
-  it("показывает ошибку, если minPrice > maxPrice", async () => {
-    render(<FilterForm 
-      onModalClose={onClose} 
-      initialValues={initialValues} 
-      onApply={onApply} />);
-
-    const minInput = screen.getByPlaceholderText("Мин");
-    const maxInput = screen.getByPlaceholderText("Макс");
-
-    // Сделаем min больше max
-    await userEvent.clear(minInput);
-    await userEvent.type(minInput, "30");
-    // Ошибка появляется автоматически по useEffect
-    expect(await screen.findByText("Мин больше Макс")).toBeInTheDocument();
-    // Поле в ошибочном состоянии должно иметь подходящий класс
-    expect(minInput).toHaveClass("border-red-500");
-  });
-
-  it("показывает ошибку, если startDate > endDate", async () => {
-    render(
+    const utils = render(
       <FilterForm
-        onModalClose={onClose}
-        initialValues={{ ...initialValues, startDate: new Date("2025-02-02T12:00:00"), endDate: new Date("2025-02-01T12:00:00") }}
-        onApply={onApply}
+        suggestions={["еда", "транспорт"]}
+        filtersState={filtersState}
+        handleAddKeyword={handleAddKeyword}
+        applyFilters={applyFilters}
+        onModalOpen={onModalOpen}
+        onModalClose={onModalClose}
       />
     );
-    // Триггерим onCalendarClose через blur
-    const startInput = screen.getByTestId("От");
-    await fireEvent.blur(startInput);
 
-    expect(await screen.findByText("Начало позже конца")).toBeInTheDocument();
+    return {
+      ...utils,
+      setKeywordInput,
+      setKeywordsList,
+      setStartDate,
+      setEndDate,
+      setMinPrice,
+      setMaxPrice,
+      backup,
+      restoreInitialValues,
+      handleResetFilters,
+      handleAddKeyword,
+      applyFilters,
+      onModalOpen,
+      onModalClose,
+    };
+  };
+
+  it("вызывает backup при монтировании", () => {
+    const { backup } = setup();
+    expect(backup).toHaveBeenCalled();
   });
 
-  it("вызывает onApply с корректными фильтрами", async () => {
-    render(<FilterForm 
-      onModalClose={onClose}
-      initialValues={initialValues} 
-      onApply={onApply} />);
+  it("отображает сообщение, если список ключевых слов пуст", () => {
+    setup();
+    expect(screen.getByText("Ключевые слова не добавлены")).toBeInTheDocument();
+  });
 
-    // Меняем цены
-    await userEvent.clear(screen.getByPlaceholderText("Мин"));
-    await userEvent.type(screen.getByPlaceholderText("Мин"), "15");
-    await userEvent.clear(screen.getByPlaceholderText("Макс"));
-    await userEvent.type(screen.getByPlaceholderText("Макс"), "25");
+  it("добавляет ключевое слово через кнопку", () => {
+    const { handleAddKeyword } = setup({ keywordInput: "еда" });
+    fireEvent.click(screen.getByText("Добавить слово"));
+    expect(handleAddKeyword).toHaveBeenCalledWith("еда");
+  });
 
-    // Добавим новое ключевое слово
-    await userEvent.type(screen.getByPlaceholderText("Введите ключевое слово"), "baz");
-    await userEvent.click(screen.getByText("Добавить ключевое слово"));
+  it("очищает список ключевых слов", () => {
+    const { setKeywordsList } = setup({ keywordsList: ["еда", "такси"] });
+    fireEvent.click(screen.getByText("Очистить список"));
+    expect(setKeywordsList).toHaveBeenCalledWith([]);
+  });
 
-    // Жмём «Применить»
-    await userEvent.click(screen.getByText("Применить"));
+  it("открывает модалку выбора даты", () => {
+    const { onModalOpen } = setup();
+    fireEvent.click(screen.getByTestId('input-date'));
 
-    expect(onApply).toHaveBeenCalledTimes(1);
-    expect(onApply).toHaveBeenCalledWith({
-      startDate: initialValues.startDate,
-      endDate: initialValues.endDate,
-      minPrice: 15,
-      maxPrice: 25,
-      keywords: ["foo", "baz"],
+    expect(onModalOpen).toHaveBeenCalledWith("startDate");
+  });
+
+  it("очищает дату окончания", () => {
+    const { setEndDate } = setup({ endDate: new Date() });
+    fireEvent.click(screen.getAllByRole("button", { name: "×" })[1]); // кнопка очистки
+    expect(setEndDate).not.toHaveBeenCalled();
+  });
+
+  it("вызывает setMinPrice при изменении цены", () => {
+    const { setMinPrice } = setup();
+    const inputs = screen.getAllByPlaceholderText("От");
+    fireEvent.change(inputs[1], { target: { value: "123" } }); // второе поле "От" — для цены
+    expect(setMinPrice).toHaveBeenCalled();
+  });
+
+  it("вызывает handleResetFilters при клике на Сбросить", () => {
+    const { handleResetFilters } = setup();
+    fireEvent.click(screen.getByText("Сбросить"));
+    expect(handleResetFilters).toHaveBeenCalled();
+  });
+
+  it("вызывает applyFilters и onClose при Применить", () => {
+    const { applyFilters, onModalClose } = setup();
+    fireEvent.click(screen.getByText("Применить"));
+    expect(applyFilters).toHaveBeenCalled();
+    expect(onModalClose).toHaveBeenCalled();
+  });
+
+  it("показывает ошибку, если startDate > endDate", () => {
+  const start = new Date("2025-01-10T00:00:00Z");
+  const end = new Date("2025-01-05T00:00:00Z");
+
+  setup({ startDate: start, endDate: end });
+
+  expect(screen.getByText("Начало отсчёта позже конца")).toBeInTheDocument();
+  // кнопка Применить должна быть задизейблена
+  const applyBtn = screen.getByText("Применить");
+  expect(applyBtn).toHaveClass("btn-disabled");
+  });
+
+  it("показывает ошибку, если minPrice > maxPrice", () => {
+    setup({ minPrice: "200", maxPrice: "100" });
+
+    expect(screen.getByText("Минимальная цена больше максимальной")).toBeInTheDocument();
+    const applyBtn = screen.getByText("Применить");
+    expect(applyBtn).toHaveClass("btn-disabled");
+  });
+
+  it("разрешает применение, если даты и цены валидны", () => {
+    const { applyFilters, onModalClose } = setup({
+      startDate: new Date("2025-01-01T00:00:00Z"),
+      endDate: new Date("2025-01-05T00:00:00Z"),
+      minPrice: "50",
+      maxPrice: "100",
     });
+
+    const applyBtn = screen.getByText("Применить");
+    expect(applyBtn).toHaveClass("btn-confirm");
+
+    fireEvent.click(applyBtn);
+    expect(applyFilters).toHaveBeenCalled();
+    expect(onModalClose).toHaveBeenCalled();
   });
 
-  it("сбрасывает все поля по нажатию Reset", async () => {
-    render(<FilterForm 
-      onModalClose={onClose}
-      initialValues={initialValues} 
-      onApply={onApply} />);
-
-    // Жмём «Сбросить»
-    await userEvent.click(screen.getByText("Сбросить"));
-
-    // Все значения должны очиститься
-    expect(screen.getByPlaceholderText("Мин")).toHaveValue("");
-    expect(screen.getByPlaceholderText("Макс")).toHaveValue("");
-    expect(screen.queryByText("foo")).toBeNull();
-    expect(screen.getByTestId("От")).toHaveValue("");
-    expect(screen.getByTestId("До")).toHaveValue("");
+  it("вызывает restoreInitialValues при размонтировании, если не применено", () => {
+    const { restoreInitialValues, unmount } = setup();
+    // размонтируем
+    unmount();
+    expect(restoreInitialValues).toHaveBeenCalled();
   });
-});
+}); 

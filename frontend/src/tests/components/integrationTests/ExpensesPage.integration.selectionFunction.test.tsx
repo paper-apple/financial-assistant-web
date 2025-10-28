@@ -1,6 +1,6 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ExpensesPage } from '../../../pages/ExpensesPage';
+import { ExpensesPage } from '../../../components/ExpensesPage';
 import * as api from "../../../api";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { setupApiMocks } from './setupTestEnv';

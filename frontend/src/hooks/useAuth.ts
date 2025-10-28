@@ -1,9 +1,10 @@
+// useAuth
 import { useState } from "react";
 import { fetchExpenses, login, logout, register } from "../api";
 
 export function useAuth() {
   const [user, setUser] = useState<{ username: string } | null>(null);
-  const [error, setError] = useState<string>("");
+  const [authError, setAuthError] = useState<string>("");
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
 
@@ -22,7 +23,7 @@ export function useAuth() {
       await login(username, password);
       setUser({ username });
     } catch (err: any) {
-      setError(err.response?.data?.message || "Ошибка входа");
+      setAuthError(err.response?.data?.message || "Ошибка входа");
       throw err;
     }
   };
@@ -32,7 +33,7 @@ export function useAuth() {
       await register(username, password);
       setUser({ username });
     } catch (err: any) {
-      setError(err.response?.data?.message || "Ошибка регистрации");
+      setAuthError(err.response?.data?.message || "Ошибка регистрации");
       throw err;
     }
   };
@@ -48,8 +49,8 @@ export function useAuth() {
   };
 
   return {
-    user, setUser,
-    error, setError,
+    user,
+    authError, setAuthError,
     authModalOpen, setAuthModalOpen,
     isLoginMode, setIsLoginMode,
     checkAuth,

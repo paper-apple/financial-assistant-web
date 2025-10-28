@@ -6,17 +6,14 @@ import type { SortParams, Expense } from "../types";
 export const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [lastUpdatedId, setLastUpdatedId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({});
   const [sortParams, setSortParams] = useState<SortParams>({
     field: 'datetime',
-    // direction: 'DESC' as 'ASC' | 'DESC'
     direction: 'DESC'
   });
 
   const loadExpenses = useCallback(async (newFilters?: any, newSortParams?: any) => {
     try {
-      setLoading(true);
       const currentFilters = newFilters || filters;
       const currentSortParams = newSortParams || sortParams;
       
@@ -27,8 +24,6 @@ export const useExpenses = () => {
       setExpenses(response.data);
     } catch (error) {
       console.error('Ошибка загрузки расходов:', error);
-    } finally {
-      setLoading(false);
     }
   }, [filters, sortParams]);
 

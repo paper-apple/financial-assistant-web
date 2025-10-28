@@ -1,5 +1,5 @@
 // App.tsx
-import { ExpensesPage } from "./pages/ExpensesPage";
+import { ExpensesPage } from "./components/ExpensesPage";
 
 window.addEventListener('online', () => {
   console.log('Сеть восстановлена');

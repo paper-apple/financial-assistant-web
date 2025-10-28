@@ -1,12 +1,3 @@
-// export type Expense = {
-//   id: number;
-//   title: string;
-//   category: string;
-//   price: number;
-//   location: string;
-//   datetime: string; // ISO
-// }
-
 export interface Category {
   id: number;
   name: string;
@@ -92,19 +83,12 @@ export type SortState = {
   setSortDirection: React.Dispatch<React.SetStateAction<SortParams['direction']>>;
 };
 
-// export type GroupField = "title" | "category" | "location";
-
-// type SortField = "title" | "category" | "price" | "location" | "datetime";
-
 export type GroupField = "title" | "category" | "location";
-
-// export type GroupField = CommonField;
 
 type SortField = GroupField | "price" | "datetime";
 
 export type SortParams = {
   field: SortField;
-  // direction: "asc" | "desc";
   direction: "ASC" | "DESC";
 };
 

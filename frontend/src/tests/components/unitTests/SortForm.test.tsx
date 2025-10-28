@@ -1,88 +1,84 @@
-// src/components/SortForm.test.tsx
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+// SortForm.test.tsx
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { SortForm } from "../../../components/SortForm";
-import type { SortParams } from "../../../types";
-import { userEvent } from "@testing-library/user-event";
+import type { SortState } from "../../../types";
 
 describe("SortForm", () => {
-  const initialValues: SortParams = {
-    field: "price",
-    direction: "desc",
-  };
-
-  it("должен корректно отображать начальные значения", () => {
-    render(
-      <SortForm
-        // isOpen={true}
-        initialValues={initialValues}
-        applySorts={vi.fn()}
-        onClose={vi.fn()}
-      />
-    );
-
-    // select field
-    const select = screen.getByRole("combobox") as HTMLSelectElement;
-    expect(select.value).toBe("price");
-
-    // radios
-    const ascRadio = screen.getByLabelText("По возрастанию") as HTMLInputElement;
-    const descRadio = screen.getByLabelText("По убыванию") as HTMLInputElement;
-    expect(ascRadio.checked).toBe(false);
-    expect(descRadio.checked).toBe(true);
-  });
-
-  it("вызывает onClose при клике на «Отмена»", async () => {
+  const setup = (overrides?: Partial<SortState>) => {
+    const setSortField = vi.fn();
+    const setSortDirection = vi.fn();
+    const applySorts = vi.fn();
     const onClose = vi.fn();
+
+    const sortState: SortState = {
+      sortField: "title",
+      setSortField,
+      sortDirection: "ASC",
+      setSortDirection,
+      ...overrides,
+    };
+
     render(
       <SortForm
-        initialValues={initialValues}
-        applySorts={vi.fn()}
+        sortState={sortState}
+        applySorts={applySorts}
         onClose={onClose}
       />
     );
 
-    await userEvent.click(screen.getByText("Отмена"));
-    expect(onClose).toHaveBeenCalledTimes(1);
+    return { setSortField, setSortDirection, applySorts, onClose };
+  };
+
+  it("рендерит все опции сортировки", () => {
+    setup();
+
+    expect(screen.getByText("Название")).toBeInTheDocument();
+    expect(screen.getByText("Категория")).toBeInTheDocument();
+    expect(screen.getByText("Стоимость")).toBeInTheDocument();
+    expect(screen.getByText("Место")).toBeInTheDocument();
+    expect(screen.getByText("Дата")).toBeInTheDocument();
+
+    expect(screen.getByText("По возрастанию")).toBeInTheDocument();
+    expect(screen.getByText("По убыванию")).toBeInTheDocument();
   });
 
-  it("вызывает onApply с начальным набором, если ничего не менять", async () => {
-    const onApply = vi.fn();
-    render(
-      <SortForm
-        initialValues={initialValues}
-        applySorts={onApply}
-        onClose={vi.fn()}
-      />
-    );
+  it("вызывает setSortField при выборе поля", () => {
+    const { setSortField } = setup();
 
-    await userEvent.click(screen.getByText("Применить"));
-    expect(onApply).toHaveBeenCalledWith(initialValues);
-    expect(onApply).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByText("Категория"));
+    expect(setSortField).toHaveBeenCalledWith("category");
   });
 
-  it("позволяет выбрать новое поле и направление, затем вызывает onApply", async () => {
-    const onApply = vi.fn();
-    render(
-      <SortForm
-        initialValues={initialValues}
-        applySorts={onApply}
-        onClose={vi.fn()}
-      />
-    );
+  it("вызывает setSortDirection при выборе направления", () => {
+    const { setSortDirection } = setup();
 
-    // меняем поле на "title"
-    await userEvent.selectOptions(screen.getByRole("combobox"), "title");
+    fireEvent.click(screen.getByText("По убыванию"));
+    expect(setSortDirection).toHaveBeenCalledWith("DESC");
+  });
 
-    // меняем направление на asc
-    await userEvent.click(screen.getByLabelText("По возрастанию"));
+  it("кнопка Отменить вызывает onClose", () => {
+    const { onClose } = setup();
 
-    // применяем
-    await userEvent.click(screen.getByText("Применить"));
+    fireEvent.click(screen.getByText("Отменить"));
+    expect(onClose).toHaveBeenCalled();
+  });
 
-    expect(onApply).toHaveBeenCalledWith({
-      field: "title",
-      direction: "asc",
-    });
+  it("кнопка Применить вызывает applySorts и onClose", () => {
+    const { applySorts, onClose } = setup();
+
+    fireEvent.click(screen.getByText("Применить"));
+    expect(applySorts).toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it("подсвечивает выбранное поле и направление", () => {
+    setup({ sortField: "price", sortDirection: "DESC" });
+
+    const priceBtn = screen.getByText("Стоимость").closest("button");
+    const descBtn = screen.getByText("По убыванию").closest("button");
+
+    expect(priceBtn).toHaveClass("bg-blue-100");
+    expect(descBtn).toHaveClass("bg-blue-100");
   });
 });
