@@ -1,9 +1,9 @@
+// expenses.controller.ts
 import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { AuthGuard } from '../auth/auth.guard';
-import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req, Query, ParseArrayPipe } from '@nestjs/common';
-
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req, Query } from '@nestjs/common';
 
 @Controller('expenses')
 @UseGuards(AuthGuard)

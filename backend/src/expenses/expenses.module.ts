@@ -1,3 +1,4 @@
+// expenses.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ExpensesService } from './expenses.service';
@@ -7,10 +8,9 @@ import { CategoriesModule } from '../categories/categories.module';
 import { LocationsModule } from '../locations/locations.module';
 import { UsersModule } from 'src/users/users.module';
 
-
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Expense]), // Подключение Expense к модулю и регистрация Repository<Expense>
+    TypeOrmModule.forFeature([Expense]),
     CategoriesModule,
     LocationsModule,
     UsersModule,  

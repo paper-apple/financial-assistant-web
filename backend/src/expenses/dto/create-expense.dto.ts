@@ -1,5 +1,5 @@
 // create-expense.dto.ts
-import { IsString, IsNumber, IsDate, IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsDate } from 'class-validator';
 
 export class CreateExpenseDto {
   @IsString()

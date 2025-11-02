@@ -1,15 +1,15 @@
+// expense.entity.ts
 import { Category } from '../../categories/entities/category.entity';
 import { Location } from '../../locations/entities/location.entity';
-import { User } from 'src/users/entities/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-
+import { User } from '../../users/entities/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity('expenses')
 export class Expense {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 30 })
+  @Column("varchar", { length: 30 })
   title: string;
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })

@@ -41,7 +41,7 @@ export const Modal = ({ onModalClose: onClose, title, children }: Props) => {
 
   return (
     <div
-      className="fixed inset-0 bg-gray-900/70 bg-opacity-30 z-50 flex items-center justify-center"
+      className="fixed inset-0  bg-gray-900/70 bg-opacity-30 z-50 flex items-center justify-center"
       onClick={onClose}
     >
       <div

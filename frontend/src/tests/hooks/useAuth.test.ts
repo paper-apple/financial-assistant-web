@@ -58,7 +58,7 @@ describe("useAuth", () => {
     });
 
     expect(result.current.user).toEqual({ username: "dima" });
-    expect(result.current.error).toBe("");
+    expect(result.current.authError).toBe("");
   });
 
   it("loginUser устанавливает error при ошибке", async () => {    
@@ -71,7 +71,7 @@ describe("useAuth", () => {
     const { result } = renderHook(() => useAuth());
 
     // Проверяем начальное состояние
-    expect(result.current.error).toBe("");
+    expect(result.current.authError).toBe("");
 
     // Вызываем метод с ошибкой
     let caughtError;
@@ -88,7 +88,7 @@ describe("useAuth", () => {
 
     // Проверяем состояние после ошибки
     await waitFor(() => {
-      expect(result.current.error).toBe("Неверный пароль");
+      expect(result.current.authError).toBe("Неверный пароль");
     });
 
     // Убеждаемся что пользователь не установлен
@@ -120,7 +120,7 @@ describe("useAuth", () => {
     });
 
     await waitFor(() => {
-      expect(result.current.error).toBe("Имя занято");
+      expect(result.current.authError).toBe("Имя занято");
       expect(result.current.user).toBeNull();
     });
   });

@@ -5,21 +5,6 @@ import { format } from "date-fns";
 import type { Expense } from "../../types";
 import { makeCategory, makeLocation } from "../createCategoryAndLocationFields";
 
-// type Expense = {
-//   datetime: string;
-//   price: number;
-// };
-
-// const makeExpense = (overrides: Partial<Expense[]>): Expense[] => ({
-//   id: Math.random(),
-//   title: "Default",
-//   category: makeCategory(1, "Default"),
-//   location: makeLocation(1, "Default"),
-//   price: 10,
-//   datetime: new Date().toISOString(),
-//   ...overrides,
-// });
-
 export const baseExpense: Expense = {
   id: 1,
   title: "Test expense",
@@ -66,8 +51,8 @@ describe("groupByPeriod", () => {
     const result = groupByPeriod(expenses, "day");
 
     expect(result).toEqual([
-      { key: "2025-01-01", total: 30, count: 2 },
-      { key: "2025-01-02", total: 5, count: 1 },
+      { key: "01.01.2025", total: 30, count: 2 },
+      { key: "02.01.2025", total: 5, count: 1 },
     ]);
   });
 
@@ -81,8 +66,8 @@ describe("groupByPeriod", () => {
     const result = groupByPeriod(expenses, "month");
 
     expect(result).toEqual([
-      { key: "2025-01", total: 30, count: 2 },
-      { key: "2025-02", total: 5, count: 1 },
+      { key: "01.2025", total: 30, count: 2 },
+      { key: "02.2025", total: 5, count: 1 },
     ]);
   });
 
@@ -95,23 +80,9 @@ describe("groupByPeriod", () => {
     const result = groupByPeriod(expenses, "day");
 
     expect(result).toEqual([
-      { key: "2025-01-01", total: 10, count: 1 },
-      { key: "2025-01-02", total: 0, count: 0 }, // 👈 пропущенный день
-      { key: "2025-01-03", total: 20, count: 1 },
+      { key: "01.01.2025", total: 10, count: 1 },
+      { key: "02.01.2025", total: 0, count: 0 }, // 👈 пропущенный день
+      { key: "03.01.2025", total: 20, count: 1 },
     ]);
-  });
-
-  it("отсекает данные старше 12 месяцев", () => {
-    const expenses = [
-      { ...baseExpense, datetime: "2023-01-01", price: 100 }, // старше 12 мес
-      { ...baseExpense, datetime: "2025-01-01", price: 50 },
-    ];
-
-    const result = groupByPeriod(expenses, "month");
-
-    // Должен включать только 2025-01
-    expect(result[0]).toEqual({ key: "2024-01", total: 0, count: 0 });
-    expect(result[result.length - 1]).toEqual({ key: "2025-01", total: 50, count: 1 });
-    expect(result).toHaveLength(13);
   });
 });

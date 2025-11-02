@@ -88,7 +88,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
             keywordsList.map((word) => (
               <span
                 key={word}
-                className="inline-flex items-center h-8 bg-blue-100 text-blue-800 text-sm px-2 rounded"
+                className="inline-flex items-center h-8 bg-blue-200 text-blue-800 text-sm px-2 rounded"
               >
                 {word}
                 <button
@@ -109,7 +109,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 
       {/* Даты */}
       <div className="mb-2 border-b">
-        <label className="label-text">Интервал времени</label>
+        <label className="text-left">Интервал времени</label>
         <div className="grid grid-cols-2 gap-2">
           <FormField
             name="startDate"

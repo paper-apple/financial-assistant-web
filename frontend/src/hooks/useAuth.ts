@@ -49,7 +49,7 @@ export function useAuth() {
   };
 
   return {
-    user,
+    user, setUser,
     authError, setAuthError,
     authModalOpen, setAuthModalOpen,
     isLoginMode, setIsLoginMode,

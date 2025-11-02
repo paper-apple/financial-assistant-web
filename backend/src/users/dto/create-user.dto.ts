@@ -1,3 +1,4 @@
+// create-user.dto.ts
 import { IsString, MinLength, MaxLength, Matches } from 'class-validator';
 
 export class CreateUserDto {
@@ -10,7 +11,7 @@ export class CreateUserDto {
   @MinLength(6)
   @MaxLength(30)
   @Matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/, {
-    message: 'Пароль должен содержать至少 одну строчную букву, одну заглавную букву и одну цифру',
+    message: 'Пароль должен содержать одну строчную букву, одну заглавную букву и одну цифру',
   })
   password: string;
 }

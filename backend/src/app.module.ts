@@ -1,24 +1,4 @@
-// import { Module } from '@nestjs/common';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-// import { ExpensesModule } from './expenses/expenses.module';
-
-// @Module({
-//   imports: [
-//     TypeOrmModule.forRoot({
-//       type: 'postgres',
-//       host: 'localhost',
-//       port: 5432,
-//       username: 'postgres',
-//       password: 'postgres',
-//       database: 'finance_db',
-//       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-//       synchronize: true,
-//     }),
-//     ExpensesModule,
-//   ],
-// })
-// export class AppModule {}
-
+// app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ExpensesModule } from './expenses/expenses.module';
@@ -30,7 +10,6 @@ import { Expense } from './expenses/entities/expense.entity';
 import { Category } from './categories/entities/category.entity';
 import { Location } from './locations/entities/location.entity';
 import { User } from './users/entities/user.entity';
-
 
 @Module({
   imports: [

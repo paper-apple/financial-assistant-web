@@ -1,6 +1,7 @@
+// expenses.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Brackets, FindManyOptions, FindOptionsWhere, ILike, Like, Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { Expense } from './entities/expense.entity';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
@@ -53,7 +54,6 @@ export class ExpensesService {
       .leftJoinAndSelect('expense.location', 'location')
       .where('user.id = :userId', { userId });
 
-    // --- Фильтр по цене ---
     if (filters?.minPrice !== undefined || filters?.maxPrice !== undefined) {
       qb.andWhere('expense.price BETWEEN :min AND :max', {
         min: filters.minPrice ?? 0,
@@ -61,7 +61,6 @@ export class ExpensesService {
       });
     }
 
-    // --- Фильтр по дате ---
     if (filters?.startDate || filters?.endDate) {
       qb.andWhere('expense.datetime BETWEEN :start AND :end', {
         start: filters.startDate ?? new Date(0),
@@ -69,7 +68,6 @@ export class ExpensesService {
       });
     }
 
-    // --- Поиск по ключевым словам ---
     const keywords = Array.isArray(filters?.keywords)
       ? filters.keywords
       : typeof filters?.keywords === 'string'
@@ -89,7 +87,6 @@ export class ExpensesService {
       );
     }
 
-    // --- Сортировка ---
     if (sortParams) {
       switch (sortParams.field) {
         case 'category':
@@ -107,7 +104,6 @@ export class ExpensesService {
 
     return qb.getMany();
   }
-
 
   async findOne(id: number, userId: number): Promise<Expense> {
     const expense = await this.expenseRepository.findOne({

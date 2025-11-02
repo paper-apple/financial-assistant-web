@@ -66,10 +66,10 @@ export const FormField: React.FC<FormFieldProps> = ({
   return (
     <div className="relative w-full">
       {/* Заголовок и ошибка */}
-        <label className="label-text mb-2">{label}</label>
+        <label className="text-left mb-2">{label}</label>
 
       {/* Поле */}
-        <div className="flex items-center border border-neutral-500 rounded w-full">
+        <div className="flex items-center border border-neutral-500 bg-white rounded w-full">
           {/* Само поле */}
           <input
             name={name}
@@ -88,7 +88,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           />
 
           {/* Кнопка очистки */}
-          {!readOnly && onChange && (
+          {/* {!readOnly && onChange && (
             <button
               type="button"
               onClick={() =>
@@ -100,7 +100,7 @@ export const FormField: React.FC<FormFieldProps> = ({
             >
               ×
             </button>
-          )}
+          )} */}
 
           {/* Кнопка очистки */}
           {onClear && showCalendarIcon && (
