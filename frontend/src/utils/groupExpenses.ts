@@ -1,11 +1,10 @@
-// src/utils/groupExpenses.ts
-// Формирует объект для статистики, в зависимости от выбранного поля
+// groupExpenses.ts
 import { type Category, type Expense, type GroupField } from "../types"
 
 export type StatRow = {
-  key: string;     // Отображаемое значение группы
-  count: number;   // Кол-во покупок
-  total: number;   // Общая сумма
+  key: string;
+  count: number;
+  total: number;
 };
 
 export function groupExpenses(expenses: Expense[], field: GroupField): StatRow[] {
@@ -14,9 +13,7 @@ export function groupExpenses(expenses: Expense[], field: GroupField): StatRow[]
   for (const exp of expenses) {
     let value = exp[field];
 
-    // Если это объект — достаём читаемое имя
     if (value && typeof value === "object") {
-      // value = (value as any).name || (value as any).title || "";
       value = (value as Category || Location).name || "";
     }
 
@@ -43,4 +40,3 @@ export function groupExpenses(expenses: Expense[], field: GroupField): StatRow[]
       total: Math.round(r.total * 100) / 100}))
     .sort((a, b) => (b.total - a.total) || (b.count - a.count) || a.key.localeCompare(b.key));
 }
-

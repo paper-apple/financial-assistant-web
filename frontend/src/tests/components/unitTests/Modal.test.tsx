@@ -1,4 +1,4 @@
-// src/tests/Modal.test.tsx
+// Modal.test.tsx
 import { describe, expect, vi, test } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Modal } from "../../../components/Modal";

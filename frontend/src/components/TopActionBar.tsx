@@ -1,4 +1,4 @@
-// components/TopActionBar.tsx
+// TopActionBar.tsx
 import { useEffect, useState } from "react";
 import { getSelectionText } from "../utils/getSelectionText";
 
@@ -38,8 +38,7 @@ export const TopActionBar = ({
     if (selectedCount === 0) {
       setConfirmDelete(false)
     }
-  },[selectedCount]);
-
+  }, [selectedCount]);
 
   return (
     <div className="fixed max-w-screen-sm mx-auto top-0 left-0 right-0 z-40 p-2 px-4 bg-gray-100 border-b">

@@ -77,12 +77,13 @@ export const ExpensesPage = () => {
 
   const handleAuth = async (username: string, password: string) => {
     try {
+      console.log('test2')
       setAuthError("");
       const fn = isLoginMode ? loginUser : registerUser;
       await fn(username, password);
       loadExpenses();
-
       setAuthModalOpen(false); 
+      console.log('test3')
     } catch (error: any) {
       console.error("Ошибка:", error);
     }

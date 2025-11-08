@@ -51,7 +51,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
     });
   };
 
-  // Восстановление кэшированных данных при закрытии окна 
   useEffect(() => {
     return () => {
       if (!wasAppliedRef.current) {
@@ -62,7 +61,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 
   return (
     <div>
-      {/* Ключевые слова */}
       <div className="mb-2 relative border-b-1">
         <div className="flex items-end gap-2 pb-2">
           <FormField
@@ -107,13 +105,12 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         </div>
       </div>
 
-      {/* Даты */}
       <div className="mb-2 border-b">
         <label className="text-left">Интервал времени</label>
         <div className="grid grid-cols-2 gap-2">
           <FormField
             name="startDate"
-            testId="input-date"
+            testId="input-date-from"
             value={
               startDate
                 ? startDate.toLocaleString("ru-RU", {
@@ -135,6 +132,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 
           <FormField
             name="endDate"
+            testId="input-date-to"
             value={
               endDate
                 ? endDate.toLocaleString("ru-RU", {
@@ -161,7 +159,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         </div>
       </div>
 
-      {/* Цены */}
       <div className="mb-2">
         <label className="label-text">Диапазон цен</label>
           <div className="grid grid-cols-2 gap-2">
@@ -172,7 +169,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
               placeholder={'От'}
               error={priceError}
             />
-
             <FormField
               name="endDate"
               value={maxPrice}
@@ -188,7 +184,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         </div>
       </div>
 
-      {/* Кнопки */}
       <div className="flex justify-end gap-2">
         <button onClick={onClose} className="btn-base btn-cancel">Отмена</button>
         <button onClick={handleResetFilters} className="btn-base btn-cancel">Сбросить</button>

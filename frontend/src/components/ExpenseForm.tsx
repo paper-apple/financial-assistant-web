@@ -1,4 +1,4 @@
-// src/components/ExpenseForm.tsx
+// ExpenseForm.tsx
 import { createExpense, updateExpense } from "../api";
 import type { Expense, FormState } from "../types";
 import { useKeywordSuggestions } from "../hooks/useKeywordSuggestions";
@@ -82,7 +82,6 @@ export const ExpenseForm = ({
               testId={testId}
               value={form[key]}
               onChange={handleChange}
-              // placeholder={placeholder}
               error={getFieldError(key)}
               suggestions={sugg?.suggestions}
               onSuggestionSelect={
@@ -97,11 +96,9 @@ export const ExpenseForm = ({
           );
         })}
 
-        {/* Дата */}
         <div>
           <label className="label-text mb-2">Дата</label>
           <button
-            // onClick={onCalendarOpen}
             onClick={openCalendar}
             className="w-full border border-neutral-500 rounded px-3 py-1 text-left"
             data-testid="button-date"
@@ -125,7 +122,6 @@ export const ExpenseForm = ({
         )}
       </div>
 
-      {/* Кнопка */}
       <div className="flex justify-end gap-2">
         <button
           onClick={closeModal}

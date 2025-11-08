@@ -1,4 +1,4 @@
-// components/TimeSeriesChart.tsx
+// TimeSeriesChart.tsx
 import { Line } from "react-chartjs-2";
 import type { ChartData } from "chart.js";
 import { detectPeriod, groupByPeriod, type Period } from "../utils/groupByPeriod";
@@ -19,7 +19,6 @@ export function TimeSeriesChart({ expenses }: Props) {
 
   // Группируем только в этом диапазоне
   const rawRows = groupByPeriod(expenses, period);
-  // const rows = period === "day" ? aggregateToMaxPoints(rawRows, 20) : rawRows;
   const rows = aggregateToMaxPoints(rawRows, 20);
 
   // Подписи снизу: начало диапазона = cutoff, конец = lastDate
@@ -60,10 +59,10 @@ export function TimeSeriesChart({ expenses }: Props) {
             maintainAspectRatio: false,
             interaction: { mode: "index", intersect: false },
             layout: {
-    padding: {
-      top: 70, // 👈 отступ сверху (между легендой и графиком)
-    },
-  },
+              padding: {
+                top: 70,
+              },
+            },
             plugins: {
               tooltip: {
                 callbacks: {
@@ -71,7 +70,7 @@ export function TimeSeriesChart({ expenses }: Props) {
                 },
               },
               legend: {
-                labels: { boxWidth: 12, boxHeight: 12 },
+                labels: { boxWidth: 3.5, boxHeight: 3.5 },
               },
             },
             scales: {

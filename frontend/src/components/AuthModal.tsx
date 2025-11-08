@@ -29,18 +29,18 @@ export const AuthModal = ({
     const usernameError = validateUsername(username);
     const passwordError = validatePassword(password);
 
-    // if (usernameError || passwordError) {
-    //   setLocalError(usernameError || passwordError);
-    //   return;
-    // }
-
+    if (usernameError || passwordError) {
+      setLocalError(usernameError || passwordError);
+      return;
+    }
+    
     onAuth(username, password);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" data-testid={"auth-modal"}>
       <div className="bg-white p-6 rounded-lg w-96">
         <h2 className="text-xl font-semibold text-center mb-4">
           {isLoginMode ? "Вход" : "Регистрация"}

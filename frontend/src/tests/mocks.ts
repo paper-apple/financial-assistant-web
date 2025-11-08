@@ -1,4 +1,4 @@
-// src/__tests__/mocks.ts
+// mocks.ts
 import { vi } from 'vitest';
 import type { Expense, SortParams } from '../types';
 
@@ -34,15 +34,6 @@ export const mockUseSelection = () => ({
   handleCancelSelection: vi.fn(),
   handleSelectAll: vi.fn(),
 });
-
-// export const mockUseFilterSort = () => ({
-//   filtersState: {},
-//   sortState: {},
-//   suggestions: [],
-//   applyFilters: vi.fn(),
-//   applySorts: vi.fn(),
-//   handleAddKeyword: vi.fn(),
-// });
 
 export const mockUseFilterSort = () => ({
   filtersState: {
@@ -91,5 +82,4 @@ export const mockExpense: Expense = {
   price: 100,
   location: { id: 1, name: 'Store' },
   datetime: '2023-01-01T00:00:00Z',
-  // user: { id: 1, username: 'testuser' }
 };

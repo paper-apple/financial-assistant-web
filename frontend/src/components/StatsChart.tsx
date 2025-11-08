@@ -1,5 +1,6 @@
+// StatsChart.tsx
 import type { ChartData } from "chart.js"
-import { Pie, Bar} from "react-chartjs-2"
+import { Pie } from "react-chartjs-2"
 
 type Props = {
   chartData: ChartData<"pie", number[], string>;
@@ -8,16 +9,13 @@ type Props = {
 export const StatsChart = ({ chartData }: Props) => 
 {          
   return (
-    // <Pie data={chartData} />
     <div className="w-full h-full">
-      {/* <Pie data={chartData} options={{ maintainAspectRatio: false }} /> */}
       <Pie
         data={chartData}
         options={{
           maintainAspectRatio: false,
           responsive: true,
           plugins: {
-            // legend: { position: "top" as const },
             tooltip: {
               callbacks: {
                 label: function (context) {
@@ -30,10 +28,6 @@ export const StatsChart = ({ chartData }: Props) =>
               },
             },
           },
-          // scales: {
-          //   x: { beginAtZero: true },
-          //   y: { beginAtZero: true },
-          // },
         }}
       />
     </div>

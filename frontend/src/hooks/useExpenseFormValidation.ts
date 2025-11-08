@@ -1,4 +1,4 @@
-// hooks/useExpenseFormValidation.ts
+// useExpenseFormValidation.ts
 import type { FormState } from "../types";
 import { useState, useCallback } from "react";
 
@@ -17,7 +17,6 @@ export function useExpenseFormValidation(form: FormState) {
   const getFieldError = useCallback(
     (field: keyof FormState) => {
       if (!wasSubmitted) return false;
-      // if (!form[field].trim()) return "Заполните поле";
       if (!form[field].trim()) return true;
       return false;
     },

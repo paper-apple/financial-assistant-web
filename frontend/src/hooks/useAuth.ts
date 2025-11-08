@@ -1,4 +1,4 @@
-// useAuth
+// useAuth.ts
 import { useState } from "react";
 import { fetchExpenses, login, logout, register } from "../api";
 
@@ -20,6 +20,7 @@ export function useAuth() {
 
   const loginUser = async (username: string, password: string) => {
     try {
+      console.log('test4')
       await login(username, password);
       setUser({ username });
     } catch (err: any) {

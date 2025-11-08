@@ -1,3 +1,4 @@
+// FormField.tsx
 import { SuggestionsList } from "./SuggestionList";
 import type { FormState } from "../../types";
 import { useState } from "react";
@@ -12,11 +13,10 @@ type FormFieldProps = {
   suggestions?: string[];
   placeholder?: string;
   onSuggestionSelect?: (val: string) => void;
-  // onKeywordAdd?: () => void;
   readOnly?: boolean;
   onFieldClick?: () => void;
-  showCalendarIcon?: boolean; // 👈 новый проп
-  onClear?: () => void; // 👈 новый проп
+  showCalendarIcon?: boolean;
+  onClear?: () => void;
 };
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -29,7 +29,6 @@ export const FormField: React.FC<FormFieldProps> = ({
   suggestions,
   placeholder,
   onSuggestionSelect,
-  // onKeywordAdd,
   readOnly = false,
   onFieldClick,
   showCalendarIcon = false,
@@ -65,12 +64,8 @@ export const FormField: React.FC<FormFieldProps> = ({
 
   return (
     <div className="relative w-full">
-      {/* Заголовок и ошибка */}
-        <label className="text-left mb-2">{label}</label>
-
-      {/* Поле */}
-        <div className="flex items-center border border-neutral-500 bg-white rounded w-full">
-          {/* Само поле */}
+        <label className="text-left text-sm text-gray-500 mb-2">{label}</label>
+        <div className="flex items-center border-b border-neutral-500 bg-white w-full">
           <input
             name={name}
             value={value}
@@ -80,29 +75,18 @@ export const FormField: React.FC<FormFieldProps> = ({
             placeholder={placeholder}
             onClick={readOnly && onFieldClick ? onFieldClick : undefined}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => {setIsFocused(false), setHighlightedIndex(-1)}}
+            onBlur={() => {
+              setTimeout(() => {
+                setIsFocused(false);
+                setHighlightedIndex(-1);
+              }, 100);
+            }}
             onKeyDown={handleKeyDown}
-            className={`flex-1 min-w-0 px-2 py-1 outline-none ${
+            className={`flex-1 min-w-0 py-1 outline-none ${
               readOnly ? "cursor-pointer" : ""
             } ${ error ? "bg-red-100" : ""}`}
           />
 
-          {/* Кнопка очистки */}
-          {/* {!readOnly && onChange && (
-            <button
-              type="button"
-              onClick={() =>
-                onChange({
-                  target: { name, value: "" },
-                } as React.ChangeEvent<HTMLInputElement>)
-              }
-              className="input-delete"
-            >
-              ×
-            </button>
-          )} */}
-
-          {/* Кнопка очистки */}
           {onClear && showCalendarIcon && (
             <button
               type="button"
@@ -114,18 +98,16 @@ export const FormField: React.FC<FormFieldProps> = ({
           )}
         </div>
 
-      {/* Подсказки */}
-      {isFocused && suggestions && suggestions.length > 0 && (
-        <SuggestionsList 
-          list={suggestions} 
-          onSelect={(val) => {
-            onSuggestionSelect?.(val);
-            setIsFocused(false);
-            setHighlightedIndex(-1);
-          }}
-          highlightedIndex={highlightedIndex}
-          />
-      )}
+      <SuggestionsList
+        list={suggestions ?? []}
+        onSelect={(val) => {
+          onSuggestionSelect?.(val);
+          setIsFocused(false);
+          setHighlightedIndex(-1);
+        }}
+        highlightedIndex={highlightedIndex}
+        isOpen={isFocused && !!suggestions?.length}
+      />
     </div>
   )
 };

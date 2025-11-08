@@ -15,7 +15,7 @@ export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
   const [modalDate, setModalDate] = useState<Date | null>(value);
 
   return (
-    <div>
+    <div data-testid="calendar-modal">
       <div className="flex justify-center">
         <DatePicker
           selected={modalDate}

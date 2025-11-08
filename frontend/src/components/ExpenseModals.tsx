@@ -1,4 +1,4 @@
-// components/ExpenseModals.tsx
+// ExpenseModals.tsx
 import { Modal } from "./Modal";
 import { ExpenseForm } from "./ExpenseForm";
 import { FilterForm } from "./FilterForm";
@@ -21,7 +21,6 @@ type Props = {
   filtersState: FiltersState;
   sortState: SortState;
   suggestions: string[];
-  // handleReset: () => void;
   applyFilters: () => void;
   applySorts: () => void;
   closeModal: (modal: keyof Modals) => void;
@@ -38,7 +37,6 @@ export const ExpenseModals = ({
   editingExpense,
   filtersState,
   sortState,
-  // handleReset,
   sortedExpenses,
   closeModal,
   openModal,
@@ -51,19 +49,19 @@ export const ExpenseModals = ({
 }: Props) => (
   <>
     {modals.add && (
-      <Modal onModalClose={() => closeModal("add")} title="Добавить расход">
+      <Modal onModalClose={() => closeModal("add")} title="Добавление расхода">
         <ExpenseForm 
           form={form} 
           onCreated={handleCreated} 
           updateField={updateFormField}
           onCalendarOpen={() => openModal("calendar")}
           onModalClose={() => closeModal("add")}
-          />
+        />
       </Modal>
     )}
 
     {modals.update && editingExpense && (
-      <Modal onModalClose={() => closeModal("update")} title="Редактировать расход">
+      <Modal onModalClose={() => closeModal("update")} title="Редактирование расхода">
         <ExpenseForm 
           form={form}
           initialData={editingExpense}
@@ -82,7 +80,6 @@ export const ExpenseModals = ({
           filtersState={filtersState}
           handleAddKeyword={handleAddKeyword}
           applyFilters={applyFilters} 
-          // handleReset={handleReset}
           onModalOpen={openModal}
           onModalClose={() => closeModal("filters")}
         />
@@ -119,11 +116,9 @@ export const ExpenseModals = ({
       </Modal>
     )}
 
-
     {modals.sort && (
       <Modal onModalClose={() => closeModal("sort")} title="Сортировка">
         <SortForm 
-          // initialValues={sortParams} 
           sortState={sortState}
           applySorts={applySorts} 
           onClose={() => closeModal("sort")}

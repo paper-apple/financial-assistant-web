@@ -1,4 +1,4 @@
-// utils/aggregate.ts
+// aggregate.ts
 export function aggregateToMaxPoints<T extends { key: string; total: number; count: number }>(
   rows: T[],
   maxPoints = 20

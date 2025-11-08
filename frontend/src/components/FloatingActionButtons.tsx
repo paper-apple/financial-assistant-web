@@ -1,5 +1,5 @@
-// components/FloatingActionButtons.tsx
-import { FunnelIcon, AdjustmentsHorizontalIcon, PlusIcon, ChartBarIcon, ArrowLeftStartOnRectangleIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline';
+// FloatingActionButtons.tsx
+import { FunnelIcon, PlusIcon, ChartBarIcon, ArrowLeftStartOnRectangleIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   onAdd: () => void;
@@ -35,7 +35,6 @@ export const FloatingActionButtons = ({
   ];
 
   return (
-    // <div className="fixed bottom-0 left-0 right-0 z-40 p-2 px-5 max-w-screen-sm mx-auto bg-white border-t shadow-md">
     <div className="fixed bottom-0 left-0 right-0 z-40 p-2 px-5 max-w-screen-sm mx-auto">
       <div className="max-w-screen-sm mx-auto">
         <div className="flex justify-between">

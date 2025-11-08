@@ -1,4 +1,4 @@
-// src/components/FilterForm.test.tsx
+// FilterForm.test.tsx
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { FilterForm } from "../../../components/FilterForm";
@@ -94,21 +94,21 @@ describe("FilterForm", () => {
 
   it("открывает модалку выбора даты", () => {
     const { onModalOpen } = setup();
-    fireEvent.click(screen.getByTestId('input-date'));
+    fireEvent.click(screen.getByTestId('input-date-from'));
 
     expect(onModalOpen).toHaveBeenCalledWith("startDate");
   });
 
   it("очищает дату окончания", () => {
     const { setEndDate } = setup({ endDate: new Date() });
-    fireEvent.click(screen.getAllByRole("button", { name: "×" })[1]); // кнопка очистки
-    expect(setEndDate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getAllByRole("button", { name: "×" })[1]);
+    expect(setEndDate).toHaveBeenCalled();
   });
 
   it("вызывает setMinPrice при изменении цены", () => {
     const { setMinPrice } = setup();
     const inputs = screen.getAllByPlaceholderText("От");
-    fireEvent.change(inputs[1], { target: { value: "123" } }); // второе поле "От" — для цены
+    fireEvent.change(inputs[1], { target: { value: "123" } });
     expect(setMinPrice).toHaveBeenCalled();
   });
 

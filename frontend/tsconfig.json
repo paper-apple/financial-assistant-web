@@ -7,7 +7,7 @@
   "include": ["src", "vitest.d.ts"]
 }
   ],
-  // "compilerOptions": {
-  //   "types": ["vitest/globals"]
-  // }
+  "compilerOptions": {
+    "types": ["vitest/globals"]
+  }
 }

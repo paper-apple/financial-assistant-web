@@ -52,9 +52,7 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
 
   const rows = useMemo(() => groupExpenses(expenses, field), [expenses, field]);
   const grandTotal = useMemo(
-    () => Math.round(rows.reduce((s, r) => s + r.total, 0) * 100) / 100,
-    [rows]
-  );
+    () => Math.round(rows.reduce((s, r) => s + r.total, 0) * 100) / 100, [rows]);
   const totalCount = useMemo(() => rows.reduce((s, r) => s + r.count, 0), [rows]);
 
   const threshold = 0.02;
@@ -77,7 +75,7 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
               />
             </>
           ) : (
-            // 👇 пустой блок-заглушка той же высоты
+            // пустой блок-заглушка той же высоты
             <div className="" /> 
           )}
 

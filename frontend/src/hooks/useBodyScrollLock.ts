@@ -1,6 +1,6 @@
 // src/hooks/useBodyScrollLock.ts
 import { useEffect } from "react";
-import { isSafari } from "../tests/utils/isSafari";
+import { isSafari } from "../utils/isSafari";
 
 export const useBodyScrollLock = (isSafariBrowser = isSafari) => {
   useEffect(() => {

@@ -3,7 +3,6 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import type { FiltersState, FormState, Modals, SortState } from "../../../types";
 
-// Мокаем дочерние компоненты
 vi.mock("./Modal", () => ({
   Modal: ({ children, title }: any) => (
     <div>
@@ -12,19 +11,19 @@ vi.mock("./Modal", () => ({
     </div>
   ),
 }));
-vi.mock("./ExpenseForm", () => ({
+vi.mock("../../../components/ExpenseForm", () => ({
   ExpenseForm: (props: any) => <div>ExpenseForm {props.initialData ? "update" : "add"}</div>,
 }));
-vi.mock("./FilterForm", () => ({
+vi.mock("../../../components/FilterForm", () => ({
   FilterForm: () => <div>FilterForm</div>,
 }));
-vi.mock("./SortForm", () => ({
+vi.mock("../../../components/SortForm", () => ({
   SortForm: () => <div>SortForm</div>,
 }));
-vi.mock("./StatsModal", () => ({
+vi.mock("../../../components/StatsModal", () => ({
   StatsModal: () => <div>StatsModal</div>,
 }));
-vi.mock("./CalendarModal", () => ({
+vi.mock("../../../components/CalendarModal", () => ({
   CalendarModal: () => <div data-testid="calendar-modal">CalendarModal</div>,
 }));
 
@@ -47,6 +46,7 @@ const baseProps = {
     endDate: null,
     setStartDate: vi.fn(),
     setEndDate: vi.fn(),
+    keywordsList: [],
   } as unknown as FiltersState,
   sortState: {} as SortState,
   suggestions: [],
@@ -65,7 +65,7 @@ import { ExpenseModals } from "../../../components/ExpenseModals";
 describe("ExpenseModals", () => {
   it("рендерит форму добавления, если modals.add=true", () => {
     render(<ExpenseModals {...baseProps} modals={{ ...baseProps.modals, add: true }} />);
-    expect(screen.getByText("Добавить расход")).toBeInTheDocument();
+    expect(screen.getByText("Добавление расхода")).toBeInTheDocument();
     expect(screen.getByText("ExpenseForm add")).toBeInTheDocument();
   });
 
@@ -77,7 +77,7 @@ describe("ExpenseModals", () => {
         editingExpense={{ id: 1, title: "Test", category: { id: 1, name: "Cat" }, price: 10, location: { id: 1, name: "Loc" }, datetime: "" }}
       />
     );
-    expect(screen.getByText("Редактировать расход")).toBeInTheDocument();
+    expect(screen.getByText("Редактирование расхода")).toBeInTheDocument();
     expect(screen.getByText("ExpenseForm update")).toBeInTheDocument();
   });
 
@@ -99,14 +99,18 @@ describe("ExpenseModals", () => {
     expect(screen.getByText("StatsModal")).toBeInTheDocument();
   });
 
-  it("рендерит CalendarModal для calendar/startDate/endDate", () => {
+  it("рендерит CalendarModal для calendar", () => {
     render(<ExpenseModals {...baseProps} modals={{ ...baseProps.modals, calendar: true }} form={{ datetime: "" } as any} />);
     expect(screen.getByTestId("calendar-modal")).toBeInTheDocument();
-    
-    render(<ExpenseModals {...baseProps} modals={{ ...baseProps.modals, startDate: true }} />);
-    expect(screen.getByText("CalendarModal")).toBeInTheDocument();
+  });
 
+  it("рендерит CalendarModal для startDate", () => {
+    render(<ExpenseModals {...baseProps} modals={{ ...baseProps.modals, startDate: true }} />);
+    expect(screen.getByTestId("calendar-modal")).toBeInTheDocument();
+  });
+
+  it("рендерит CalendarModal для endDate", () => {
     render(<ExpenseModals {...baseProps} modals={{ ...baseProps.modals, endDate: true }} />);
-    expect(screen.getByText("CalendarModal")).toBeInTheDocument();
+    expect(screen.getByTestId("calendar-modal")).toBeInTheDocument();
   });
 });
