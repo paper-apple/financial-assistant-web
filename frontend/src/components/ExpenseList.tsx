@@ -1,3 +1,4 @@
+// ExpenseList.tsx
 import { type Expense } from "../types";
 import { ExpenseCard } from "./ExpenseCard";
 
@@ -21,7 +22,6 @@ export const ExpenseList = ({
   lastUpdatedId,
 }: Props) => {
   return (
-    // <ul className="space-y-1 w-full">
     <div>
       { (expenses.length > 0) ? (
         <ul className="

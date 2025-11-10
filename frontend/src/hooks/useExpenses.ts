@@ -1,4 +1,4 @@
-// hooks/useExpenses.ts
+// useExpenses.ts
 import { useState, useEffect, useCallback } from "react";
 import { deleteExpense, fetchExpenses } from "../api";
 import type { SortParams, Expense } from "../types";

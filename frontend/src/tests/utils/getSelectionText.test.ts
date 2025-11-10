@@ -1,3 +1,4 @@
+// getSelectionText.test.ts
 import { describe, it, expect } from "vitest";
 import { getSelectionText } from "../../utils/getSelectionText";
 

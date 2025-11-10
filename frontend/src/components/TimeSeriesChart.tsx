@@ -21,8 +21,6 @@ export function TimeSeriesChart({ expenses }: Props) {
   const rawRows = groupByPeriod(expenses, period);
   const rows = aggregateToMaxPoints(rawRows, 20);
 
-  // Подписи снизу: начало диапазона = cutoff, конец = lastDate
-  // start = первая точка rows, end = последняя
   const startLabel = rows.length > 0 ? rows[0].key.split("–")[0] : "";
   const endLabel = rows.length > 0 ? rows[rows.length - 1].key.split("–")[0] : "";
 
@@ -60,7 +58,7 @@ export function TimeSeriesChart({ expenses }: Props) {
             interaction: { mode: "index", intersect: false },
             layout: {
               padding: {
-                top: 70,
+                top: 0,
               },
             },
             plugins: {
@@ -92,8 +90,6 @@ export function TimeSeriesChart({ expenses }: Props) {
           }}
         />
       </div>
-
-      {/* Нижняя рамка диапазона */}
       <div className="flex justify-between text-xs text-gray-600 mt-1">
         <span>{startLabel}</span>
         <span>{endLabel}</span>

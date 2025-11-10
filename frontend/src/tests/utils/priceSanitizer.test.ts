@@ -1,3 +1,4 @@
+// priceSanitizer.test.ts
 import { describe, it, expect, vi } from "vitest";
 import { handlePriceChange, sanitizePrice } from "../../utils/sanitizePrice";
 
@@ -9,7 +10,7 @@ describe("sanitizePrice", () => {
 
   it("ограничивает длину строки 30 символами", () => {
     const long = "1".repeat(50);
-    expect(sanitizePrice(long)).toBe("1111111111"); // первые 10 цифр (ограничение на integerPart)
+    expect(sanitizePrice(long)).toBe("1111111111");
   });
 
   it("удаляет ведущие нули", () => {

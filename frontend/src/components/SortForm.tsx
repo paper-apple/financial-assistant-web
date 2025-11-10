@@ -1,4 +1,4 @@
-// src/components/SortForm.tsx
+// SortForm.tsx
 import type { SortParams, SortState } from '../types';
 import {
   TagIcon,
@@ -13,12 +13,10 @@ import { RadioGroup } from './ui/RadioGroup';
 
 type Props = {
   sortState: SortState;
-  // icon: React.ElementType <any>;
   applySorts: () => void;
   onClose: () => void;
 };
 
-// Вынесем константы наружу, чтобы не пересоздавались при каждом рендере
 const FIELD_OPTIONS: { value: SortParams['field']; label: string; icon: React.ElementType }[] = [
   { value: 'title', label: 'Название', icon: TagIcon },
   { value: 'category', label: 'Категория', icon: RectangleStackIcon },
@@ -42,30 +40,27 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
 
   return (
     <div className="">
-      
-      {/* Выбор поля */}
       <div className="mb-2 pb-2 border-b border-gray-700">
         <label className="label-text">Поле для сортировки</label>
-        <RadioGroup 
-          options={FIELD_OPTIONS} 
-          selected={sortField} 
-          onChange={setSortField} 
-        />
+        <div className="pt-2">
+          <RadioGroup 
+            options={FIELD_OPTIONS} 
+            selected={sortField} 
+            onChange={setSortField} 
+          />
+        </div>
       </div>
-
-      {/* Направление */}
       <div className="mb-4">
         <label className="label-text">Направление сортировки</label>
-        <RadioGroup 
-          options={DIRECTION_OPTIONS} 
-          selected={sortDirection} 
-          onChange={setSortDirection} 
-        />
+        <div className="pt-2">
+          <RadioGroup 
+            options={DIRECTION_OPTIONS} 
+            selected={sortDirection} 
+            onChange={setSortDirection} 
+          />
+        </div>
       </div>
-
-      {/* Кнопки */}
-      {/* <div className="flex justify-end gap-3 pt-4 border-t border-gray-200"> */}
-        <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2">
         <button
           onClick={onClose}
           className="btn-base btn-cancel"

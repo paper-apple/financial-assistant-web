@@ -1,4 +1,4 @@
-// tests/utils/modalStack.test.ts
+// modalStack.test.ts
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   addModalToStack,
@@ -7,7 +7,6 @@ import {
   getModalStack
 } from "../../utils/modalStack";
 
-// Чтобы каждый тест начинал с чистого стека, используется beforeEach + removeModalFromStack
 beforeEach(() => {
   const ids = getModalStack();
   ids.forEach(id => removeModalFromStack(id));
@@ -38,8 +37,8 @@ describe("modalStack", () => {
   it("getModalStack возвращает копию массива, а не ссылку", () => {
     const id = addModalToStack();
     const stackCopy = getModalStack();
-    stackCopy.push(999); // изменяем копию
-    expect(getModalStack()).toEqual([id]); // оригинал не изменился
+    stackCopy.push(999);
+    expect(getModalStack()).toEqual([id]);
   });
 
   it("getTopModalId возвращает null, если стек пуст", () => {

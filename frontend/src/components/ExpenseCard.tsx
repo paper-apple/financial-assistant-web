@@ -1,4 +1,4 @@
-// components/ExpenseCard
+// ExpenseCard.tsx
 import type { Expense } from "../types";
 import { useLongPress } from "../hooks/useLongPress";
 import {
@@ -116,4 +116,3 @@ export const ExpenseCard = ({
     </li>
   );
 };
- 

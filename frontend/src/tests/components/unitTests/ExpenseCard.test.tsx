@@ -1,4 +1,4 @@
-// src/components/__tests__/ExpenseCard.test.tsx
+// ExpenseCard.test.tsx
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ExpenseCard } from "../../../components/ExpenseCard";
@@ -18,7 +18,6 @@ function makeExpense(overrides: Partial<Expense> = {}): Expense {
 }
 
 function getItem() {
-  // Находим <li> по тексту заголовка
   const li = screen.getByText("Фисташки").closest("li");
   if (!li) throw new Error("ExpenseCard list item not found");
   return li;
@@ -26,7 +25,7 @@ function getItem() {
 
 describe("ExpenseCard", () => {
   beforeEach(() => {
-    vi.useFakeTimers(); // для контроля long-press таймера
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
@@ -117,7 +116,7 @@ describe("ExpenseCard", () => {
           onLongPress={onLongPress}
           onSelect={onSelect}
           onEdit={onEdit}
-          selectionMode={true} // чтобы видно было, что click бы вызвал onSelect, но он подавляется
+          selectionMode={true}
           selected={false}
         />
       </ul>
@@ -125,16 +124,14 @@ describe("ExpenseCard", () => {
 
     const item = getItem();
     fireEvent.mouseDown(item);
-    vi.advanceTimersByTime(401); // срабатывает таймер long-press
+    vi.advanceTimersByTime(401);
     fireEvent.mouseUp(item);
 
-    // После mouseUp браузер обычно генерирует click — эмулируем его:
     fireEvent.click(item);
 
     expect(onLongPress).toHaveBeenCalledTimes(1);
     expect(onLongPress).toHaveBeenCalledWith(1);
 
-    // click подавлен благодаря флагу longPressTriggered
     expect(onSelect).not.toHaveBeenCalled();
     expect(onEdit).not.toHaveBeenCalled();
   });
@@ -156,9 +153,9 @@ describe("ExpenseCard", () => {
 
     const item = getItem();
     fireEvent.touchStart(item);
-    vi.advanceTimersByTime(200); // начался, но ещё не достиг порога
-    fireEvent.touchMove(item);   // движение — отмена
-    vi.advanceTimersByTime(500); // даже если пройдёт больше 400мс — не должно сработать
+    vi.advanceTimersByTime(200);
+    fireEvent.touchMove(item);
+    vi.advanceTimersByTime(500);
     fireEvent.touchEnd(item);
 
     expect(onLongPress).not.toHaveBeenCalled();
@@ -182,7 +179,7 @@ describe("ExpenseCard", () => {
     const item = getItem();
     fireEvent.mouseDown(item);
     vi.advanceTimersByTime(200);
-    fireEvent.mouseLeave(item); // отмена
+    fireEvent.mouseLeave(item);
     vi.advanceTimersByTime(500);
 
     expect(onLongPress).not.toHaveBeenCalled();

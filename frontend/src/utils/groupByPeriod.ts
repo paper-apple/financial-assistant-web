@@ -1,5 +1,5 @@
-// utils/groupByPeriod.ts
-import { format, subMonths, addDays, addMonths, isBefore } from "date-fns";
+// groupByPeriod.ts
+import { format, addDays, addMonths } from "date-fns";
 import type { Expense } from "../types";
 
 export type Period = "day" | "month";
@@ -38,7 +38,6 @@ export function groupByPeriod(expenses: Expense[], period: Period) {
   const lastDate = new Date(Math.max(...times));
   const earliestDate = new Date(Math.min(...times));
 
-  // 👉 теперь старт всегда с самой ранней даты
   const startDate = earliestDate;
 
   const map = new Map<string, { total: number; count: number; firstDate: number }>();
@@ -77,5 +76,3 @@ export function groupByPeriod(expenses: Expense[], period: Period) {
 
   return result;
 }
-
-

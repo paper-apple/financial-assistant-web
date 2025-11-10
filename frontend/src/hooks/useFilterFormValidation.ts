@@ -1,4 +1,4 @@
-// hooks/useExpenseFormValidation.ts
+// useExpenseFormValidation.ts
 import { useState, useCallback, useEffect } from "react";
 
 type Props = {
@@ -12,14 +12,12 @@ export function useFilterFormValidation(form: Props) {
   const [dateError, setDateError] = useState(false);
   const [priceError, setPriceError] = useState(false);
 
-  // Валидация цен
   useEffect(() => {
     const min = parseFloat(form.minPrice);
     const max = parseFloat(form.maxPrice);
     setPriceError(!isNaN(min) && !isNaN(max) && min > max);
   }, [form.minPrice, form.maxPrice]);
 
-  // Валидация дат
   useEffect(() => {
     setDateError(Boolean(form.startDate && form.endDate && form.startDate > form.endDate));
   }, [form.startDate, form.endDate]);

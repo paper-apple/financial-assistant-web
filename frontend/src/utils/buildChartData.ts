@@ -84,4 +84,3 @@ export function buildChartData(
     datasets: [dataset],
   };
 }
-

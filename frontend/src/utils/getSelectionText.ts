@@ -1,5 +1,4 @@
-// src/utils/getSelectionText.ts
-// Склонение слова "запись" для TopActionBar
+// getSelectionText.ts
 export function getSelectionText(count: number, confirmDelete: boolean) {
   const forms = ["запись", "записи", "записей"];
 
@@ -13,7 +12,7 @@ export function getSelectionText(count: number, confirmDelete: boolean) {
 
   const mod10 = count % 10;
   const mod100 = count % 100;
-  const isSingular = mod10 === 1 && mod100 !== 11; // 1, 21, 31, ... но не 11
+  const isSingular = mod10 === 1 && mod100 !== 11;
 
   if (confirmDelete) {
     return `Удалить ${count} ${getWordForm(count)}?`;
@@ -21,4 +20,3 @@ export function getSelectionText(count: number, confirmDelete: boolean) {
     return `Выбран${isSingular ? "а" : "о"} ${count} ${getWordForm(count)}`;
   }
 }
-

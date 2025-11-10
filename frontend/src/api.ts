@@ -2,7 +2,6 @@
 import axios from "axios";
 import { type Expense, type ExpenseCreate, type ExpenseUpdate } from "./types"
 
-// Динамическое определение адреса API
 const getApiBase = () => {
   // Для продакшена используйте env переменную
   // if (import.meta.env.PROD) {
@@ -19,14 +18,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// api.interceptors.request.use((config) => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
-
 export const login = (username: string, password: string) =>
   api.post('/auth/login', { username, password });
 
@@ -38,12 +29,10 @@ export const logout = () => api.post('/auth/logout');
 export const fetchExpenses = (filters?: any, sortParams?: any) => {
   const params = new URLSearchParams();
   
-// Добавляем фильтры
   if (filters) {
     Object.keys(filters).forEach(key => {
       if (filters[key] !== undefined && filters[key] !== null && filters[key] !== '') {
         if (key === 'keywords' && Array.isArray(filters[key])) {
-          // Для массива ключевых слов добавляем каждый элемент отдельно
           filters[key].forEach((keyword: string, index: number) => {
             params.append(`keywords`, keyword);
           });
@@ -54,7 +43,6 @@ export const fetchExpenses = (filters?: any, sortParams?: any) => {
     });
   }
   
-  // Добавляем параметры сортировки
   if (sortParams) {
     params.append('sortField', sortParams.field);
     params.append('sortDirection', sortParams.direction);

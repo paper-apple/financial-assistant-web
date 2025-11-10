@@ -1,4 +1,4 @@
-// src/hooks/useAuthValidation.ts
+// useAuthValidation.ts
 import { useCallback } from "react";
 
 export function useAuthValidation() {

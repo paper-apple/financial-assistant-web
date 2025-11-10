@@ -1,4 +1,4 @@
-// src/utils/modalStack.ts
+// modalStack.ts
 //Создаёт идентификатор для текущего модального окна и добавляет его в список
 let modalStack: number[] = [];
 export let nextId = 0;

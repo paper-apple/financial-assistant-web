@@ -1,16 +1,14 @@
-// src/components/__tests__/ExpenseForm.test.tsx
+// ExpenseForm.test.tsx
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ExpenseForm } from "../../../components/ExpenseForm";
 import type { Expense, FormState } from '../../../types';
 
-// Мокаем API вызовы
 vi.mock('../../../api', () => ({
   createExpense: vi.fn(),
   updateExpense: vi.fn(),
 }));
 
-// Мокаем кастомные хуки
 vi.mock('../../../hooks/useKeywordSuggestions', () => ({
   useKeywordSuggestions: vi.fn(() => ({
     suggestions: [],
@@ -27,7 +25,6 @@ vi.mock('../../../hooks/useExpenseFormValidation', () => ({
   })),
 }));
 
-// Мокаем FormField компонент
 vi.mock('../../ui/FormField', () => ({
   FormField: vi.fn(({ label, name, value, onChange, placeholder }) => (
     <div data-testid={`form-field-${name}`}>
@@ -43,7 +40,6 @@ vi.mock('../../ui/FormField', () => ({
   )),
 }));
 
-// Импортируем после моков
 import { createExpense, updateExpense } from '../../../api';
 
 const mockForm: FormState = {

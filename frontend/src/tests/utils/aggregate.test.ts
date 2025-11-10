@@ -1,4 +1,4 @@
-// utils/aggregate.test.ts
+// aggregate.test.ts
 import { describe, it, expect } from "vitest"; // или jest
 import { aggregateToMaxPoints } from "../../utils/aggregate";
 
@@ -24,17 +24,14 @@ describe("aggregateToMaxPoints", () => {
 
     const result = aggregateToMaxPoints(rows, 5);
 
-    // Должно получиться 5 точек (bucketSize = ceil(10/5) = 2)
     expect(result).toHaveLength(5);
 
-    // Проверим первую агрегированную точку
     expect(result[0]).toEqual({
       key: "K1 – K2",
       total: 1 + 2,
       count: 2,
     });
 
-    // Проверим последнюю
     expect(result[4]).toEqual({
       key: "K9 – K10",
       total: 9 + 10,
@@ -51,19 +48,15 @@ describe("aggregateToMaxPoints", () => {
 
     const result = aggregateToMaxPoints(rows, 3);
 
-    // bucketSize = ceil(7/3) = 3 → будет 3 группы
     expect(result).toHaveLength(3);
 
-    // Первая группа: K1–K3
     expect(result[0].key).toBe("K1 – K3");
     expect(result[0].total).toBe(3);
     expect(result[0].count).toBe(3);
 
-    // Вторая группа: K4–K6
     expect(result[1].key).toBe("K4 – K6");
     expect(result[1].total).toBe(3);
 
-    // Третья группа: K7–K7
     expect(result[2].key).toBe("K7 – K7");
     expect(result[2].total).toBe(1);
   });

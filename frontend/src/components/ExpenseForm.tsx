@@ -128,7 +128,7 @@ export const ExpenseForm = ({
           onClick={closeModal}
           className="btn-base btn-cancel"
         >
-          Отменить
+          Отмена
         </button>
          <button onClick={handleSubmit} className={`btn-base
           ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>

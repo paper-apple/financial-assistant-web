@@ -11,22 +11,23 @@
 } */
 
 .ios-calendar {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  /* font-family: -apple-system, BlinkMacSystemFont, sans-serif; */
+  /* border: none;
+  border-radius: 12px; */
+  /* box-shadow: 0 4px 20px rgba(0,0,0,0.15); */
 }
 
 .ios-calendar .react-datepicker__header {
   background: white;
   border: none;
-  padding-top: 12px;
+  /* padding-top: 12px; */
 }
 
 .ios-calendar .react-datepicker__day {
-  margin: 0.2em;
+  /* margin: 0.2em;
   width: 2em;
-  line-height: 2em;
+  line-height: 2em; */
+  width: 30px;
 }
 
 .ios-calendar .react-datepicker__day--selected {
@@ -36,11 +37,11 @@
 
 /* Стили для времени */
 .react-datepicker__time-container {
-  border-left: 1px solid #f0f0f0;
 }
 
 .react-datepicker__time-box {
   width: 100px;
+  border-right: 1px solid #B0B0B0;
 }
 
 .btn-base {
@@ -70,17 +71,17 @@
 
 .label-text {
   /* @apply block text-sm text-center font-medium text-gray-700 */
-  @apply text-left text-sm text-gray-500 mb-2
+  @apply text-left text-sm text-gray-600 mb-2
 }
 
 .first-column {
-  @apply p-1 text-sm font-medium w-[50%]
+  @apply p-1 text-sm font-normal w-[50%]
 }
 
 .second-column {
-  @apply p-1 text-sm font-medium text-center w-[17%]
+  @apply p-1 text-sm font-normal text-center w-[17%]
 }
 
 .third-column {
-  @apply p-1 text-sm font-medium text-right w-[34%] 
+  @apply p-1 text-sm font-normal text-right w-[34%] 
 }

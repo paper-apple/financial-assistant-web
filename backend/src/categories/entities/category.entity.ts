@@ -1,4 +1,4 @@
-// categories.entity
+// categories.entity.ts
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Expense } from '../../expenses/entities/expense.entity';
 

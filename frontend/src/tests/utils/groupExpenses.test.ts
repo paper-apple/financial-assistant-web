@@ -1,5 +1,6 @@
+// groupExpenses.test.ts
 import { describe, it, expect } from "vitest";
-import type { Category, Location, Expense } from "../../types";
+import type { Expense } from "../../types";
 import { groupExpenses } from "../../utils/groupExpenses";
 import { makeCategory, makeLocation } from "../createCategoryAndLocationFields"
 
@@ -98,7 +99,6 @@ describe("groupExpenses", () => {
 
     const result = groupExpenses(expenses, "category");
 
-    // A и C имеют одинаковый total, сортировка идёт по key
     expect(result.map(r => r.key)).toEqual(["A", "C", "B"]);
   });
 });

@@ -1,4 +1,4 @@
-// hooks/useSelection.ts
+// useSelection.ts
 import { useState } from "react";
 import type { Expense } from "../types";
 

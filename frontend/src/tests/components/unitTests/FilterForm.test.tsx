@@ -163,7 +163,6 @@ describe("FilterForm", () => {
 
   it("вызывает restoreInitialValues при размонтировании, если не применено", () => {
     const { restoreInitialValues, unmount } = setup();
-    // размонтируем
     unmount();
     expect(restoreInitialValues).toHaveBeenCalled();
   });

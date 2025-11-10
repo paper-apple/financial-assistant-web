@@ -11,7 +11,7 @@ type Props = {
 };
 
 const btnClass =
-  "bg-blue-300 hover:bg-blue-500 text-white font-bold py-3.5 px-3.5 rounded-full border-1 transition-colors";
+  "bg-blue-300 opacity-50 hover:bg-blue-500 hover:opacity-100 text-white font-bold py-3.5 px-3.5 rounded-full border-1 transition-colors transition-opacity";
 
 export const FloatingActionButtons = ({
   onAdd,

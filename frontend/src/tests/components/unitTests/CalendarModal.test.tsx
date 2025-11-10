@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CalendarModal } from '../../../components/CalendarModal';
 
-// Мокаем react-datepicker чтобы избежать сложностей с рендерингом
 vi.mock('react-datepicker', () => {
   return {
     default: vi.fn(({ selected, onChange, inline }) => (

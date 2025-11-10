@@ -1,3 +1,4 @@
+// types.tsx
 export interface Category {
   id: number;
   name: string;
@@ -17,9 +18,9 @@ export interface User {
 export interface Expense {
   id: number;
   title: string;
-  category: Category; // Теперь это объект, а не строка
+  category: Category;
   price: number;
-  location: Location; // Теперь это объект, а не строка
+  location: Location;
   datetime: string;
 }
 
@@ -31,12 +32,11 @@ export interface ExpenseFormType {
   onModalClose: () => void;
 };
 
-// Типы для создания/обновления расходов
 export interface ExpenseCreate {
   title: string;
-  category: string; // При создании передаем строку
+  category: string;
   price: number;
-  location: string; // При создании передаем строку
+  location: string;
   datetime: string;
 }
 
@@ -95,9 +95,9 @@ export type SortParams = {
 export type FormState = {
   title: string;
   category: string;
-  price: string;      // именно string, т.к. в useState ты делаешь String(...)
+  price: string;
   location: string;
-  datetime: string;   // ISO-строка
+  datetime: string;
 };
 
   export type Modals = {

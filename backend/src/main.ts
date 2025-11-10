@@ -18,8 +18,6 @@ async function bootstrap() {
   });
 
   await app.listen(3000);
-  // console.log(`Server running on: http://${localIp}:3000`);
-  // console.log(`CORS enabled for: http://${localIp}:5173`);
 }
 
 bootstrap();

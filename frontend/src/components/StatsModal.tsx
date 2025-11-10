@@ -1,13 +1,13 @@
-// src/components/StatsModal.tsx
+// StatsModal.tsx
 import { useMemo, useState } from "react";
 import {
   Chart as ChartJS,
   ArcElement,
-  CategoryScale,   // ось X
-  LinearScale,    // ось Y
-  PointElement,   // точки на линии
-  LineElement,    // сама линия
-  BarElement,     // если используешь Bar
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
@@ -61,10 +61,10 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
   return (
     <div className="w-full bg-white rounded-lg">
       <div className="pb-2">
-        <div className="relative mb-2 flex flex-wrap items-center gap-3 min-h-[80px]">
+        <div className="relative mb-2 flex flex-wrap items-center gap-3">
           {mode !== "time" ? (
             <>
-              <label className="text-sm text-center w-full font-medium">
+              <label className="text-sm text-center text-gray-600 w-full">
                 Группировать по:
               </label>
               <RadioGroup
@@ -75,8 +75,7 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
               />
             </>
           ) : (
-            // пустой блок-заглушка той же высоты
-            <div className="" /> 
+            <div/> 
           )}
 
           <div

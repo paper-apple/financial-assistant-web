@@ -1,3 +1,4 @@
+// ExpensesPage.tsx
 import { useState, useEffect, useCallback } from "react";
 import { useExpenses } from "../hooks/useExpenses";
 import { useSelection } from "../hooks/useSelection";
@@ -90,6 +91,7 @@ export const ExpensesPage = () => {
   };
 
   const handleLogout = async () => {
+    filtersState.handleResetFilters();
     await logoutUser();
     setAuthModalOpen(true);
   };
@@ -168,7 +170,6 @@ export const ExpensesPage = () => {
             />
           </div>
           
-          {/* <div className="mt-4 mx-auto"> */}
           <FloatingActionButtons
             onAdd={() => openModal("add")}
             onFilter={() => openModal("filters")}
@@ -177,7 +178,6 @@ export const ExpensesPage = () => {
             onLogout={() => handleLogout()}
             closeSelection={() => handleCancelSelection()} 
           />
-          {/* </div> */}
 
           <ExpenseModals
             form={form}

@@ -29,10 +29,10 @@ export const AuthModal = ({
     const usernameError = validateUsername(username);
     const passwordError = validatePassword(password);
 
-    // if (usernameError || passwordError) {
-    //   setLocalError(usernameError || passwordError);
-    //   return;
-    // }
+    if (usernameError || passwordError) {
+      setLocalError(usernameError || passwordError);
+      return;
+    }
     
     onAuth(username, password);
   };

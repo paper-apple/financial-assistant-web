@@ -1,8 +1,7 @@
-// hooks/useFilterSort.ts
+// useFilterSort.ts
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { FilterParams, SortParams } from "../types";
 import { useKeywordSuggestions } from "./useKeywordSuggestions";
-
 
 export const useFilterSort = (
   loadExpenses: (filters: FilterParams, sortParams: SortParams) => void
@@ -53,7 +52,6 @@ export const useFilterSort = (
     setMaxPrice(maxPrice);
   };
 
-  // Собираем фильтры из текущего состояния
   const getCurrentFilters = useCallback((): FilterParams => ({
     startDate,
     endDate,
@@ -97,14 +95,12 @@ export const useFilterSort = (
     setMaxPrice('');
   };
 
-  // Валидация цен
   useEffect(() => {
     const min = parseFloat(minPrice);
     const max = parseFloat(maxPrice);
     setPriceError(!isNaN(min) && !isNaN(max) && min > max);
   }, [minPrice, maxPrice]);
 
-  // Валидация дат
   useEffect(() => {
     setDateError(Boolean(startDate && endDate && startDate > endDate));
   }, [startDate, endDate]);

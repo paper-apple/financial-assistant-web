@@ -3,7 +3,7 @@ import { useRef, useCallback } from "react";
 
 type Options = {
   onLongPress: () => void;
-  delay?: number; // по умолчанию 400 мс
+  delay?: number;
 };
 
 export function useLongPress({ onLongPress, delay = 400 }: Options) {

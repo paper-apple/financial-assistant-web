@@ -1,3 +1,4 @@
+// RadioGroup.tsx
 export const RadioGroup = <T extends string>({
   options,
   selected,
@@ -9,7 +10,7 @@ export const RadioGroup = <T extends string>({
   onChange: (val: T) => void;
   orientation?: "horizontal" | "vertical";
 }) => (
-  <div className={orientation === "horizontal" ? "flex gap-3.5" : "space-y-1"}>    
+  <div className={orientation === "horizontal" ? "flex gap-6.5" : "space-y-1"}>    
     {options.map(opt => {
       const isActive = selected === opt.value;
       const Icon = opt.icon;
@@ -18,7 +19,7 @@ export const RadioGroup = <T extends string>({
           key={opt.value}
           type="button"
           onClick={() => onChange(opt.value)}
-          className={`w-full flex items-center gap-2 px-3 py-2 rounded transition-colors
+          className={`w-full flex items-center gap-2 px-2 py-2 rounded transition-colors
             ${isActive 
               ? 'bg-blue-100 ' 
               : 'bg-white  hover:bg-gray-50'

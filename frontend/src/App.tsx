@@ -6,26 +6,6 @@ window.addEventListener('online', () => {
   window.location.reload();
 });
 
-// export function App() {
-//   return (
-//     <main className="justify-center-safe bg-red-200 p-4">
-//       <h1 className="text-2xl font-bold text-center mb-6">Финансовый ассистент</h1>
-//       <ExpensesPage />
-//     </main>
-//   );
-// }
-
-// export function App() {
-//   return (
-//     <main>
-//       <div className="max-w-screen-sm mx-auto bg-red-200 p-4">
-//         <h1 className="text-2xl font-bold text-center mb-6">Финансовый ассистент</h1>
-//         <ExpensesPage />
-//       </div>
-//     </main>
-//   );
-// }
-
 export function App() {
   return (
     <main className="flex justify-center min-h-screen bg-gray-100">

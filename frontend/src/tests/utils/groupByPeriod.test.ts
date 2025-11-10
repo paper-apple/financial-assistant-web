@@ -1,9 +1,7 @@
-// utils/groupByPeriod.test.ts
-import { describe, it, expect } from "vitest"; // или jest
-import { detectPeriod, groupByPeriod, type Period } from "../../utils/groupByPeriod";
-import { format } from "date-fns";
+// groupByPeriod.test.ts
+import { describe, it, expect } from "vitest";
+import { detectPeriod, groupByPeriod } from "../../utils/groupByPeriod";
 import type { Expense } from "../../types";
-import { makeCategory, makeLocation } from "../createCategoryAndLocationFields";
 
 export const baseExpense: Expense = {
   id: 1,
@@ -81,7 +79,7 @@ describe("groupByPeriod", () => {
 
     expect(result).toEqual([
       { key: "01.01.2025", total: 10, count: 1 },
-      { key: "02.01.2025", total: 0, count: 0 }, // 👈 пропущенный день
+      { key: "02.01.2025", total: 0, count: 0 },
       { key: "03.01.2025", total: 20, count: 1 },
     ]);
   });
