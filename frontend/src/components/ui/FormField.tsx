@@ -5,7 +5,7 @@ import { useState } from "react";
 
 type FormFieldProps = {
   label?: string;
-  name: keyof FormState | 'keyword' | 'startDate' | 'endDate';
+  name?: keyof FormState;
   value: string;
   testId?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -15,7 +15,6 @@ type FormFieldProps = {
   onSuggestionSelect?: (val: string) => void;
   readOnly?: boolean;
   onFieldClick?: () => void;
-  showCalendarIcon?: boolean;
   onClear?: () => void;
 };
 
@@ -31,7 +30,6 @@ export const FormField: React.FC<FormFieldProps> = ({
   onSuggestionSelect,
   readOnly = false,
   onFieldClick,
-  showCalendarIcon = false,
   onClear,
 }) => {
   
@@ -64,7 +62,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 
   return (
     <div className="relative w-full">
-        <label className="text-left text-sm text-gray-500 mb-2">{label}</label>
+        <label className="label-text">{label}</label>
         <div className="flex items-center border-b border-neutral-500 bg-white w-full">
           <input
             name={name}
@@ -84,10 +82,10 @@ export const FormField: React.FC<FormFieldProps> = ({
             onKeyDown={handleKeyDown}
             className={`flex-1 min-w-0 py-1 outline-none ${
               readOnly ? "cursor-pointer" : ""
-            } ${ error ? "bg-red-100" : ""}`}
+            } ${ error ? "" : ""}`}
           />
 
-          {onClear && showCalendarIcon && (
+          {onClear && (
             <button
               type="button"
               onClick={onClear}
@@ -97,7 +95,6 @@ export const FormField: React.FC<FormFieldProps> = ({
             </button>
           )}
         </div>
-
       <SuggestionsList
         list={suggestions ?? []}
         onSelect={(val) => {

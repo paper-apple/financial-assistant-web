@@ -54,7 +54,7 @@ export const ExpenseModals = ({
           form={form} 
           onCreated={handleCreated} 
           updateField={updateFormField}
-          onCalendarOpen={() => openModal("calendar")}
+          onModalOpen={openModal}
           onModalClose={() => closeModal("add")}
         />
       </Modal>
@@ -67,7 +67,7 @@ export const ExpenseModals = ({
           initialData={editingExpense}
           onUpdated={handleUpdated} 
           updateField={updateFormField}
-          onCalendarOpen={() => openModal("calendar")}
+          onModalOpen={openModal}
           onModalClose={() => closeModal("update")}
           />
       </Modal>
@@ -106,7 +106,7 @@ export const ExpenseModals = ({
       </Modal>
     )}
 
-    {modals.endDate && form &&(
+    {modals.endDate &&(
       <Modal onModalClose={() => closeModal("endDate")}>
         <CalendarModal 
           value={filtersState.endDate}

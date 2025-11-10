@@ -65,7 +65,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         <div className="flex items-end gap-2 pb-2">
           <FormField
             label="Ключевые слова"
-            name="keyword"
             value={keywordInput}
             onChange={(e) => setKeywordInput(e.target.value)}
             placeholder="...введите ключевое слово"
@@ -105,11 +104,10 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         </div>
       </div>
 
-      <div className="mb-2 border-b">
-        <label className="text-left">Интервал времени</label>
-        <div className="grid grid-cols-2 gap-2">
+      <div>
+        <label className="label-text">Интервал времени</label>
+        <div className="grid grid-cols-2 gap-4">
           <FormField
-            name="startDate"
             testId="input-date-from"
             value={
               startDate
@@ -125,13 +123,11 @@ export const FilterForm: React.FC<FilterFormProps> = ({
             placeholder={'От'}
             error={dateError}
             readOnly
-            showCalendarIcon
             onFieldClick={() => openModal("startDate")}
             onClear={() => setStartDate(null)}
           />
 
           <FormField
-            name="endDate"
             testId="input-date-to"
             value={
               endDate
@@ -147,7 +143,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
             placeholder={'До'}
             error={dateError}
             readOnly
-            showCalendarIcon
             onFieldClick={() => openModal("endDate")}
             onClear={() => setEndDate(null)}
           />
@@ -159,18 +154,16 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         </div>
       </div>
 
-      <div className="mb-2">
+      <div>
         <label className="label-text">Диапазон цен</label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-4">
             <FormField
-              name="startDate"
               value={minPrice}
               onChange={e => handlePriceChange(e.target.value, setMinPrice)}
               placeholder={'От'}
               error={priceError}
             />
             <FormField
-              name="endDate"
               value={maxPrice}
               onChange={e => handlePriceChange(e.target.value, setMaxPrice)}
               placeholder={'До'}

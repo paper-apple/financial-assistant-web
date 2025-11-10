@@ -81,7 +81,7 @@ describe('ExpenseForm', () => {
       <ExpenseForm
         form={mockForm}
         updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
+        onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
       />
     );
@@ -97,7 +97,7 @@ describe('ExpenseForm', () => {
       <ExpenseForm
         form={mockForm}
         updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
+        onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
       />
     );
@@ -107,34 +107,17 @@ describe('ExpenseForm', () => {
     expect(dateButton).toBeInTheDocument();
   });
 
-  it('отображает placeholder для даты когда datetime пустой', () => {
-    const emptyForm = { ...mockForm, datetime: '' };
-    
-    render(
-      <ExpenseForm
-        form={emptyForm}
-        updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
-        onModalClose={mockOnModalClose}
-      />
-    );
-
-    expect(screen.getByText('Выберите дату и время')).toBeInTheDocument();
-  });
-
   it('вызывает onCalendarOpen при клике на кнопку даты', () => {
     render(
       <ExpenseForm
         form={mockForm}
         updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
+        onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
       />
     );
 
-    // const dateButton = screen.getByText('01.01.2024, 12:00');
     const dateButton = screen.getByTestId('button-date')
-    // expect(screen.getByTestId('form-field-location')).toBeInTheDocument();
 
     fireEvent.click(dateButton);
 
@@ -146,7 +129,7 @@ describe('ExpenseForm', () => {
       <ExpenseForm
         form={mockForm}
         updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
+        onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
       />
     );
@@ -162,7 +145,7 @@ describe('ExpenseForm', () => {
       <ExpenseForm
         form={mockForm}
         updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
+        onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
         onCreated={mockOnCreated}
       />
@@ -186,7 +169,7 @@ describe('ExpenseForm', () => {
         form={mockForm}
         initialData={mockExpense}
         updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
+        onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
         onUpdated={mockOnUpdated}
       />
@@ -209,7 +192,7 @@ describe('ExpenseForm', () => {
       <ExpenseForm
         form={mockForm}
         updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
+        onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
       />
     );
@@ -228,7 +211,7 @@ describe('ExpenseForm', () => {
       <ExpenseForm
         form={mockForm}
         updateField={mockUpdateField}
-        onCalendarOpen={mockOnCalendarOpen}
+        onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
         onCreated={mockOnCreated}
       />

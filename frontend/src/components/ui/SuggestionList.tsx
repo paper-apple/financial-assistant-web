@@ -58,9 +58,9 @@ export const SuggestionsList = ({
 }) => (
   <ul
     className={`
-      absolute w-full bg-white shadow border-x border-b rounded-b z-10 overflow-hidden
+      absolute w-full bg-white shadow border-x border-b rounded-b z-10 overflow-auto
       transition-[max-height] duration-500 
-      // ${isOpen ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}
+      ${isOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}
     `}
   >
     {list.map((s, idx) => (

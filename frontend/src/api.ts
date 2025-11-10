@@ -1,3 +1,4 @@
+// api.ts
 import axios from "axios";
 import { type Expense, type ExpenseCreate, type ExpenseUpdate } from "./types"
 
@@ -7,8 +8,6 @@ const getApiBase = () => {
   // if (import.meta.env.PROD) {
   //   return import.meta.env.VITE_API_URL || "http://localhost:3000";
   // }
-  
-  // Для разработки используем текущий hostname
   const { hostname } = window.location;
   return `http://${hostname}:3000`;
 };
@@ -17,16 +16,16 @@ export const API_BASE = getApiBase();
 
 const api = axios.create({
   baseURL: API_BASE || "https://localhost:3000",
-  withCredentials: true, // ✅ Это заставляет axios отправлять cookies
+  withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// api.interceptors.request.use((config) => {
+//   const token = localStorage.getItem('token');
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
 
 export const login = (username: string, password: string) =>
   api.post('/auth/login', { username, password });
@@ -85,4 +84,4 @@ export const suggestKeywords = async (
   field?: 'title' | 'category' | 'location'
 ) => {
   return api.get(`/expenses/keywords/suggest?field=${field}&query=${encodeURIComponent(query)}`);
-}
+} 

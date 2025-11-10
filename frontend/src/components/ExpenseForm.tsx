@@ -1,6 +1,6 @@
 // ExpenseForm.tsx
 import { createExpense, updateExpense } from "../api";
-import type { Expense, FormState } from "../types";
+import type { Expense, FormState, Modals } from "../types";
 import { useKeywordSuggestions } from "../hooks/useKeywordSuggestions";
 import { useExpenseFormValidation } from "../hooks/useExpenseFormValidation";
 import { sanitizePrice } from "../utils/sanitizePrice";
@@ -12,7 +12,7 @@ type Props = {
   onCreated?: (created: Expense) => void;
   onUpdated?: (updated: Expense) => void;
   updateField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
-  onCalendarOpen: () => void;
+  onModalOpen: (modal: keyof Modals) => void;
   onModalClose: () => void;
 };
 
@@ -29,8 +29,8 @@ export const ExpenseForm = ({
   onCreated,
   onUpdated,
   updateField,
+  onModalOpen: openModal,
   onModalClose: closeModal,
-  onCalendarOpen: openCalendar,
 }: Props) => {
   const suggestionsMap = {
     title: useKeywordSuggestions({ field: "title", input: form.title }),
@@ -70,7 +70,7 @@ export const ExpenseForm = ({
   };
   
   return (
-    <div className="bg-white">
+    <div>
       <div className="grid grid-cols-1 gap-2">
         {FIELDS_CONFIG.map(({ key, label, placeholder, testId }) => {
           const sugg = suggestionsMap[key as keyof typeof suggestionsMap];
@@ -95,27 +95,28 @@ export const ExpenseForm = ({
             />
           );
         })}
-
         <div>
-          <label className="label-text mb-2">Дата</label>
-          <button
-            onClick={openCalendar}
-            className="w-full border border-neutral-500 rounded px-3 py-1 text-left"
-            data-testid="button-date"
-          >
-            {form.datetime
-              ? new Date(form.datetime).toLocaleString("ru-RU", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : "Выберите дату и время"}
-          </button>
+          <label className="label-text">Дата</label>
+          <div>
+            <FormField
+              testId="button-date"
+              value={
+                form.datetime
+                  ? new Date(form.datetime).toLocaleString("ru-RU", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                  : ""
+              }
+              readOnly
+              onFieldClick={() => openModal("calendar")}
+            />
+          </div>
         </div>
       </div>
-
       <div className="my-1 min-h-[26px] max-h-[26px] overflow-y-auto text-red-400 text-center">
         {wasSubmitted && !isValid() && (
           <p>Заполните поля</p>
