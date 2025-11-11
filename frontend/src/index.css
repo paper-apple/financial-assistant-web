@@ -61,7 +61,7 @@
 }
 
 .btn-disabled {
-  @apply text-gray-500 bg-gray-200 hover:bg-gray-200
+  @apply border-gray-200 text-gray-500 bg-gray-200 hover:bg-gray-200
 }
 
 .input-delete {

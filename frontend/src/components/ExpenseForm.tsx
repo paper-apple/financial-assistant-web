@@ -108,7 +108,7 @@ export const ExpenseForm = ({
                     year: "numeric",
                     hour: "2-digit",
                     minute: "2-digit",
-                  })
+                  }).replace(',', '')
                   : ""
               }
               readOnly

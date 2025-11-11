@@ -62,40 +62,40 @@ export const FormField: React.FC<FormFieldProps> = ({
 
   return (
     <div className="relative w-full">
-        <label className="label-text">{label}</label>
-        <div className="flex items-center border-b border-gray-600 bg-white w-full">
-          <input
-            name={name}
-            value={value}
-            onChange={onChange}
-            data-testid={testId}
-            readOnly={readOnly}
-            placeholder={placeholder}
-            onClick={readOnly && onFieldClick ? onFieldClick : undefined}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => {
-              setTimeout(() => {
-                setIsFocused(false);
-                setHighlightedIndex(-1);
-              }, 100);
-            }}
-            onKeyDown={handleKeyDown}
-            className={`flex-1 min-w-0 py-1 outline-none 
-              placeholder:text-sm placeholder:text-gray-400 
-              ${readOnly ? "cursor-pointer" : ""} 
-              ${ error ? "" : ""}`}
-          />
+      <label className="label-text">{label}</label>
+      <div className="flex items-center border-b border-gray-600 bg-white w-full">
+        <input
+          name={name}
+          value={value}
+          onChange={onChange}
+          data-testid={testId}
+          readOnly={readOnly}
+          placeholder={placeholder}
+          onClick={readOnly && onFieldClick ? onFieldClick : undefined}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => {
+            setTimeout(() => {
+              setIsFocused(false);
+              setHighlightedIndex(-1);
+            }, 100);
+          }}
+          onKeyDown={handleKeyDown}
+          className={`flex-1 min-w-0 py-1 outline-none 
+            placeholder:text-sm placeholder:text-gray-400 
+            ${readOnly ? "cursor-pointer" : ""} 
+            ${ error ? "" : ""}`}
+        />
 
-          {onClear && (
-            <button
-              type="button"
-              onClick={onClear}
-              className="input-delete"
-            >
-              ×
-            </button>
-          )}
-        </div>
+        {onClear && (
+          <button
+            type="button"
+            onClick={onClear}
+            className="input-delete"
+          >
+            ×
+          </button>
+        )}
+      </div>
       <SuggestionsList
         list={suggestions ?? []}
         onSelect={(val) => {

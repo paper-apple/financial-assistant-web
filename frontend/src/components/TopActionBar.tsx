@@ -5,6 +5,7 @@ import { getSelectionText } from "../utils/getSelectionText";
 type Props = {
   selectedCount: number;
   totalCount: number;
+  selectionMode: boolean;
   onSelectAll: () => void;
   onDelete: () => void;
   onCancel: () => void;
@@ -13,6 +14,7 @@ type Props = {
 export const TopActionBar = ({
   selectedCount,
   totalCount,
+  selectionMode,
   onSelectAll,
   onDelete,
   onCancel
@@ -31,7 +33,6 @@ export const TopActionBar = ({
     return () => {
       document.removeEventListener("keydown", handleEsc);
     };
-    
   });
 
   useEffect(() => {
@@ -40,11 +41,32 @@ export const TopActionBar = ({
     }
   }, [selectedCount]);
 
+    const [showBorder, setShowBorder] = useState(false);
+
+  useEffect(() => {
+    if (selectionMode) {
+      setShowBorder(true);
+    } else {
+      const timer = setTimeout(() => setShowBorder(false), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [selectionMode]);
+
   return (
-    <div className="fixed max-w-screen-sm mx-auto top-0 left-0 right-0 z-40 p-2 px-4 bg-gray-100 border-b">
+    <div 
+      className={`fixed max-w-screen-sm mx-18 top-0 left-0 right-0 z-40 px-4 
+        bg-gray-100 overflow-hidden border-x border-gray-400 rounded-b-xl shadow-md transition-[max-height] duration-700 ease-initial ${
+        selectionMode ? "max-h-32" : "max-h-0"
+      } ${
+        showBorder ? "border-b" : ""
+      }`}
+    >
       {!confirmDelete ? (
         // Обычный режим
-        <div key="normal" className="flex justify-between items-center">
+        <div 
+          key="normal" 
+          className="flex justify-between py-2 items-center"
+        >
           <span className="label-text">
             {getSelectionText(selectedCount, confirmDelete)}
           </span>
@@ -72,7 +94,7 @@ export const TopActionBar = ({
         </div>
       ) : (
         // Режим подтверждения
-        <div key="confirm" className="flex justify-between items-center">
+        <div key="confirm" className="flex justify-between items-center py-2">
           <span className="label-text">
             {getSelectionText(selectedCount, confirmDelete)}
           </span>

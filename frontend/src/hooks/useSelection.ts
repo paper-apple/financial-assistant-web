@@ -27,7 +27,7 @@ export const useSelection = (expenses: Expense[]) => {
 
   const handleCancelSelection = () => {
     setSelectionMode(false);
-    setSelectedIds([]);
+    setTimeout(() => setSelectedIds([]), 500);
   };
 
   const handleSelectAll = () => {

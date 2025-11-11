@@ -108,7 +108,7 @@ export const ExpenseCard = ({
               year: "numeric",
               hour: "2-digit",
               minute: "2-digit",
-            })}
+            }).replace(',', '')}
             className="flex items-center gap-1 font-medium"
           />
         </div>

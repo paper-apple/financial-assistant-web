@@ -148,27 +148,24 @@ export const ExpensesPage = () => {
 
       {user && (
         <>
-          {selectionMode && (
-            <TopActionBar
-              selectedCount={selectedIds.length}
-              totalCount={expenses.length}
-              onSelectAll={handleSelectAll}
-              onDelete={() => handleDeleteSelected(removeExpenses)}
-              onCancel={handleCancelSelection}
-            />
-          )}
+          <TopActionBar
+            selectedCount={selectedIds.length}
+            totalCount={expenses.length}
+            selectionMode={selectionMode}
+            onSelectAll={handleSelectAll}
+            onDelete={() => handleDeleteSelected(removeExpenses)}
+            onCancel={handleCancelSelection}
+          />
 
-          <div className="mt-4 mx-auto">
-            <ExpenseList
-              expenses={expenses}
-              onEdit={handleEditClick}
-              onLongPress={handleLongPress}
-              onSelect={handleSelect}
-              selectionMode={selectionMode}
-              selectedIds={selectedIds}
-              lastUpdatedId={lastUpdatedId}
-            />
-          </div>
+          <ExpenseList
+            expenses={expenses}
+            onEdit={handleEditClick}
+            onLongPress={handleLongPress}
+            onSelect={handleSelect}
+            selectionMode={selectionMode}
+            selectedIds={selectedIds}
+            lastUpdatedId={lastUpdatedId}
+          />
           
           <FloatingActionButtons
             onAdd={() => openModal("add")}
