@@ -36,16 +36,15 @@ export const Modal = ({ onModalClose: onClose, title, children }: Props) => {
         modalIdRef.current = null;
       }
     };
-    
   });
 
   return (
     <div
-      className="fixed inset-0  bg-gray-900/70 bg-opacity-30 z-50 flex items-center justify-center"
+      className="fixed inset-0  bg-gray-500/30 backdrop-blur-xs z-50 flex items-center justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-3 w-full max-w-sm mx-auto shadow-lg"
+        className="bg-white rounded-lg p-3 w-full max-w-sm mx-auto shadow-md"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
       >

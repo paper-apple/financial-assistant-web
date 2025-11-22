@@ -8,7 +8,7 @@ import { FormField } from "./ui/FormField";
 
 type Props = {
   form: FormState;
-  initialData?: Expense;
+  initialData?: Expense | null;
   onCreated?: (created: Expense) => void;
   onUpdated?: (updated: Expense) => void;
   updateField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
@@ -47,16 +47,32 @@ export const ExpenseForm = ({
     updateField(name as keyof FormState, finalValue);
   };
 
-  const handleSubmit = async () => {
+  // const handleSubmit = async () => {
+  //   validateAndSubmit(async () => {
+  //     try {
+  //       if (initialData && onUpdated) {
+  //         const updated = await updateExpense(initialData.id, {
+  //           ...form,
+  //           price: +form.price,
+  //         });
+  //         onUpdated(updated);
+  //       } else if (!initialData && onCreated) {
+  //         const created = await createExpense({
+  //           ...form,
+  //           price: +form.price,
+  //         });
+  //         onCreated(created);
+  //       }
+  //     } catch (err) {
+  //       console.error("Ошибка при сохранении:", err);
+  //     }
+  //   });
+  // };
+
+    const handleAddExpense = async () => {
     validateAndSubmit(async () => {
       try {
-        if (initialData && onUpdated) {
-          const updated = await updateExpense(initialData.id, {
-            ...form,
-            price: +form.price,
-          });
-          onUpdated(updated);
-        } else if (!initialData && onCreated) {
+       if (onCreated) {
           const created = await createExpense({
             ...form,
             price: +form.price,
@@ -68,10 +84,26 @@ export const ExpenseForm = ({
       }
     });
   };
+
+  const handleEditExpense = async () => {
+    validateAndSubmit(async () => {
+      try {
+        if (initialData && onUpdated) {
+          const updated = await updateExpense(initialData.id, {
+            ...form,
+            price: +form.price,
+          });
+          onUpdated(updated);
+        }
+      } catch (err) {
+        console.error("Ошибка при сохранении:", err);
+      }
+    });
+  };
   
   return (
     <div>
-      <div className="grid grid-cols-1 gap-2">
+      <div className="grid grid-cols-1 gap-4">
         {FIELDS_CONFIG.map(({ key, label, placeholder, testId }) => {
           const sugg = suggestionsMap[key as keyof typeof suggestionsMap];
           return (
@@ -112,12 +144,12 @@ export const ExpenseForm = ({
                   : ""
               }
               readOnly
-              onFieldClick={() => openModal("calendar")}
+              calendarOpen={() => openModal("calendar")}
             />
           </div>
         </div>
       </div>
-      <div className="my-1 min-h-[26px] max-h-[26px] overflow-y-auto text-red-400 text-center">
+      <div className="my-1 min-h-[26px] max-h-[26px] overflow-y-auto text-red-600 text-center">
         {wasSubmitted && !isValid() && (
           <p>Заполните поля</p>
         )}
@@ -130,10 +162,16 @@ export const ExpenseForm = ({
         >
           Отмена
         </button>
-         <button onClick={handleSubmit} className={`btn-base
+        <button onClick={handleAddExpense} className={`btn-base
           ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
-          Применить
+          Создать
         </button>
+        {initialData && (
+          <button onClick={handleEditExpense} className={`btn-base
+          ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
+            Редактировать
+          </button>
+        )}
       </div>
     </div>
   );

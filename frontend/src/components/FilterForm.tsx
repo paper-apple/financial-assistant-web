@@ -123,7 +123,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
             placeholder={'От'}
             error={dateError}
             readOnly
-            onFieldClick={() => openModal("startDate")}
+            calendarOpen={() => openModal("startDate")}
             onClear={() => setStartDate(null)}
           />
 
@@ -143,11 +143,11 @@ export const FilterForm: React.FC<FilterFormProps> = ({
             placeholder={'До'}
             error={dateError}
             readOnly
-            onFieldClick={() => openModal("endDate")}
+            calendarOpen={() => openModal("endDate")}
             onClear={() => setEndDate(null)}
           />
         </div>
-        <div className="my-1 min-h-[26px] max-h-[26px] overflow-y-auto text-red-400 text-center">
+        <div className="my-1 min-h-[26px] max-h-[26px] overflow-y-auto text-red-600 text-center">
           {dateError && (
             <p>Начало отсчёта позже конца</p>
           )}

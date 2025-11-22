@@ -35,7 +35,7 @@ describe("FormField", () => {
   });
 
   it("в режиме readOnly вызывает onFieldClick при клике", async () => {
-    render(<FormField value="readonly" readOnly onFieldClick={onFieldClick} />);
+    render(<FormField value="readonly" readOnly calendarOpen={onFieldClick} />);
     const input = screen.getByDisplayValue("readonly");
     await userEvent.click(input);
     expect(onFieldClick).toHaveBeenCalled();

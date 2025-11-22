@@ -69,6 +69,11 @@
   @apply flex items-center justify-center w-5 h-5 rounded-full border border-gray-400 bg-gray-400 text-[14px] text-white
 }
 
+.div-input {
+  /* @apply px-3 py-1 text-black bg-red-200 hover:bg-red-300 border-l border-neutral-500 rounded-r transition-colors active:bg-red-400 */
+  @apply flex items-center border-b border-gray-600 bg-white w-full
+}
+
 .label-text {
   /* @apply block text-sm text-center font-medium text-gray-700 */
   @apply text-left text-sm text-gray-600 mb-2
@@ -84,4 +89,12 @@
 
 .third-column {
   @apply p-1 text-sm font-normal text-right w-[34%] 
+}
+
+body {
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+.floating-buttons {
+  right: var(--scrollbar-width, 0px);
 }

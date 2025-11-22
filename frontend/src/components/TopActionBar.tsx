@@ -53,14 +53,25 @@ export const TopActionBar = ({
   }, [selectionMode]);
 
   return (
-    <div 
-      className={`fixed max-w-screen-sm mx-18 top-0 left-0 right-0 z-40 px-4 
-        bg-gray-100 overflow-hidden border-x border-gray-400 rounded-b-xl shadow-md transition-[max-height] duration-700 ease-initial ${
-        selectionMode ? "max-h-32" : "max-h-0"
-      } ${
-        showBorder ? "border-b" : ""
-      }`}
-    >
+    // <div 
+    //   className={`fixed max-w-screen-sm mx-18 top-0 left-0 right-0 z-40 px-4 
+    //     bg-white overflow-hidden border-x border-gray-400 rounded-b-xl shadow-md transition-[max-height] duration-700 ease-initial ${
+    //     selectionMode ? "max-h-32" : "max-h-0"
+    //   } ${
+    //     showBorder ? "border-b" : ""
+    //   }`}
+    // >
+    <div
+  className={`
+    fixed top-0 left-1/2 z-40
+    transform -translate-x-1/2
+    w-full max-w-screen-sm px-4
+    bg-white overflow-hidden border-x border-gray-400 rounded-b-xl shadow-md
+    transition-[max-height] duration-700 ease-initial
+    ${selectionMode ? "max-h-32" : "max-h-0"}
+    ${showBorder ? "border-b" : ""}
+  `}
+>
       {!confirmDelete ? (
         // Обычный режим
         <div 

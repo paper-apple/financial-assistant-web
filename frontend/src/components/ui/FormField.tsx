@@ -1,7 +1,7 @@
 // FormField.tsx
 import { SuggestionsList } from "./SuggestionList";
 import type { FormState } from "../../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FormFieldProps = {
   label?: string;
@@ -14,8 +14,9 @@ type FormFieldProps = {
   placeholder?: string;
   onSuggestionSelect?: (val: string) => void;
   readOnly?: boolean;
-  onFieldClick?: () => void;
+  calendarOpen?: () => void;
   onClear?: () => void;
+  type?: string;
 };
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -29,8 +30,9 @@ export const FormField: React.FC<FormFieldProps> = ({
   placeholder,
   onSuggestionSelect,
   readOnly = false,
-  onFieldClick,
+  calendarOpen: onFieldClick,
   onClear,
+  type = 'text',
 }) => {
   
   const [isFocused, setIsFocused] = useState(false);
@@ -60,10 +62,16 @@ export const FormField: React.FC<FormFieldProps> = ({
     }
   };
 
+    useEffect(() => {
+      if (readOnly && isFocused && onFieldClick) {
+        onFieldClick();
+      }
+    }, [isFocused]);
+
   return (
     <div className="relative w-full">
       <label className="label-text">{label}</label>
-      <div className="flex items-center border-b border-gray-600 bg-white w-full">
+      <div className="div-input ">
         <input
           name={name}
           value={value}
@@ -71,6 +79,8 @@ export const FormField: React.FC<FormFieldProps> = ({
           data-testid={testId}
           readOnly={readOnly}
           placeholder={placeholder}
+          type={type}
+          required
           onClick={readOnly && onFieldClick ? onFieldClick : undefined}
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
@@ -80,7 +90,7 @@ export const FormField: React.FC<FormFieldProps> = ({
             }, 100);
           }}
           onKeyDown={handleKeyDown}
-          className={`flex-1 min-w-0 py-1 outline-none 
+          className={`flex-1 min-w-0 outline-none pb-1
             placeholder:text-sm placeholder:text-gray-400 
             ${readOnly ? "cursor-pointer" : ""} 
             ${ error ? "" : ""}`}

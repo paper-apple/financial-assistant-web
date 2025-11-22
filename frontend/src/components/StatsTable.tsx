@@ -22,7 +22,12 @@ export const StatsTable = ({ field, rows, totalCount, grandTotal }: Props) =>
   return (
     <div className="border border-gray-400 rounded-lg"> 
       <div className="flex sticky bottom-0 z-20 border-b border-gray-400">
-        <span className="first-column">{groupFieldLabels[field]}</span>
+        <span className={
+          isSafari
+            ? "first-column"
+            : "first-column ml-3"
+        }
+          >{groupFieldLabels[field]}</span>
         <span className="second-column">Кол-во</span>
         <span className={
           isSafari
@@ -31,7 +36,7 @@ export const StatsTable = ({ field, rows, totalCount, grandTotal }: Props) =>
         }
           >Сумма</span>
       </div>
-      <div className="h-70 overflow-y-auto relative [scrollbar-gutter:stable]">
+      <div className="h-70 pl-3 overflow-y-auto relative [scrollbar-gutter:stable]">
         <table className="w-full table-fixed border-collapse text-sm">
           <tbody>
             {rows.map(row => (
@@ -45,14 +50,19 @@ export const StatsTable = ({ field, rows, totalCount, grandTotal }: Props) =>
         </table>
       </div>
       <div className="flex sticky bottom-0 z-20 border-t border-gray-400">
-        <span className="first-column">Итого</span>
+        <span className={
+          isSafari
+            ? "first-column"
+            : "first-column ml-3"
+          }
+        >Итого</span>
         <span className="second-column">{totalCount}</span>
-            <span className={
-        isSafari
-          ? "third-column"
-          : "third-column mr-3"
-        }
-          >{grandTotal}</span>
+        <span className={
+          isSafari
+            ? "third-column"
+            : "third-column mr-3"
+          }
+        >{grandTotal}</span>
       </div>
     </div>
   )

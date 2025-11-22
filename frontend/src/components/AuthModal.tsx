@@ -1,6 +1,7 @@
 // AuthModal.tsx
 import { useState } from "react";
 import { useAuthValidation } from "../hooks/useAuthValidation";
+import { FormField } from "./ui/FormField";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -40,14 +41,14 @@ export const AuthModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" data-testid={"auth-modal"}>
+    <div className="fixed inset-0 bg-gray-500/30 backdrop-blur-xs flex items-center justify-center z-50" data-testid={"auth-modal"}>
       <div className="bg-white p-6 rounded-lg w-96">
         <h2 className="text-xl font-semibold text-center mb-4">
           {isLoginMode ? "Вход" : "Регистрация"}
         </h2>
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-medium mb-1">
               Имя пользователя
             </label>
@@ -59,9 +60,15 @@ export const AuthModal = ({
               className="w-full p-2 border rounded"
               required
             />
-          </div>
+          </div> */}
+          <FormField
+            testId="username"
+            label="Имя пользователя"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="password" className="block text-sm font-medium mb-1">
               Пароль
             </label>
@@ -73,11 +80,19 @@ export const AuthModal = ({
               className="w-full p-2 border rounded"
               required
             />
-          </div>
+          </div> */}
+
+          <FormField
+            testId="password"
+            label="Пароль"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+          />
 
           <div
-            className={`p-2 rounded mb-4 min-h-[64px] max-h-[64px]
-              ${error || localError ? "bg-red-100 text-red-700" : "bg-transparent"}`}
+            className={`my-4 p-2 rounded mb-4 h-[64px]
+              ${error || localError ? " text-red-600" : "bg-transparent"}`}
           >
             {error || localError}
           </div>
