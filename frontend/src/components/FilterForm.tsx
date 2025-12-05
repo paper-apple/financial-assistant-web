@@ -85,16 +85,16 @@ export const FilterForm: React.FC<FilterFormProps> = ({
             keywordsList.map((word) => (
               <span
                 key={word}
-                className="inline-flex items-center h-8 bg-blue-200 text-blue-800 text-sm px-2 rounded"
+                className="inline-flex items-center h-8 border border-gray-400 text-gray-500 text-sm font-semibold tracking-wide px-2 rounded-md"
               >
-                {word}
+                {/* {word} */}
                 <button
                   onClick={() =>
                     setKeywordsList((prev) => prev.filter((k) => k !== word))
                   }
-                  className="ml-1 text-blue-600 hover:text-blue-800"
+                  className="text-gray-500 text-sm font-semibold tracking-wide cursor-pointer"
                 >
-                  ×
+                  {word} ×
                 </button>
               </span>
             ))
@@ -117,7 +117,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
                     year: "numeric",
                     hour: "2-digit",
                     minute: "2-digit",
-                  })
+                  }).replace(',', '')
                 : ""
             }
             placeholder={'От'}
@@ -137,7 +137,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
                     year: "numeric",
                     hour: "2-digit",
                     minute: "2-digit",
-                  })
+                  }).replace(',', '')
                 : ""
             }
             placeholder={'До'}
@@ -177,7 +177,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-end gap-2">
+      <div className="flex gap-2">
         <button onClick={onClose} className="btn-base btn-cancel">Отмена</button>
         <button onClick={handleResetFilters} className="btn-base btn-cancel">Сбросить</button>
         <button onClick={handleApply} className={`btn-base

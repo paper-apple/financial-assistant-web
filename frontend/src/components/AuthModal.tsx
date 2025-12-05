@@ -47,41 +47,13 @@ export const AuthModal = ({
           {isLoginMode ? "Вход" : "Регистрация"}
         </h2>
 
-        <form onSubmit={handleSubmit}>
-          {/* <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium mb-1">
-              Имя пользователя
-            </label>
-            <input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div> */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <FormField
             testId="username"
             label="Имя пользователя"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-
-          {/* <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium mb-1">
-              Пароль
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div> */}
-
           <FormField
             testId="password"
             label="Пароль"
@@ -89,15 +61,14 @@ export const AuthModal = ({
             onChange={(e) => setPassword(e.target.value)}
             type="password"
           />
-
           <div
-            className={`my-4 p-2 rounded mb-4 h-[64px]
+            className={`rounded h-[64px] text-
               ${error || localError ? " text-red-600" : "bg-transparent"}`}
           >
             {error || localError}
           </div>
 
-          <div className="flex justify-between items-center">
+          <div className="flex gap-2">
             <button
               type="submit"
               className="btn-base btn-confirm"
@@ -108,7 +79,7 @@ export const AuthModal = ({
             <button
               type="button"
               onClick={onToggleMode}
-              className="text-blue-500 hover:underline"
+              className="btn-base btn-cancel"
             >
               {isLoginMode ? "Нет аккаунта?" : "Уже есть аккаунт?"}
             </button>

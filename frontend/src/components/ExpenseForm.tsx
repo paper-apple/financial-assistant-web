@@ -8,8 +8,8 @@ import { FormField } from "./ui/FormField";
 
 type Props = {
   form: FormState;
-  initialData?: Expense | null;
-  onCreated?: (created: Expense) => void;
+  initialData?: Expense;
+  onCreated: (created: Expense) => void;
   onUpdated?: (updated: Expense) => void;
   updateField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
   onModalOpen: (modal: keyof Modals) => void;
@@ -47,38 +47,14 @@ export const ExpenseForm = ({
     updateField(name as keyof FormState, finalValue);
   };
 
-  // const handleSubmit = async () => {
-  //   validateAndSubmit(async () => {
-  //     try {
-  //       if (initialData && onUpdated) {
-  //         const updated = await updateExpense(initialData.id, {
-  //           ...form,
-  //           price: +form.price,
-  //         });
-  //         onUpdated(updated);
-  //       } else if (!initialData && onCreated) {
-  //         const created = await createExpense({
-  //           ...form,
-  //           price: +form.price,
-  //         });
-  //         onCreated(created);
-  //       }
-  //     } catch (err) {
-  //       console.error("Ошибка при сохранении:", err);
-  //     }
-  //   });
-  // };
-
-    const handleAddExpense = async () => {
+  const handleAddExpense = async () => {
     validateAndSubmit(async () => {
       try {
-       if (onCreated) {
           const created = await createExpense({
             ...form,
             price: +form.price,
           });
           onCreated(created);
-        }
       } catch (err) {
         console.error("Ошибка при сохранении:", err);
       }
@@ -155,23 +131,25 @@ export const ExpenseForm = ({
         )}
       </div>
 
-      <div className="flex justify-end gap-2">
+      <div className="flex gap-2">
         <button
           onClick={closeModal}
           className="btn-base btn-cancel"
         >
           Отмена
         </button>
-        <button onClick={handleAddExpense} className={`btn-base
+        {/* <div className="flex gap-2"> */}
+        {onUpdated && (
+          <button onClick={handleEditExpense} className={`btn-base w-[100px]
+          ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
+            Изменить
+          </button>
+        )}
+        <button onClick={handleAddExpense} className={`btn-base w-[100px]
           ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
           Создать
         </button>
-        {initialData && (
-          <button onClick={handleEditExpense} className={`btn-base
-          ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
-            Редактировать
-          </button>
-        )}
+        {/* </div> */}
       </div>
     </div>
   );

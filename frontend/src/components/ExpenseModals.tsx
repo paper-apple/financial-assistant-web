@@ -27,7 +27,6 @@ type Props = {
   openModal: (modal: keyof Modals) => void;
   handleCreated: (expense: Expense) => void;
   handleUpdated: (expense: Expense) => void;
-  handleExpense: (expense: Expense, initialData: Expense | undefined) => void;
   handleAddKeyword: (word: string) => void;
   updateFormField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;};
 
@@ -49,7 +48,7 @@ export const ExpenseModals = ({
   updateFormField
 }: Props) => (
   <>
-    {/* {modals.add && (
+    {modals.add && (
       <Modal onModalClose={() => closeModal("add")} title="Добавление расхода">
         <ExpenseForm 
           form={form} 
@@ -62,20 +61,6 @@ export const ExpenseModals = ({
     )}
 
     {modals.update && editingExpense && (
-      <Modal onModalClose={() => closeModal("update")} title="Редактирование расхода">
-        <ExpenseForm 
-          form={form}
-          initialData={editingExpense}
-          onCreated={handleCreated} 
-          onUpdated={handleUpdated} 
-          updateField={updateFormField}
-          onModalOpen={openModal}
-          onModalClose={() => closeModal("update")}
-          />
-      </Modal>
-    )} */}
-    
-    {modals.expense && (
       <Modal onModalClose={() => closeModal("update")} title="Редактирование расхода">
         <ExpenseForm 
           form={form}

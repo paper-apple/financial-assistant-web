@@ -31,8 +31,13 @@
 }
 
 .ios-calendar .react-datepicker__day--selected {
-  background: #007AFF;
+  background: #007ABB;
   border-radius: 50%;
+}
+
+.ios-calendar .react-datepicker__time-box--selected {
+  background: #007AFF;
+  /* border-radius: 50%; */
 }
 
 /* Стили для времени */
@@ -45,15 +50,15 @@
 }
 
 .btn-base {
-  @apply px-4 py-2 rounded-lg text-sm border transition-colors duration-300;
+  @apply px-2 py-2 w-full rounded-lg text-sm font-semibold tracking-wide border transition-colors duration-300 truncate cursor-pointer;
 }
 
 .btn-confirm {
-  @apply text-white bg-blue-500 hover:bg-blue-600 border-blue-500 hover:border-blue-600 active:bg-blue-700 active:border-blue-700;
+  @apply text-white bg-blue-300 hover:bg-blue-400  hover:border-blue-400 active:bg-blue-500 active:border-blue-500;
 }
 
 .btn-cancel {
-  @apply text-gray-800 border bg-white border-gray-400 hover:bg-gray-50 active:bg-gray-100
+  @apply text-gray-500 border bg-white border-gray-400 hover:bg-gray-50 active:bg-gray-100
 }
 
 .btn-delete {
@@ -66,7 +71,7 @@
 
 .input-delete {
   /* @apply px-3 py-1 text-black bg-red-200 hover:bg-red-300 border-l border-neutral-500 rounded-r transition-colors active:bg-red-400 */
-  @apply flex items-center justify-center w-5 h-5 rounded-full border border-gray-400 bg-gray-400 text-[14px] text-white
+  @apply flex items-center justify-center w-5 h-5 rounded-full border border-gray-400 bg-gray-400 text-[14px] text-white cursor-pointer
 }
 
 .div-input {
@@ -76,7 +81,7 @@
 
 .label-text {
   /* @apply block text-sm text-center font-medium text-gray-700 */
-  @apply text-left text-sm text-gray-600 mb-2
+  @apply text-left text-sm text-gray-500 mb-2
 }
 
 .first-column {

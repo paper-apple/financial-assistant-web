@@ -101,7 +101,6 @@ export type FormState = {
 };
 
   export type Modals = {
-    expense: boolean;
     add: boolean;
     update: boolean;
     filters: boolean;

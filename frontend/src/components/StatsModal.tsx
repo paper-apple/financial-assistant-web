@@ -59,64 +59,64 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
   const chartData = useMemo(() => buildChartData(rows, grandTotal, threshold), [rows, grandTotal]);
 
   return (
-    <div className="w-full bg-white rounded-lg">
-      <div className="pb-2">
-        <div className="relative mb-2 flex flex-wrap items-center gap-3">
-          {mode !== "time" ? (
-            <>
-              <label className="text-sm text-center text-gray-600 w-full">
-                Группировать по:
-              </label>
-              <RadioGroup
-                options={GROUP_OPTIONS}
-                selected={field}
-                onChange={setField}
-                orientation="horizontal"
-              />
-            </>
-          ) : (
-            <div/> 
-          )}
+    <div className="w-full bg-white rounded-lg ">
+      <div className="relative mb-4 flex flex-wrap items-center gap-3">
+        {mode !== "time" ? (
+          <>
+            <label className="text-sm text-center text-gray-600 w-full">
+              Группировать по:
+            </label>
+            <div className="w-full">
+            <RadioGroup
+              options={GROUP_OPTIONS}
+              selected={field}
+              onChange={setField}
+              orientation="horizontal"
+            />
+            </div>
+          </>
+        ) : (
+          <div/> 
+        )}
 
-          <div
-            className={`w-full ${
-              mode === "time" ? "h-102" : "h-85"
-            }`}
-          >
-            {rows.length > 0 ? (
-              mode === "table" ? (
-                <StatsTable field={field} rows={rows} grandTotal={grandTotal} totalCount={totalCount} />
-              ) : mode === "pie" ? (
-                <StatsChart chartData={chartData} />
-              ) : (
-                <TimeSeriesChart expenses={expenses} />
-              )
+        <div
+          className={`w-full ${
+            mode === "time" ? "h-102" : "h-85"
+          }`}
+        >
+          {rows.length > 0 ? (
+            mode === "table" ? (
+              <StatsTable field={field} rows={rows} grandTotal={grandTotal} totalCount={totalCount} />
+            ) : mode === "pie" ? (
+              <StatsChart chartData={chartData} />
             ) : (
-              <p>Нет данных</p>
-            )}
-          </div>
+              <TimeSeriesChart expenses={expenses} />
+            )
+          ) : (
+            <p>Нет данных</p>
+          )}
         </div>
+      </div>
 
-        <div className="flex justify-end gap-2">
-          {mode !== "table" && (
-            <button onClick={() => setMode("table")} className="btn-base">
-              Таблица
-            </button>
-          )}
-          {mode !== "pie" && (
-            <button onClick={() => setMode("pie")} className="btn-base">
-              Диаграмма
-            </button>
-          )}
-          {mode !== "time" && (
-            <button onClick={() => setMode("time")} className="btn-base">
-              График
-            </button>
-          )}
-          <button onClick={onClose} className="btn-base btn-cancel">
-            Закрыть
+      <div className="flex gap-2">
+        <button onClick={onClose} className="btn-base btn-cancel">
+          Закрыть
+        </button>
+        {mode !== "table" && (
+          <button onClick={() => setMode("table")} className="btn-base btn-confirm">
+            Таблица
           </button>
-        </div>
+        )}
+        {mode !== "pie" && (
+          <button onClick={() => setMode("pie")} className="btn-base btn-confirm">
+            Диаграмма
+          </button>
+        )}
+        {mode !== "time" && (
+          <button onClick={() => setMode("time")} className="btn-base btn-confirm">
+            График
+          </button>
+        )}
       </div>
     </div>
   );

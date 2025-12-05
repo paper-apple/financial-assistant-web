@@ -41,14 +41,36 @@
 
 
 // vitest.config.base.ts
+/// <reference types="vitest" />
 import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react-swc";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
+
+// export default defineConfig({
+//   test: {
+//     globals: true,
+//     include: ["**/*.{test,spec}.{ts,tsx}"],
+//     coverage: {
+//       reporter: ["text", "html"],
+//     },
+//   },
+// });
 
 export default defineConfig({
-  test: {
-    globals: true,
-    include: ["**/*.{test,spec}.{ts,tsx}"],
-    coverage: {
-      reporter: ["text", "html"],
+    plugins: [react(), tailwindcss()],
+    test: {
+      globals: true,
+      environment: "jsdom",
+      setupFiles: path.resolve(__dirname, "src/tests/setupTests.ts"),
+      include: ["**/*.{test,spec}.{ts,tsx}"],
+          coverage: {
+        reporter: ["text", "html"],
+      },
     },
-  },
-});
+    resolve: {
+      alias: {
+        src: path.resolve(__dirname, "src"),
+      },
+    },
+  });

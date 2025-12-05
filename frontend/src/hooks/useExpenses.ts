@@ -33,7 +33,7 @@ export const useExpenses = () => {
 
   useEffect(() => {
     if (lastUpdatedId !== null) {
-      const timer = setTimeout(() => setLastUpdatedId(null), 2000);
+      const timer = setTimeout(() => setLastUpdatedId(null), 1500);
       return () => clearTimeout(timer);
     }
   }, [lastUpdatedId]);
@@ -45,6 +45,7 @@ export const useExpenses = () => {
 
   const addExpense = (created: Expense) => {
     setExpenses(prev => [...prev, created]);
+    setLastUpdatedId(created.id);
   };
 
   const removeExpenses = async (ids: number[]) => {

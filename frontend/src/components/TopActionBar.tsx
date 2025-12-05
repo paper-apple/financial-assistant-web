@@ -53,75 +53,79 @@ export const TopActionBar = ({
   }, [selectionMode]);
 
   return (
-    // <div 
-    //   className={`fixed max-w-screen-sm mx-18 top-0 left-0 right-0 z-40 px-4 
-    //     bg-white overflow-hidden border-x border-gray-400 rounded-b-xl shadow-md transition-[max-height] duration-700 ease-initial ${
-    //     selectionMode ? "max-h-32" : "max-h-0"
-    //   } ${
-    //     showBorder ? "border-b" : ""
-    //   }`}
-    // >
     <div
-  className={`
-    fixed top-0 left-1/2 z-40
-    transform -translate-x-1/2
-    w-full max-w-screen-sm px-4
-    bg-white overflow-hidden border-x border-gray-400 rounded-b-xl shadow-md
-    transition-[max-height] duration-700 ease-initial
-    ${selectionMode ? "max-h-32" : "max-h-0"}
-    ${showBorder ? "border-b" : ""}
-  `}
->
+      className={`
+        fixed flex top-0 left-1/2 z-40
+        transform -translate-x-1/2
+        w-full max-w-screen-sm px-4
+        overflow-hidden rounded-b-xl
+        transition-[max-height] duration-500
+        ${selectionMode ? "max-h-32" : "max-h-0"}
+      `}
+    >
       {!confirmDelete ? (
-        // Обычный режим
         <div 
           key="normal" 
-          className="flex justify-between py-2 items-center"
+          className={`flex justify-between items-center w-full py-2 px-2 border-x bg-white border-gray-400 rounded-b-lg
+            ${showBorder ? "border-b" : ""}
+          `}
         >
-          <span className="label-text">
+          <span className="hidden sm:block label-text flex-shrink-0 whitespace-nowrap mr-4">
             {getSelectionText(selectedCount, confirmDelete)}
           </span>
-          <div className="space-x-2">
+          <div className="flex gap-2 flex-1 justify-end">
             <button
               onClick={onSelectAll}
-              className="btn-base btn-confirm"
+              className="btn-base btn-confirm flex-1 min-w-0"
             >
-              {selectedCount === totalCount ? "Снять всё" : "Выделить всё"}
+                {selectedCount === totalCount ? (
+                  "Снять всё"
+                ) : (
+                  <>
+                    <span className="hidden sm:inline">Выбрать всё</span>
+                    <span className="inline sm:hidden">Выб. всё</span>
+                  </>
+                )}
             </button>
             <button
               onClick={() => setConfirmDelete(true)}
               disabled={selectedCount === 0}
-              className={`btn-base ${selectedCount !== 0 ? "btn-delete" : "btn-disabled"}`}
+              className={`btn-base flex-1 min-w-0 ${
+                selectedCount !== 0 ? "btn-delete" : "btn-disabled"
+              }`}
             >
               Удалить
             </button>
             <button
               onClick={onCancel}
-              className="btn-base btn-cancel"
+              className="btn-base btn-cancel flex-1 min-w-0"
             >
               Отмена
             </button>
           </div>
         </div>
       ) : (
-        // Режим подтверждения
-        <div key="confirm" className="flex justify-between items-center py-2">
-          <span className="label-text">
+        <div key="confirm"
+          className={`flex justify-between items-center w-full py-2 px-2 border-x bg-white border-gray-400 rounded-b-lg
+            ${showBorder ? "border-b" : ""}
+          `}
+        >
+          <span className="label-text flex-shrink-0 whitespace-nowrap mr-4">
             {getSelectionText(selectedCount, confirmDelete)}
           </span>
-          <div className="space-x-2">
+          <div className="flex gap-2 flex-1 justify-end">
             <button
               onClick={() => {
                 onDelete();
                 setConfirmDelete(false);
               }}
-              className="btn-base btn-delete"
+              className="btn-base btn-delete flex-1 min-w-0"
             >
               Да
             </button>
             <button
               onClick={() => setConfirmDelete(false)}
-              className="btn-base btn-cancel"
+              className="btn-base btn-cancel flex-1 min-w-0"
             >
               Нет
             </button>

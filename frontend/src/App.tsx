@@ -8,7 +8,7 @@ window.addEventListener('online', () => {
 
 export function App() {
   return (
-    <main className="flex justify-center min-h-screen bg-gray-100">
+    <main className="flex justify-center min-h-screen ">
       <div  className="max-w-screen-sm w-full bg-blue-100 p-4">
         <h1 className="text-2xl font-bold text-center mb-6">
           Web-помощник

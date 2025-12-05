@@ -61,7 +61,6 @@ export const ExpensesPage = () => {
   } = useExpenseForm();
   
   const [modals, setModals] = useState({
-    expense: false,
     add: false,
     update: false,
     filters: false,
@@ -105,8 +104,7 @@ export const ExpensesPage = () => {
 
   const closeModal = useCallback((modal: keyof typeof modals) => {
     setModals(prev => ({ ...prev, [modal]: false }));
-    // if (modal === "update" || modal === "add") {
-    if (modal === "expense") {
+    if (modal === "update" || modal === "add") {
       resetForm();     
     }
     else if (modal === "filters") {
@@ -121,31 +119,22 @@ export const ExpensesPage = () => {
       return;
     }
     setFormFromExpense(expense);
-    // openModal("update");
-    openModal("expense");
+    openModal("update");
   }, [user, openModal, setFormFromExpense]);
 
   // Создание расхода
   const handleCreated = useCallback((created: Expense) => {
     addExpense(created);
+    loadExpenses();
     closeModal("add");
   }, [addExpense, closeModal]);
 
   // Редактирование расхода
   const handleUpdated = useCallback((updated: Expense) => {
     updateExpense(updated);
+    loadExpenses();
     closeModal("update");
   }, [updateExpense, closeModal]);
-
-  const handleExpense = useCallback((expense: Expense, initialData: Expense | undefined) => {
-    if (initialData) {
-      updateExpense(expense);
-      closeModal("update");
-    } else if (!initialData) {
-      addExpense(expense);
-      closeModal("add");
-    }
-  }, [updateExpense, addExpense, closeModal]);
 
   return (
     <section>
@@ -158,8 +147,7 @@ export const ExpensesPage = () => {
       />
 
       <FloatingActionButtons
-        // onAdd={() => openModal("add")}
-        onAdd={() => openModal("expense")}
+        onAdd={() => openModal("add")}
         onFilter={() => openModal("filters")}
         onSort={() => openModal("sort")}
         onStats={() => openModal("stats")}
@@ -199,7 +187,6 @@ export const ExpensesPage = () => {
             openModal={openModal}
             handleCreated={handleCreated}
             handleUpdated={handleUpdated}
-            handleExpense={handleExpense}
             applyFilters={applyFilters}
             applySorts={applySorts}
             handleAddKeyword={handleAddKeyword}
