@@ -11,10 +11,11 @@ const getApiBase = () => {
   return `http://${hostname}:3000`;
 };
 
-export const API_BASE = getApiBase();
+// export const API_BASE = getApiBase();
 
 const api = axios.create({
-  baseURL: API_BASE || "https://localhost:3000",
+  // baseURL: API_BASE || "https://localhost:3000",
+  baseURL: '/api', // Vite проксирует на нужный адрес
   withCredentials: true,
 });
 
