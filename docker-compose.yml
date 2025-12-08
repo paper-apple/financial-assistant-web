@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # 🗄️ PostgreSQL
   db:
     image: postgres:15
     container_name: budget_postgres
@@ -8,11 +9,41 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: expenses_db
+      POSTGRES_DB: expenses_db2
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  # ⚙️ Backend (NestJS)
+  backend:
+    build: ./backend
+    container_name: budget_backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  # 🎨 Frontend (Vite/React)
+  frontend:
+    build: ./frontend
+    container_name: budget_frontend
+    restart: always
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   postgres_data:
