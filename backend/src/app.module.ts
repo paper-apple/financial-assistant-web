@@ -11,6 +11,7 @@ import { Category } from './categories/entities/category.entity';
 import { Location } from './locations/entities/location.entity';
 import { User } from './users/entities/user.entity';
 
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
