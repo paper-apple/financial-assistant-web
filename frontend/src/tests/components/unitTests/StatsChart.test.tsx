@@ -6,7 +6,7 @@ import { StatsChart } from "../../../components/StatsChart";
 let lastOptions: any;
 
 vi.mock("react-chartjs-2", () => ({
-  Pie: vi.fn(({ data, options }) => {
+  Pie: vi.fn(({ options }) => {
     lastOptions = options;
     return <div data-testid="pie-mock">Pie chart mock</div>;
   }),

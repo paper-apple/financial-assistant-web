@@ -1,7 +1,7 @@
 // useSelection.test.ts
 import { renderHook, act } from "@testing-library/react";
 import type { Expense } from "../../types";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useSelection } from "../../hooks/useSelection";
 
 const expenses: Expense[] = [
@@ -11,6 +11,14 @@ const expenses: Expense[] = [
 ];
 
 describe("useSelection", () => {
+    beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("handleLongPress включает режим выбора и добавляет id", () => {
     const { result } = renderHook(() => useSelection(expenses));
 
@@ -66,6 +74,9 @@ describe("useSelection", () => {
     });
 
     expect(result.current.selectionMode).toBe(false);
+    act(() => {
+      vi.advanceTimersByTime(501);
+    });
     expect(result.current.selectedIds).toEqual([]);
   });
 

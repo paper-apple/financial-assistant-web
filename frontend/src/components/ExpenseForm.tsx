@@ -80,7 +80,7 @@ export const ExpenseForm = ({
   return (
     <div>
       <div className="grid grid-cols-1 gap-4">
-        {FIELDS_CONFIG.map(({ key, label, placeholder, testId }) => {
+        {FIELDS_CONFIG.map(({ key, label, testId }) => {
           const sugg = suggestionsMap[key as keyof typeof suggestionsMap];
           return (
             <FormField

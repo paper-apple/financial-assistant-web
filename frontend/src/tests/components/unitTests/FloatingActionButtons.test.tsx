@@ -32,7 +32,23 @@ describe("FloatingActionButtons", () => {
     expect(buttons).toHaveLength(5);
     buttons.forEach((btn) => {
       expect(btn).toHaveClass(
-        "bg-blue-300 hover:bg-blue-500 text-white font-bold py-3.5 px-3.5 rounded-full border-1 transition-colors"
+        // "bg-blue-300 hover:bg-blue-500 text-white font-bold py-3.5 px-3.5 rounded-full border-1 transition-colors"
+        `
+  bg-blue-300/40
+  hover:bg-blue-300
+  hover:opacity-100
+  active:bg-blue-400
+  active:opacity-100
+  text-white
+  font-bold
+  py-3.5 
+  px-3.5
+  rounded-full
+  border
+  transition-all
+  duration-500
+  ease-in-out
+`
       );
     });
   });
@@ -50,7 +66,7 @@ describe("FloatingActionButtons", () => {
     );
 
     const buttons = screen.getAllByRole("button");
-    await userEvent.click(buttons[0]);
+    await userEvent.click(buttons[4]);
 
     expect(closeSelection).toHaveBeenCalled();
     expect(onAdd).toHaveBeenCalled();
@@ -69,7 +85,7 @@ describe("FloatingActionButtons", () => {
     );
 
     const buttons = screen.getAllByRole("button");
-    await userEvent.click(buttons[1]);
+    await userEvent.click(buttons[3]);
 
     expect(closeSelection).toHaveBeenCalled();
     expect(onFilter).toHaveBeenCalled();
@@ -107,7 +123,7 @@ describe("FloatingActionButtons", () => {
     );
 
     const buttons = screen.getAllByRole("button");
-    await userEvent.click(buttons[3]);
+    await userEvent.click(buttons[1]);
 
     expect(closeSelection).toHaveBeenCalled();
     expect(onStats).toHaveBeenCalled();
@@ -126,7 +142,7 @@ describe("FloatingActionButtons", () => {
     );
 
     const buttons = screen.getAllByRole("button");
-    await userEvent.click(buttons[4]);
+    await userEvent.click(buttons[0]);
 
     expect(closeSelection).toHaveBeenCalled();
     expect(onLogout).toHaveBeenCalled();

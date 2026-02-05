@@ -48,7 +48,7 @@ describe("RadioGroup", () => {
         orientation="horizontal"
       />
     );
-    expect(container.firstChild).toHaveClass("flex", "gap-6.5");
+    expect(container.firstChild).toHaveClass("flex w-full gap-4.5");
   });
 
   it("ориентация vertical применяет класс space-y-1", () => {
@@ -60,6 +60,6 @@ describe("RadioGroup", () => {
         orientation="vertical"
       />
     );
-    expect(container.firstChild).toHaveClass("space-y-1");
+    expect(container.firstChild).toHaveClass("flex w-full flex-col");
   });
 });

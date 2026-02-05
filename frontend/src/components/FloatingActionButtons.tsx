@@ -11,20 +11,20 @@ type Props = {
 };
 
 const btnClass = `
-  bg-blue-300/40           /* изначально полупрозрачная */
-  hover:bg-blue-300        /* при наведении - более насыщенный цвет */
-  hover:opacity-100        /* при наведении - полностью непрозрачная */
-  active:bg-blue-400       /* при удержании - самый насыщенный синий */
-  active:opacity-100       /* при удержании - полностью непрозрачная */
-  text-white 
-  font-bold 
+  bg-blue-300/40
+  hover:bg-blue-300
+  hover:opacity-100
+  active:bg-blue-400
+  active:opacity-100
+  text-white
+  font-bold
   py-3.5 
-  px-3.5 
-  rounded-full 
-  border 
-  transition-all           /* анимируем все свойства */
-  duration-500             /* продолжительность анимации */
-  ease-in-out              /* плавное ускорение и замедление */
+  px-3.5
+  rounded-full
+  border
+  transition-all
+  duration-500
+  ease-in-out
 `;
 
 

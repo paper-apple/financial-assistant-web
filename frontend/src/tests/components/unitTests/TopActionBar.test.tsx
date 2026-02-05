@@ -24,6 +24,7 @@ describe("TopActionBar", () => {
       <TopActionBar
         selectedCount={2}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
@@ -31,22 +32,23 @@ describe("TopActionBar", () => {
     );
 
     expect(screen.getByText("Выбрано 2")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Выделить всё" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Выбрать всё/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Удалить" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Отмена" })).toBeInTheDocument();
   });
 
-  it("кнопка 'Выделить всё' вызывает onSelectAll", async () => {
+  it("кнопка 'Выбрать всё' вызывает onSelectAll", async () => {
     render(
       <TopActionBar
         selectedCount={2}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
       />
     );
-    await userEvent.click(screen.getByRole("button", { name: "Выделить всё" }));
+    await userEvent.click(screen.getByRole("button", { name: /Выбрать всё/ }));
     expect(onSelectAll).toHaveBeenCalled();
   });
 
@@ -55,6 +57,7 @@ describe("TopActionBar", () => {
       <TopActionBar
         selectedCount={2}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
@@ -71,6 +74,7 @@ describe("TopActionBar", () => {
       <TopActionBar
         selectedCount={2}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
@@ -87,6 +91,7 @@ describe("TopActionBar", () => {
       <TopActionBar
         selectedCount={2}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
@@ -103,6 +108,7 @@ describe("TopActionBar", () => {
       <TopActionBar
         selectedCount={2}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
@@ -117,6 +123,7 @@ describe("TopActionBar", () => {
       <TopActionBar
         selectedCount={2}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
@@ -132,6 +139,7 @@ describe("TopActionBar", () => {
       <TopActionBar
         selectedCount={0}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
@@ -145,6 +153,7 @@ describe("TopActionBar", () => {
       <TopActionBar
         selectedCount={5}
         totalCount={5}
+        selectionMode={true}
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}

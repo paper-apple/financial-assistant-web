@@ -10,15 +10,16 @@ export const RadioGroup = <T extends string>({
   onChange: (val: T) => void;
   orientation?: "horizontal" | "vertical";
 }) => (
-<div className={`flex w-full ${orientation === "horizontal" ? "gap-4.5" : "flex-col"}`}>    {options.map(opt => {
-      const isActive = selected === opt.value;
-      const Icon = opt.icon;
+<div className={`flex w-full ${orientation === "horizontal" ? "gap-4.5" : "flex-col"}`}>    
+  {options.map(opt => {
+    const isActive = selected === opt.value;
+    const Icon = opt.icon;
       return (
         <button
           key={opt.value}
           type="button"
           onClick={() => onChange(opt.value)}
-          className={`flex flex-1 items-center  gap-2 px-2 py-2 rounded-md transition-colors cursor-pointer
+          className={`flex flex-1 items-center gap-2 px-2 py-2 rounded-md transition-colors cursor-pointer
             ${orientation == "horizontal" 
               ? 'justify-center'
               : 'justify-normal'

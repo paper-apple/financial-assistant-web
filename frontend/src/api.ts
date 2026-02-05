@@ -2,19 +2,7 @@
 import axios from "axios";
 import { type Expense, type ExpenseCreate, type ExpenseUpdate } from "./types"
 
-const getApiBase = () => {
-  // Для продакшена используйте env переменную
-  // if (import.meta.env.PROD) {
-  //   return import.meta.env.VITE_API_URL || "http://localhost:3000";
-  // }
-  const { hostname } = window.location;
-  return `http://${hostname}:3000`;
-};
-
-// export const API_BASE = getApiBase();
-
 const api = axios.create({
-  // baseURL: API_BASE || "https://localhost:3000",
   baseURL: '/api', // Vite проксирует на нужный адрес
   withCredentials: true,
 });
@@ -34,7 +22,7 @@ export const fetchExpenses = (filters?: any, sortParams?: any) => {
     Object.keys(filters).forEach(key => {
       if (filters[key] !== undefined && filters[key] !== null && filters[key] !== '') {
         if (key === 'keywords' && Array.isArray(filters[key])) {
-          filters[key].forEach((keyword: string, index: number) => {
+          filters[key].forEach((keyword: string) => {
             params.append(`keywords`, keyword);
           });
         } else {

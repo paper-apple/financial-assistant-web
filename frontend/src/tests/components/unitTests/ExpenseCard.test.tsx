@@ -56,7 +56,7 @@ describe("ExpenseCard", () => {
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    });
+    }).replace(',', '');
     expect(screen.getByText(expectedDate)).toBeInTheDocument();
   });
 

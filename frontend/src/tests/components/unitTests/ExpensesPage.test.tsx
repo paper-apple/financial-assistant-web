@@ -154,8 +154,8 @@ describe("ExpensesPage", () => {
 
     render(<ExpensesPage />);
 
-    await userEvent.type(screen.getByLabelText(/Имя пользователя/i), "user1234");
-    await userEvent.type(screen.getByLabelText(/Пароль/i), "Pass1234");
+    await userEvent.type(screen.getByTestId("username"), "user1234");
+    await userEvent.type(screen.getByTestId("password"), "Pass1234");
     await userEvent.click(
       screen.getByRole("button", { name: /Войти/i })
     );

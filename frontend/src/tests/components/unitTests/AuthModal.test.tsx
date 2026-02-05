@@ -40,10 +40,10 @@ describe("AuthModal", () => {
     const onAuth = vi.fn();
     setup({ onAuth });
 
-    fireEvent.change(screen.getByLabelText("Имя пользователя"), {
+    fireEvent.change(screen.getByTestId("username"), {
       target: { value: "D" },
     });
-    fireEvent.change(screen.getByLabelText("Пароль"), {
+    fireEvent.change(screen.getByTestId("password"), {
       target: { value: "123" },
     });
 
@@ -54,10 +54,10 @@ describe("AuthModal", () => {
   it("возвращает ошибку, если логин слишком короткий", () => {
     setup({});
 
-    fireEvent.change(screen.getByLabelText("Имя пользователя"), {
+    fireEvent.change(screen.getByTestId("username"), {
       target: { value: "D" },
     });
-    fireEvent.change(screen.getByLabelText("Пароль"), {
+    fireEvent.change(screen.getByTestId("password"), {
       target: { value: "123" },
     });
 
@@ -74,10 +74,10 @@ describe("AuthModal", () => {
     ["нет цифры", "Abcdef", "Пароль должен содержать хотя бы одну цифру"],
   ])("возвращает ошибку, если %s", (_, password, expectedError) => {
     setup({});
-    fireEvent.change(screen.getByLabelText("Имя пользователя"), {
+    fireEvent.change(screen.getByTestId("username"), {
       target: { value: "Dima" },
     });
-    fireEvent.change(screen.getByLabelText("Пароль"), {
+    fireEvent.change(screen.getByTestId("password"), {
       target: { value: password },
     });
         fireEvent.click(screen.getByRole("button", { name: "Войти" }));
@@ -90,10 +90,10 @@ describe("AuthModal", () => {
     const onAuth = vi.fn();
     setup({ onAuth });
 
-    fireEvent.change(screen.getByLabelText("Имя пользователя"), {
+    fireEvent.change(screen.getByTestId("username"), {
       target: { value: "Dima" },
     });
-    fireEvent.change(screen.getByLabelText("Пароль"), {
+    fireEvent.change(screen.getByTestId("password"), {
       target: { value: "Strong1" },
     });
 

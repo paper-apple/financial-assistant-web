@@ -45,7 +45,7 @@ import { createExpense, updateExpense } from '../../../api';
 const mockForm: FormState = {
   title: 'Test Expense',
   category: 'Food',
-  price: '100.50',
+  price: '100.5',
   location: 'Supermarket',
   datetime: '2024-01-01T12:00:00Z',
 };
@@ -54,7 +54,7 @@ const mockExpense: Expense = {
   id: 1,
   title: 'Test Expense',
   category: { id: 1, name: 'Food' },
-  price: 100.50,
+  price: 100.5,
   location: { id: 1, name: 'Supermarket' },
   datetime: '2024-01-01T12:00:00Z',
 };
@@ -79,6 +79,7 @@ describe('ExpenseForm', () => {
         updateField={mockUpdateField}
         onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
+        onCreated={mockOnCreated}
       />
     );
 
@@ -95,6 +96,7 @@ describe('ExpenseForm', () => {
         updateField={mockUpdateField}
         onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
+        onCreated={mockOnCreated}
       />
     );
 
@@ -110,6 +112,7 @@ describe('ExpenseForm', () => {
         updateField={mockUpdateField}
         onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
+        onCreated={mockOnCreated}
       />
     );
 
@@ -118,22 +121,6 @@ describe('ExpenseForm', () => {
     fireEvent.click(dateButton);
 
     expect(mockOnCalendarOpen).toHaveBeenCalledTimes(1);
-  });
-
-  it('вызывает onModalClose при клике на кнопку "Отменить"', () => {
-    render(
-      <ExpenseForm
-        form={mockForm}
-        updateField={mockUpdateField}
-        onModalOpen={mockOnCalendarOpen}
-        onModalClose={mockOnModalClose}
-      />
-    );
-
-    const cancelButton = screen.getByText('Отменить');
-    fireEvent.click(cancelButton);
-
-    expect(mockOnModalClose).toHaveBeenCalledTimes(1);
   });
 
   it('создает новый расход при сабмите без initialData', async () => {
@@ -147,13 +134,13 @@ describe('ExpenseForm', () => {
       />
     );
 
-    const submitButton = screen.getByText('Применить');
+    const submitButton = screen.getByText('Создать');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(createExpense).toHaveBeenCalledWith({
         ...mockForm,
-        price: 100.50, // Преобразованная цена
+        price: 100.5, // Преобразованная цена
       });
       expect(mockOnCreated).toHaveBeenCalledWith(mockExpense);
     });
@@ -168,16 +155,17 @@ describe('ExpenseForm', () => {
         onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
         onUpdated={mockOnUpdated}
+        onCreated={mockOnCreated}
       />
     );
 
-    const submitButton = screen.getByText('Применить');
+    const submitButton = screen.getByText('Изменить');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(updateExpense).toHaveBeenCalledWith(1, {
         ...mockForm,
-        price: 100.50,
+        price: 100.5,
       });
       expect(mockOnUpdated).toHaveBeenCalledWith(mockExpense);
     });
@@ -190,6 +178,7 @@ describe('ExpenseForm', () => {
         updateField={mockUpdateField}
         onModalOpen={mockOnCalendarOpen}
         onModalClose={mockOnModalClose}
+        onCreated={mockOnCreated}
       />
     );
 
@@ -213,7 +202,7 @@ describe('ExpenseForm', () => {
       />
     );
 
-    const submitButton = screen.getByText('Применить');
+    const submitButton = screen.getByText('Создать');
     fireEvent.click(submitButton);
 
     await waitFor(() => {

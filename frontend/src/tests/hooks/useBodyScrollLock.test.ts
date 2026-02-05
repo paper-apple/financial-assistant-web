@@ -31,6 +31,7 @@ describe("useBodyScrollLock", () => {
 
     expect(document.body.style.overflow).toBe("hidden");
     expect(document.body.style.paddingRight).toBe("0px");
+    console.log(document.body.style.paddingRight)
 
     unmount();
 

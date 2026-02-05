@@ -15,7 +15,7 @@ vi.mock("../../../components/TimeSeriesChart", () => ({
   TimeSeriesChart: vi.fn(() => <div data-testid="time-chart">TimeSeriesChart</div>),
 }));
 vi.mock("../../../components/ui/RadioGroup", () => ({
-  RadioGroup: vi.fn(({ options, selected }) => (
+  RadioGroup: vi.fn(({ selected }) => (
     <div data-testid="radio-group">RadioGroup: {selected}</div>
   )),
 }));
