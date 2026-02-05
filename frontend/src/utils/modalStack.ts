@@ -1,7 +1,7 @@
 // modalStack.ts
 //Создаёт идентификатор для текущего модального окна и добавляет его в список
 let modalStack: number[] = [];
-let nextId = 0;
+// let nextId = 0;
 
 export const addModalToStack = (): number => {
   const id = Math.random(); // Уникальный ID вместо счётчика
@@ -12,7 +12,7 @@ export const addModalToStack = (): number => {
 
 export const removeModalFromStack = (id: number) => {
   modalStack = modalStack.filter(modalId => modalId !== id);
-  nextId = 0;
+  // nextId = 0;
   console.log(modalStack)
 };
 

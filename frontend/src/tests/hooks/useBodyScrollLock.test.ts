@@ -1,6 +1,6 @@
 // useBodyScrollLock.test.ts
 import { renderHook } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
 
 describe("useBodyScrollLock", () => {
