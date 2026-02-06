@@ -47,6 +47,9 @@ export const AuthModal = ({
           {isLoginMode ? "Вход" : "Регистрация"}
         </h2>
 
+        <div className="my-4 p-2 bg-blue-100 rounded-md">
+          Введите имя пользователя "user" и пароль "1234Ab" для входа в аккаунт с готовым списоком расходов, либо же создайте свой
+        </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <FormField
             testId="username"

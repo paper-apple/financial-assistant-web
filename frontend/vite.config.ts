@@ -1,7 +1,7 @@
-/// <reference types="vitest" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from '@tailwindcss/vite'
+// vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -11,14 +11,13 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy, options) => {
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            console.log('🔄 Proxying:', req.method, req.url);
+          });
+        }
       }
     }
-  },
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: "./src/tests/setupTests.ts", // см. п.3
-    include: ['src/tests/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-  },
-})
+  }
+});

@@ -103,3 +103,16 @@ body {
 .floating-buttons {
   right: var(--scrollbar-width, 0px);
 }
+
+/* Добавьте в ваш глобальный CSS */
+/* :root {
+  --scrollbar-width: 17px;
+}
+
+body.no-scroll .floating-buttons {
+  right: var(--scrollbar-width) !important;
+}
+
+.floating-buttons {
+  transition: right 0.2s ease;
+} */

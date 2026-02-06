@@ -43,7 +43,7 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
       <div className="mb-2 pb-2 border-b border-gray-700">
         <label className="label-text">Поле для сортировки</label>
         <div className="pt-2">
-          <RadioGroup 
+          <RadioGroup<SortParams['field']>
             options={FIELD_OPTIONS} 
             selected={sortField} 
             onChange={setSortField} 
@@ -53,7 +53,7 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
       <div className="mb-4">
         <label className="label-text">Направление сортировки</label>
         <div className="pt-2">
-          <RadioGroup 
+          <RadioGroup<SortParams['direction']>
             options={DIRECTION_OPTIONS} 
             selected={sortDirection} 
             onChange={setSortDirection} 

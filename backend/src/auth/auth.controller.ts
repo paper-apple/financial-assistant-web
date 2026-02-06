@@ -16,13 +16,16 @@ export class AuthController {
 
     res.cookie('userId', user.id.toString(), {
       httpOnly: true,
-      secure: false, // в production — true
-      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production', // главное изменение!
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      // domain: process.env.NODE_ENV ? '.railway.app' : undefined, // опционально
+      path: '/',
     });
 
     return res.json({
       success: true,
-      user: { id: user.id, username: user.username }
+      user: { id: user.id, username: user.username },
+      userId: user.id.toString(), // отправляем ID для хранения в localStorage
     });
   }
 
@@ -32,8 +35,9 @@ export class AuthController {
 
     res.cookie('userId', user.id.toString(), {
       httpOnly: true,
-      secure: false, // в production — true
-      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production', // главное изменение!
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      domain: process.env.NODE_ENV ? '.railway.app' : undefined, // опционально
     });
 
     return res.json({

@@ -6,8 +6,13 @@ import { Request } from 'express';
 export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
-    const userId = request.cookies?.userId;
+    // Пробуем из cookie
+    let userId = request.cookies?.userId;
     
+    // Пробуем из заголовка (для Safari)
+    if (!userId) {
+      userId = request.headers['x-user-id'];
+    }
     if (!userId) {
       throw new UnauthorizedException('Требуется авторизация');
     }

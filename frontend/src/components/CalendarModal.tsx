@@ -19,7 +19,7 @@ export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
       <div className="flex justify-center">
         <DatePicker
           selected={modalDate}
-          onChange={(date) => setModalDate(date)}
+          onChange={(date: Date | null) => setModalDate(date)}
           showTimeSelect
           timeFormat="HH:mm"
           timeIntervals={15}

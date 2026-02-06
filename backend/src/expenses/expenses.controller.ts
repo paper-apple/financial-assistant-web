@@ -11,9 +11,25 @@ export class ExpensesController {
   constructor(private readonly expensesService: ExpensesService) {}
 
   @Post()
-  create(@Body() createExpenseDto: CreateExpenseDto, @Req() req) {
-    return this.expensesService.create(createExpenseDto, req.userId);
+    create(@Body() createExpenseDto: CreateExpenseDto, @Req() req) {
+      return this.expensesService.create(createExpenseDto, req.userId);
   }
+  // async create(@Body() createExpenseDto: CreateExpenseDto, @Req() req) {
+  //   console.log('Create expense request:', {
+  //     body: createExpenseDto,
+  //     user: req.user,
+  //     headers: req.headers,
+  //   });
+  
+  // try {
+  //   const expense = await this.expensesService.create(createExpenseDto, req.userId);
+  //   console.log('Expense created:', expense.id);
+  //   return expense;
+  // } catch (error) {
+  //   console.error('Error creating expense:', error);
+  //   throw error;
+  // }
+// }
 
   @Get()
   findAll(

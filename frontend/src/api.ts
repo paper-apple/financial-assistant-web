@@ -2,13 +2,35 @@
 import axios from "axios";
 import { type Expense, type ExpenseCreate, type ExpenseUpdate } from "./types"
 
-const api = axios.create({
-  baseURL: '/api', // Vite проксирует на нужный адрес
-  withCredentials: true,
+// const API_BASE = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "/api";
+const API_BASE = import.meta.env.PROD ? "/api" : "http://localhost:3000";
+const api = axios.create({ 
+  baseURL: API_BASE, 
+  withCredentials: true, 
 });
 
-export const login = (username: string, password: string) =>
-  api.post('/auth/login', { username, password });
+export const login = async (username: string, password: string) => {
+  const response = await api.post('/auth/login', { username, password });
+  
+  // Сохраняем ID в localStorage для iOS
+  if (response.data.user?.id) {
+    localStorage.setItem('userId', response.data.user.id.toString());
+  }
+
+  return response;
+};
+
+api.interceptors.request.use((config) => {
+  config.withCredentials = true;
+  
+  // Добавляем userId из localStorage
+  const userId = localStorage.getItem('userId');
+  if (userId) {
+    config.headers['X-User-Id'] = userId;
+  }
+  
+  return config;
+});
 
 export const register = (username: string, password: string) =>
   api.post('/auth/register', { username, password });
@@ -42,6 +64,8 @@ export const fetchExpenses = (filters?: any, sortParams?: any) => {
 // POST /expenses/
 export const createExpense = async (data: ExpenseCreate): Promise<Expense> => {
   const res = await api.post("/expenses", data);
+  console.log('Response:', res.data);
+  console.log('Response headers:', res.headers);
   return res.data;
 };
 

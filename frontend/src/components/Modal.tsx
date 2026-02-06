@@ -7,11 +7,14 @@ type Props = {
   onModalClose: () => void;
   children: ReactNode;
   title?: string;
+  calendar?: boolean;
 };
 
-export const Modal = ({ onModalClose: onClose, title, children }: Props) => {
+export const Modal = ({ onModalClose: onClose, title, children, calendar}: Props) => {
   const titleId = useId(); // Генерируется уникальный ID
-  useBodyScrollLock();
+  if (!calendar) {
+    useBodyScrollLock();
+  }
   const modalIdRef = useRef<number | null>(null);
 
   useEffect(() => {

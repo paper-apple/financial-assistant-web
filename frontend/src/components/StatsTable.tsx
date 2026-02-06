@@ -1,6 +1,6 @@
 // StatsTable.tsx
 import type { StatRow } from "../utils/groupExpenses";
-import 'simplebar-react/dist/simplebar.min.css';
+// import 'simplebar-react/dist/simplebar.min.css';
 import type { GroupField } from "../types";
 import { isSafari } from "../utils/isSafari";
 

@@ -1,6 +1,7 @@
 // app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ExpensesModule } from './expenses/expenses.module';
 import { CategoriesModule } from './categories/categories.module';
 import { LocationsModule } from './locations/locations.module';
@@ -10,10 +11,14 @@ import { Expense } from './expenses/entities/expense.entity';
 import { Category } from './categories/entities/category.entity';
 import { Location } from './locations/entities/location.entity';
 import { User } from './users/entities/user.entity';
+import { AppController } from './app.controller'; // Добавьте импорт
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -23,7 +28,13 @@ import { User } from './users/entities/user.entity';
       database: process.env.DB_NAME,
       entities: [Expense, Category, Location, User],
       synchronize: true, // Только для разработки
+      url: process.env.DATABASE_URL,
       autoLoadEntities: true,
+      // extra: { 
+      //   ssl: { 
+      //     rejectUnauthorized: false, 
+      //   }, 
+      // },
     }),
     ExpensesModule,
     CategoriesModule,
@@ -31,5 +42,7 @@ import { User } from './users/entities/user.entity';
     UsersModule,
     AuthModule,
   ],
+  controllers: [AppController], // Добавьте контроллер
+  providers: [],
 })
 export class AppModule {}

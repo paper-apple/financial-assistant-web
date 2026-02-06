@@ -20,7 +20,6 @@ import { StatsTable } from "./StatsTable";
 import { buildChartData } from "../utils/buildChartData";
 import { TagIcon, RectangleStackIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { RadioGroup } from "./ui/RadioGroup";
-import 'simplebar-react/dist/simplebar.min.css';
 import { TimeSeriesChart } from "./TimeSeriesChart";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
@@ -67,7 +66,7 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
               Группировать по:
             </label>
             <div className="w-full">
-            <RadioGroup
+            <RadioGroup<GroupField>
               options={GROUP_OPTIONS}
               selected={field}
               onChange={setField}

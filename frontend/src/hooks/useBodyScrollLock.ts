@@ -4,19 +4,22 @@ import { isSafari } from "../utils/isSafari";
 
 export const useBodyScrollLock = (isSafariBrowser = isSafari) => {
   useEffect(() => {
-    let originalPaddingRight: string = ""
-    if (!isSafariBrowser) {
-      originalPaddingRight = document.body.style.paddingRight;
-      document.body.style.paddingRight = "16px"
-    }
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
+    if (document.documentElement.scrollHeight > window.innerHeight) {
+      let originalPaddingRight: string = ""
       if (!isSafariBrowser) {
-        document.body.style.paddingRight = originalPaddingRight;
+        originalPaddingRight = document.body.style.paddingRight;
+        document.body.style.paddingRight = "16px"
       }
-      document.body.style.overflow = originalOverflow;
-    };
+      document.body.style.overflow = "hidden";
+      document.body.classList.add('no-scroll');
+
+      return () => {
+        if (!isSafariBrowser) {
+          document.body.style.paddingRight = originalPaddingRight;
+        }
+        document.body.style.overflow = "";
+        document.body.classList.remove('no-scroll');
+      };
+    }
   }, [isSafariBrowser]);
 };

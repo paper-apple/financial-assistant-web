@@ -88,7 +88,7 @@ export const ExpenseModals = ({
     )}
 
     {modals.calendar && form &&(
-      <Modal onModalClose={() => closeModal("calendar")}>
+      <Modal onModalClose={() => closeModal("calendar")} calendar>
         <CalendarModal 
           value={form.datetime ? new Date(form.datetime) : null}          
           onSave={(date) => updateFormField("datetime", date.toISOString())}          

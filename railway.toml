@@ -1,0 +1,9 @@
+[build]
+builder = "nixpacks"
+buildCommand = "cd backend && npm install && npm run build"
+startCommand = "cd backend && npm run start:prod"
+
+[deploy]
+  [[deploy.services]]
+    name = "backend"
+    sourcePath = "backend"
