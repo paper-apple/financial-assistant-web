@@ -14,6 +14,7 @@ describe("TopActionBar", () => {
   const onSelectAll = vi.fn();
   const onDelete = vi.fn();
   const onCancel = vi.fn();
+  const setSelectionMode = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -28,6 +29,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
 
@@ -46,6 +48,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
     await userEvent.click(screen.getByRole("button", { name: /Выбрать всё/ }));
@@ -61,6 +64,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
     await userEvent.click(screen.getByRole("button", { name: "Удалить" }));
@@ -78,6 +82,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
     await userEvent.click(screen.getByRole("button", { name: "Удалить" }));
@@ -95,6 +100,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
     await userEvent.click(screen.getByRole("button", { name: "Удалить" }));
@@ -112,6 +118,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
     await userEvent.click(screen.getByRole("button", { name: "Отмена" }));
@@ -127,6 +134,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
     const escEvent = new KeyboardEvent("keydown", { key: "Escape" });
@@ -143,6 +151,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
     expect(screen.getByRole("button", { name: "Удалить" })).toBeDisabled();
@@ -157,6 +166,7 @@ describe("TopActionBar", () => {
         onSelectAll={onSelectAll}
         onDelete={onDelete}
         onCancel={onCancel}
+        setSelectionMode={setSelectionMode}
       />
     );
     expect(screen.getByRole("button", { name: "Снять всё" })).toBeInTheDocument();

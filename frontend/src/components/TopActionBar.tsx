@@ -6,6 +6,7 @@ type Props = {
   selectedCount: number;
   totalCount: number;
   selectionMode: boolean;
+  setSelectionMode: React.Dispatch<React.SetStateAction<boolean>>;
   onSelectAll: () => void;
   onDelete: () => void;
   onCancel: () => void;
@@ -15,6 +16,7 @@ export const TopActionBar = ({
   selectedCount,
   totalCount,
   selectionMode,
+  setSelectionMode,
   onSelectAll,
   onDelete,
   onCancel
@@ -115,9 +117,9 @@ export const TopActionBar = ({
           </span>
           <div className="flex gap-2 flex-1 justify-end">
             <button
-              onClick={() => {
-                onDelete();
-                setConfirmDelete(false);
+              onClick={async() => {
+                setSelectionMode(false)
+                await onDelete();
               }}
               className="btn-base btn-delete flex-1 min-w-0"
             >

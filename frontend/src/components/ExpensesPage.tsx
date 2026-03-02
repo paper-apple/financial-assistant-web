@@ -36,6 +36,7 @@ export const ExpensesPage = () => {
   const {
     selectionMode,
     selectedIds,
+    setSelectionMode,
     handleLongPress,
     handleSelect,
     handleDeleteSelected,
@@ -78,6 +79,7 @@ export const ExpensesPage = () => {
 
   const handleAuth = async (username: string, password: string) => {
     try {
+      console.log("Expenses Page", authError)
       setAuthError("");
       const fn = isLoginMode ? loginUser : registerUser;
       await fn(username, password);
@@ -85,6 +87,7 @@ export const ExpensesPage = () => {
       setAuthModalOpen(false); 
     } catch (error: any) {
       console.error("Ошибка:", error);
+      throw error;
     }
   };
 
@@ -160,6 +163,7 @@ export const ExpensesPage = () => {
             selectedCount={selectedIds.length}
             totalCount={expenses.length}
             selectionMode={selectionMode}
+            setSelectionMode={setSelectionMode}
             onSelectAll={handleSelectAll}
             onDelete={() => handleDeleteSelected(removeExpenses)}
             onCancel={handleCancelSelection}

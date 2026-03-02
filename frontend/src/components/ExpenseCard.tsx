@@ -86,7 +86,7 @@ export const ExpenseCard = ({
 
         <InfoRow
           text={expense.title}
-          className="font-bold text-sm text-gray-700"
+          className="font-semibold text-sm text-gray-700"
         />
 
         <div className="hidden sm:block space-y-2">

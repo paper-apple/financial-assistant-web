@@ -20,6 +20,7 @@ export function useAuth() {
 
   const loginUser = async (username: string, password: string) => {
     try {
+            console.log("useAuth", authError)
       await login(username, password);
       setUser({ username });
     } catch (err: any) {
@@ -30,6 +31,8 @@ export function useAuth() {
 
   const registerUser = async (username: string, password: string) => {
     try {
+                  console.log("useAuth", authError)
+
       await register(username, password);
       setUser({ username });
     } catch (err: any) {

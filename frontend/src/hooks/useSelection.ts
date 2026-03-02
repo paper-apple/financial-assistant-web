@@ -20,14 +20,15 @@ export const useSelection = (expenses: Expense[]) => {
   };
 
   const handleDeleteSelected = async (removeFn: (ids: number[]) => Promise<void>) => {
-    await removeFn(selectedIds);
     setSelectionMode(false);
+    await removeFn(selectedIds);
+
     setSelectedIds([]);
   };
 
   const handleCancelSelection = () => {
     setSelectionMode(false);
-    setTimeout(() => setSelectedIds([]), 500);
+    setSelectedIds([]);
   };
 
   const handleSelectAll = () => {
@@ -39,6 +40,7 @@ export const useSelection = (expenses: Expense[]) => {
   return {
     selectionMode,
     selectedIds,
+    setSelectionMode,
     handleLongPress,
     handleSelect,
     handleDeleteSelected,

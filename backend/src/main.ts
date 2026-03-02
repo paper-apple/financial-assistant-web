@@ -4,14 +4,9 @@ dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
-import { ArgumentsHost, ExceptionFilter, Logger, ValidationPipe } from '@nestjs/common';
-
-
-const logger = new Logger('Bootstrap');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   app.use(cookieParser());
 
   app.enableCors({
@@ -32,3 +27,7 @@ async function bootstrap() {
 console.log('DB_USER =', process.env.DB_USER);
 
 bootstrap();
+
+function compression(): any {
+  throw new Error('Function not implemented.');
+}

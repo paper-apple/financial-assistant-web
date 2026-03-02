@@ -40,9 +40,9 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
 
   return (
     <div>
-      <div className="mb-2 pb-2 border-b border-gray-700">
+      <div className="pb-2">
         <label className="label-text">Поле для сортировки</label>
-        <div className="pt-2">
+        <div className="p-2 rounded-md border border-gray-400">
           <RadioGroup<SortParams['field']>
             options={FIELD_OPTIONS} 
             selected={sortField} 
@@ -50,9 +50,9 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
           />
         </div>
       </div>
-      <div className="mb-4">
+      <div className="pb-2">
         <label className="label-text">Направление сортировки</label>
-        <div className="pt-2">
+        <div className="p-2 rounded-md border border-gray-400">
           <RadioGroup<SortParams['direction']>
             options={DIRECTION_OPTIONS} 
             selected={sortDirection} 

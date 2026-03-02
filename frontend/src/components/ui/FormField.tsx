@@ -2,6 +2,15 @@
 import { SuggestionsList } from "./SuggestionList";
 import type { FormState } from "../../types";
 import { useEffect, useState } from "react";
+import {
+  TagIcon,
+  RectangleStackIcon,
+  CurrencyDollarIcon,
+  MapPinIcon,
+  CalendarDaysIcon,
+  ArrowUpIcon,
+  ArrowDownIcon
+} from '@heroicons/react/24/solid';
 
 type FormFieldProps = {
   label?: string;
@@ -17,6 +26,7 @@ type FormFieldProps = {
   calendarOpen?: () => void;
   onClear?: () => void;
   type?: string;
+  icon?: React.ElementType;
 };
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -33,6 +43,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   calendarOpen: onFieldClick,
   onClear,
   type = 'text',
+  icon,
 }) => {
   
   const [isFocused, setIsFocused] = useState(false);
@@ -68,10 +79,24 @@ export const FormField: React.FC<FormFieldProps> = ({
       }
     }, [isFocused]);
 
+  const Icon = icon;
+
   return (
     <div className="relative w-full">
-      <label className="label-text">{label}</label>
-      <div className="div-input ">
+      <div>
+        {label && (
+          <div className="flex justify-start items-end gap-1.5 pb-0.5">
+            {Icon && <Icon className="flex items-center mb-0.5 w-4 h-4 text-blue-300"/>}
+            <label className="label-text">{label}</label>
+          </div>
+        )}
+      </div>
+      <div className={`
+        div-input transition-all duration-200
+        ${error ? 'bg-red-50' : ''}
+        ${isFocused ? 'ring-4 ring-blue-50' : ''}
+        }
+      `}>
         <input
           name={name}
           value={value}
@@ -90,10 +115,10 @@ export const FormField: React.FC<FormFieldProps> = ({
             }, 100);
           }}
           onKeyDown={handleKeyDown}
-          className={`flex-1 min-w-0 outline-none pb-1
+          className={`flex-1 min-w-0 outline-none text-gray-700
             placeholder:text-sm placeholder:text-gray-400 
             ${readOnly ? "cursor-pointer" : ""} 
-            ${ error ? "" : ""}`}
+          `}
         />
 
         {onClear && (

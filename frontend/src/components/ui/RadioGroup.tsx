@@ -19,18 +19,18 @@ export const RadioGroup = <T extends string>({
           key={opt.value}
           type="button"
           onClick={() => onChange(opt.value)}
-          className={`flex flex-1 items-center gap-2 px-2 py-2 rounded-md transition-colors cursor-pointer
+          className={`flex flex-1 items-center gap-2 px-2 py-2 rounded-md border border-white transition-colors cursor-pointer
             ${orientation == "horizontal" 
               ? 'justify-center'
               : 'justify-normal'
             }
             ${isActive 
-              ? 'bg-blue-100 ' 
-              : 'bg-white  hover:bg-gray-50'
+              ? 'bg-blue-100 hover:border-gray-300' 
+              : 'hover:border-gray-300'
             }`}
         >
           <Icon className="w-4 h-4 text-blue-300" />
-          <span className="text-sm text-gray-800">{opt.label}</span>
+          <span className="text-sm text-gray-700">{opt.label}</span>
         </button>
       );
     })}

@@ -44,16 +44,15 @@ export const Modal = ({ onModalClose: onClose, title, children, calendar}: Props
   return (
     <div
       className="fixed inset-0 bg-gray-500/30 backdrop-blur-xs z-50 flex items-center justify-center"
-      // className="fixed inset-0 bg-white backdrop-blur-xs z-50 flex items-center justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-3 w-full max-w-sm mx-auto"
+        className="bg-white rounded-lg p-3 w-full max-w-sm mx-auto shadow-md border border-gray-300 "
         onClick={(e) => e.stopPropagation()}
         role="dialog"
       >
         {title && (
-          <h3 id={titleId} className="text-lg font-semibold pb-2 mb-2 text-center border-b text-gray-700">
+          <h3 id={titleId} className="text-lg mb-1 text-center border-b border-gray-400">
             {title}
           </h3>
         )}

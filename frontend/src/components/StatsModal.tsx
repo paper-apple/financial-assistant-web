@@ -59,13 +59,13 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
 
   return (
     <div className="w-full bg-white rounded-lg ">
-      <div className="relative mb-4 flex flex-wrap items-center gap-3">
+      <div className="relative mb-2 flex flex-wrap items-center gap-1">
         {mode !== "time" ? (
           <>
             <label className="text-sm text-center text-gray-600 w-full">
               Группировать по:
             </label>
-            <div className="w-full">
+            <div className="w-full rounded-lg p-2 mb-1 border border-gray-400">
             <RadioGroup<GroupField>
               options={GROUP_OPTIONS}
               selected={field}

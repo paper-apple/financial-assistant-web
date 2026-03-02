@@ -1,7 +1,8 @@
 // AuthModal.tsx
-import { useState } from "react";
-import { useAuthValidation } from "../hooks/useAuthValidation";
+import { useEffect, useState } from "react";
+// import { useAuthValidation } from "../hooks/useAuthValidation";
 import { FormField } from "./ui/FormField";
+import { ErrorBar } from "./ErrorBar";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -20,29 +21,52 @@ export const AuthModal = ({
 }: AuthModalProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [localError, setLocalError] = useState("");
+  const [showErrorTooltip, setShowErrorTooltip] = useState(false);
 
-  const { validateUsername, validatePassword } = useAuthValidation();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const usernameError = validateUsername(username);
-    const passwordError = validatePassword(password);
-
-    if (usernameError || passwordError) {
-      setLocalError(usernameError || passwordError);
-      return;
+    // console.log("before onAuth", error)
+    // await onAuth(username, password);
+    // console.log("after onAuth", error)
+    // if (error) {
+    //   console.log("after error == true", error)
+    //   setShowErrorTooltip(true)
+    // }
+    try {
+      await onAuth(username, password);
+      // Если дошли сюда - ошибки нет
+      console.log("Успешный вход");
+      setUsername("")
+      setPassword("")
+    } catch (error) {
+      // Ошибка уже поймана
+      setShowErrorTooltip(true);
+      console.log("error", error);
     }
-    
-    onAuth(username, password);
   };
+
+//   useEffect(() => {
+//   if (error) {
+//     setShowErrorTooltip(true);
+//     console.log("error", error);
+//   }
+// }, [error]); // Сработает когда authError изменится
+
+  useEffect(() => {
+    if (showErrorTooltip) {
+      const timer = setTimeout(() => {
+        setShowErrorTooltip(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showErrorTooltip]);
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-500/30 backdrop-blur-xs flex items-center justify-center z-50" data-testid={"auth-modal"}>
-      <div className="bg-white p-6 rounded-lg w-96">
+      <div className="bg-white p-3 rounded-lg shadow-md w-96">
         <h2 className="text-xl font-semibold text-center mb-4">
           {isLoginMode ? "Вход" : "Регистрация"}
         </h2>
@@ -64,11 +88,12 @@ export const AuthModal = ({
             onChange={(e) => setPassword(e.target.value)}
             type="password"
           />
-          <div
-            className={`rounded h-[64px] text-
-              ${error || localError ? " text-red-600" : "bg-transparent"}`}
-          >
-            {error || localError}
+          <div className="relative">
+            {showErrorTooltip && (
+              <div>
+              <ErrorBar errorText={error}/>
+              </div>
+            )}
           </div>
 
           <div className="flex gap-2">

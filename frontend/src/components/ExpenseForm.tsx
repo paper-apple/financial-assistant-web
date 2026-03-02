@@ -5,6 +5,15 @@ import { useKeywordSuggestions } from "../hooks/useKeywordSuggestions";
 import { useExpenseFormValidation } from "../hooks/useExpenseFormValidation";
 import { sanitizePrice } from "../utils/sanitizePrice";
 import { FormField } from "./ui/FormField";
+import {
+  TagIcon,
+  RectangleStackIcon,
+  CurrencyDollarIcon,
+  MapPinIcon,
+  CalendarDaysIcon,
+} from '@heroicons/react/24/solid';
+import { useEffect, useState } from "react";
+import {ErrorBar} from "./ErrorBar"
 
 type Props = {
   form: FormState;
@@ -16,11 +25,11 @@ type Props = {
   onModalClose: () => void;
 };
 
-const FIELDS_CONFIG: { key: keyof FormState; label: string; placeholder: string, testId: string }[] = [
-  { key: "title", label: "Название", placeholder: "...введите название расхода", testId: 'input-title'},
-  { key: "category", label: "Категория", placeholder: "...введите категорию расхода", testId: 'input-category' },
-  { key: "price", label: "Стоимость", placeholder: "...введите стоимость расхода", testId: 'input-price' },
-  { key: "location", label: "Место", placeholder: "...введите место оплаты расхода", testId: 'input-location' },
+const FIELDS_CONFIG: { key: keyof FormState; label: string; placeholder: string, testId: string, icon: React.ElementType }[] = [
+  { key: "title", label: "Название", placeholder: "...введите название расхода", testId: 'input-title', icon: TagIcon},
+  { key: "category", label: "Категория", placeholder: "...введите категорию расхода", testId: 'input-category', icon: RectangleStackIcon },
+  { key: "price", label: "Стоимость", placeholder: "...введите стоимость расхода", testId: 'input-price', icon: CurrencyDollarIcon },
+  { key: "location", label: "Место", placeholder: "...введите место оплаты расхода", testId: 'input-location', icon: MapPinIcon },
 ];
 
 export const ExpenseForm = ({
@@ -47,14 +56,19 @@ export const ExpenseForm = ({
     updateField(name as keyof FormState, finalValue);
   };
 
+  const [showErrorTooltip, setShowErrorTooltip] = useState(false);
+
   const handleAddExpense = async () => {
+    if (!isValid()) {
+      setShowErrorTooltip(true);
+    }
     validateAndSubmit(async () => {
       try {
-          const created = await createExpense({
-            ...form,
-            price: +form.price,
-          });
-          onCreated(created);
+        const created = await createExpense({
+          ...form,
+          price: +form.price,
+        });
+        onCreated(created);
       } catch (err) {
         console.error("Ошибка при сохранении:", err);
       }
@@ -76,11 +90,20 @@ export const ExpenseForm = ({
       }
     });
   };
+
+  useEffect(() => {
+    if (showErrorTooltip) {
+      const timer = setTimeout(() => {
+        setShowErrorTooltip(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showErrorTooltip]);
   
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4">
-        {FIELDS_CONFIG.map(({ key, label, testId }) => {
+      <div className="grid grid-cols-1 gap-2">
+        {FIELDS_CONFIG.map(({ key, label, testId, icon }) => {
           const sugg = suggestionsMap[key as keyof typeof suggestionsMap];
           return (
             <FormField
@@ -100,13 +123,14 @@ export const ExpenseForm = ({
                     }
                   : undefined
               }
+              icon={icon}
             />
           );
         })}
         <div>
-          <label className="label-text">Дата</label>
           <div>
             <FormField
+              label="Дата"
               testId="button-date"
               value={
                 form.datetime
@@ -121,35 +145,38 @@ export const ExpenseForm = ({
               }
               readOnly
               calendarOpen={() => openModal("calendar")}
+              icon={CalendarDaysIcon}
             />
           </div>
         </div>
       </div>
-      <div className="my-1 min-h-[26px] max-h-[26px] overflow-y-auto text-red-600 text-center">
-        {wasSubmitted && !isValid() && (
-          <p>Заполните поля</p>
+      {/* <div className="my-1 min-h-[40px] max-h-[40px] overflow-y-auto text-red-600 text-center">
+       */}
+
+      <div className="relative">
+        {showErrorTooltip && (
+          <div>
+          <ErrorBar errorText="Пожалуйста, заполните все обязательные поля"/>
+          </div>
         )}
       </div>
-
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-3">
         <button
           onClick={closeModal}
           className="btn-base btn-cancel"
         >
           Отмена
         </button>
-        {/* <div className="flex gap-2"> */}
         {onUpdated && (
           <button onClick={handleEditExpense} className={`btn-base w-[100px]
           ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
             Изменить
           </button>
         )}
-        <button onClick={handleAddExpense} className={`btn-base w-[100px]
+        <button onClick={handleAddExpense} className={`btn-base w-[100px] 
           ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
           Создать
         </button>
-        {/* </div> */}
       </div>
     </div>
   );

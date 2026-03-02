@@ -3,7 +3,6 @@
     {
       "source": "/api/:path*",
       "destination": "https://financial-assistant-web.onrender.com/:path*"
-
     }
   ]
 }

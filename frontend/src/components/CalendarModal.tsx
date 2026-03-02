@@ -31,10 +31,11 @@ export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
           fixedHeight
         />
       </div>
-      <div className="flex justify-end gap-2">
+      <div className="flex gap-2 pt-2 px-1">
         <button
           onClick={onClose}
-          className="mt-3 w-full text-sm border rounded-md hover:bg-gray-100"
+          // className="w-full text-sm border rounded-md hover:bg-gray-100"
+          className="w-full btn-base btn-cancel"
         >
           Закрыть
         </button>
@@ -45,7 +46,8 @@ export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
             }
             onClose();
           }}
-          className="mt-3 w-full text-sm bg-blue-300 hover:bg-blue-500 text-white py-2 border border-blue-300 rounded-md"
+          // className="mt-3 w-full text-sm bg-blue-300 hover:bg-blue-500 text-white py-2 border border-blue-300 rounded-md"
+          className="w-full btn-base btn-confirm"
         >
           Сохранить
         </button>

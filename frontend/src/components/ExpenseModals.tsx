@@ -98,7 +98,7 @@ export const ExpenseModals = ({
     )}
 
     {modals.startDate && (
-      <Modal onModalClose={() => closeModal("startDate")}>
+      <Modal onModalClose={() => closeModal("startDate")} calendar>
         <CalendarModal 
           value={filtersState.startDate} 
           onSave={(date) => filtersState.setStartDate(date)}          
@@ -108,7 +108,7 @@ export const ExpenseModals = ({
     )}
 
     {modals.endDate &&(
-      <Modal onModalClose={() => closeModal("endDate")}>
+      <Modal onModalClose={() => closeModal("endDate")} calendar>
         <CalendarModal 
           value={filtersState.endDate}
           onSave={(date) => filtersState.setEndDate(date)}          

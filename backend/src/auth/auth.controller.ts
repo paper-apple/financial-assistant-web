@@ -3,6 +3,7 @@ import { Controller, Post, Body, Res } from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
 
+
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -13,37 +14,19 @@ export class AuthController {
     @Res() res: Response
   ) {
     const user = await this.authService.validateUser(body.username, body.password);
-
-    res.cookie('userId', user.id.toString(), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // главное изменение!
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      // domain: process.env.NODE_ENV ? '.railway.app' : undefined, // опционально
-      path: '/',
-    });
-
-    return res.json({
-      success: true,
-      user: { id: user.id, username: user.username },
-      userId: user.id.toString(), // отправляем ID для хранения в localStorage
-    });
+    
+    this.authService.setUserIdCookie(res, user.id);
+    
+    return res.json(this.authService.formatUserResponse(user));
   }
 
   @Post('register')
   async register(@Body() body, @Res() res: Response) {
     const user = await this.authService.register(body.username, body.password);
-
-    res.cookie('userId', user.id.toString(), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // главное изменение!
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      domain: process.env.NODE_ENV ? '.railway.app' : undefined, // опционально
-    });
-
-    return res.json({
-      success: true,
-      user: { id: user.id, username: user.username },
-    });
+    
+    this.authService.setUserIdCookie(res, user.id);
+    
+    return res.json(this.authService.formatUserResponse(user));
   }
 
   @Post('logout')

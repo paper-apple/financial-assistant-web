@@ -37,6 +37,9 @@ export const register = (username: string, password: string) =>
 
 export const logout = () => api.post('/auth/logout');
 
+export const findUser = (username: string) =>
+  api.post('/auth/findUser', {username});
+
 export const fetchExpenses = (filters?: any, sortParams?: any) => {
   const params = new URLSearchParams();
   

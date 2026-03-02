@@ -27,14 +27,9 @@ import { AppController } from './app.controller'; // Добавьте импор
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [Expense, Category, Location, User],
-      synchronize: true, // Только для разработки
+      synchronize: true,
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
-      // extra: { 
-      //   ssl: { 
-      //     rejectUnauthorized: false, 
-      //   }, 
-      // },
     }),
     ExpensesModule,
     CategoriesModule,
@@ -42,7 +37,7 @@ import { AppController } from './app.controller'; // Добавьте импор
     UsersModule,
     AuthModule,
   ],
-  controllers: [AppController], // Добавьте контроллер
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
