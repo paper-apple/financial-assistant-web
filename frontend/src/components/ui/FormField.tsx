@@ -2,15 +2,7 @@
 import { SuggestionsList } from "./SuggestionList";
 import type { FormState } from "../../types";
 import { useEffect, useState } from "react";
-import {
-  TagIcon,
-  RectangleStackIcon,
-  CurrencyDollarIcon,
-  MapPinIcon,
-  CalendarDaysIcon,
-  ArrowUpIcon,
-  ArrowDownIcon
-} from '@heroicons/react/24/solid';
+
 
 type FormFieldProps = {
   label?: string;
@@ -85,7 +77,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     <div className="relative w-full">
       <div>
         {label && (
-          <div className="flex justify-start items-end gap-1.5 pb-0.5">
+          <div className="flex justify-start pl-1 items-end gap-0.5 pb-0.5">
             {Icon && <Icon className="flex items-center mb-0.5 w-4 h-4 text-blue-300"/>}
             <label className="label-text">{label}</label>
           </div>

@@ -150,9 +150,6 @@ export const ExpenseForm = ({
           </div>
         </div>
       </div>
-      {/* <div className="my-1 min-h-[40px] max-h-[40px] overflow-y-auto text-red-600 text-center">
-       */}
-
       <div className="relative">
         {showErrorTooltip && (
           <div>

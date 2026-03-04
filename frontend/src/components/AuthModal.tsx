@@ -26,32 +26,20 @@ export const AuthModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // console.log("before onAuth", error)
-    // await onAuth(username, password);
-    // console.log("after onAuth", error)
-    // if (error) {
-    //   console.log("after error == true", error)
-    //   setShowErrorTooltip(true)
-    // }
     try {
       await onAuth(username, password);
-      // Если дошли сюда - ошибки нет
-      console.log("Успешный вход");
       setUsername("")
       setPassword("")
     } catch (error) {
-      // Ошибка уже поймана
       setShowErrorTooltip(true);
-      console.log("error", error);
     }
   };
 
-//   useEffect(() => {
-//   if (error) {
-//     setShowErrorTooltip(true);
-//     console.log("error", error);
-//   }
-// }, [error]); // Сработает когда authError изменится
+  const logInAsDemo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    onAuth("testuser", "1234Ab");
+  };
+
 
   useEffect(() => {
     if (showErrorTooltip) {
@@ -67,14 +55,14 @@ export const AuthModal = ({
   return (
     <div className="fixed inset-0 bg-gray-500/30 backdrop-blur-xs flex items-center justify-center z-50" data-testid={"auth-modal"}>
       <div className="bg-white p-3 rounded-lg shadow-md w-96">
-        <h2 className="text-xl font-semibold text-center mb-4">
+        <h2 className="text-xl font-semibold text-center mb-4 border-b border-gray-400">
           {isLoginMode ? "Вход" : "Регистрация"}
         </h2>
-
-        <div className="my-4 p-2 bg-blue-100 rounded-md">
-          Введите имя пользователя "user" и пароль "1234Ab" для входа в аккаунт с готовым списоком расходов, либо же создайте свой
+        <div className="my-2 p-2 bg-blue-100 rounded-md">
+          Вы можете создать свой аккаунт, либо нажать кнопку "Войти как демо-пользователь",
+          чтобы зайти в аккаунт с готовым списком расходов
         </div>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <FormField
             testId="username"
             label="Имя пользователя"
@@ -96,7 +84,7 @@ export const AuthModal = ({
             )}
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 mb-2">
             <button
               type="submit"
               className="btn-base btn-confirm"
@@ -113,6 +101,15 @@ export const AuthModal = ({
             </button>
           </div>
         </form>
+        <div>
+          <button
+            type="button"
+            onClick={logInAsDemo}
+            className="btn-base btn-confirm"
+          >
+            Войти как демо-пользователь
+          </button>
+        </div>
       </div>
     </div>
   );

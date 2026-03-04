@@ -54,7 +54,7 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
     () => Math.round(rows.reduce((s, r) => s + r.total, 0) * 100) / 100, [rows]);
   const totalCount = useMemo(() => rows.reduce((s, r) => s + r.count, 0), [rows]);
 
-  const threshold = 0.02;
+  const threshold = 0.015;
   const chartData = useMemo(() => buildChartData(rows, grandTotal, threshold), [rows, grandTotal]);
 
   return (

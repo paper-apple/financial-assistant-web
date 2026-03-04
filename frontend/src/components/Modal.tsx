@@ -52,7 +52,7 @@ export const Modal = ({ onModalClose: onClose, title, children, calendar}: Props
         role="dialog"
       >
         {title && (
-          <h3 id={titleId} className="text-lg mb-1 text-center border-b border-gray-400">
+          <h3 id={titleId} className="text-lg mb-2 text-center border-b border-gray-400">
             {title}
           </h3>
         )}

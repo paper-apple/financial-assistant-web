@@ -77,7 +77,7 @@
 }
 
 .label-text {
-  @apply text-center text-sm text-gray-700 tracking-wide
+  @apply text-center text-sm pl-1 text-gray-700 tracking-wide
 }
 
 .first-column {
