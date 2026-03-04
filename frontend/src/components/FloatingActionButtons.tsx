@@ -1,5 +1,6 @@
 // FloatingActionButtons.tsx
 import { FunnelIcon, PlusIcon, ChartBarIcon, ArrowLeftStartOnRectangleIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline';
+import { isSafari } from '../utils/isSafari';
 
 type Props = {
   onAdd: () => void;
@@ -49,14 +50,16 @@ export const FloatingActionButtons = ({
   ];
 
   return (
-    <div className="floating-buttons fixed bottom-0 left-1 right-0 z-40 p-4 px-6 
-      max-w-screen-sm mx-auto pointer-events-none"
-    >
+    <div className={`
+      fixed bottom-0 left-1 right-1 z-40 p-4 px-6 
+      max-w-screen-sm mx-auto pointer-events-none
+      ${!isSafari ? 'floating-buttons' : ''}
+    `}>
       <div className="max-w-screen-sm mx-auto">
         <div className="flex justify-between">
           {buttons.map(({ onClick, icon: Icon }, idx) => (
             <button key={idx} onClick={onClick} className={btnClass} >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-4 h-4 opacity-80" />
             </button>
           ))}
         </div>

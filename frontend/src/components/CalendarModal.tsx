@@ -26,7 +26,7 @@ export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
           locale={ru}
           dateFormat="dd.MM.yyyy HH:mm"
           calendarClassName="ios-calendar"
-          timeCaption="Время"
+          timeCaption=""
           inline
           fixedHeight
         />

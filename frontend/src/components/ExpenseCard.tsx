@@ -62,7 +62,7 @@ export const ExpenseCard = ({
     <li
       key={expense.id}
       data-testid={`expense-card-${expense.id}`}
-      className={`relative transition-colors cursor-pointer p-3 rounded-lg border overflow-hidden
+      className={`relative transition-colors cursor-pointer px-3 py-3 max-sm:py-2 rounded-lg border overflow-hidden
         shadow-md hover:bg-blue-50 duration-300 select-none
         ${selected ? "bg-blue-50 border-blue-500" : "bg-white border-gray-200"}`}
       onMouseDown={start}
@@ -82,7 +82,7 @@ export const ExpenseCard = ({
       />
 
       {/* Контент */}
-      <div className="relative z-10 space-y-2">
+      <div className="relative z-10 space-y-2 max-sm:space-y-1.5">
 
         <InfoRow
           text={expense.title}
@@ -94,7 +94,7 @@ export const ExpenseCard = ({
           <InfoRow icon={MapPinIcon} text={expense.location.name} />
         </div>
 
-        <div className="flex justify-between text-xs text-gray-800 mt-1">
+        <div className="flex justify-between text-xs text-gray-800">
           <InfoRow
             icon={CurrencyDollarIcon}
             text={expense.price}

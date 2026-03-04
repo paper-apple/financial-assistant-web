@@ -1,59 +1,12 @@
 @import "tailwindcss";
 
-/* .react-datepicker__time-list-item {
-  padding: 6px 8px;
-  font-size: 0.85rem;
-}
-
-.react-datepicker__month {
-  min-height: 200px;
-  padding-top: 5px;
-} */
-
-.ios-calendar {
-  /* font-family: -apple-system, BlinkMacSystemFont, sans-serif; */
-  /* border: none;
-  border-radius: 12px; */
-  /* box-shadow: 0 4px 20px rgba(0,0,0,0.15); */
-}
-
-.ios-calendar .react-datepicker__header {
-  background: white;
-  border: none;
-  /* padding-top: 12px; */
-}
-
-.ios-calendar .react-datepicker__day {
-  /* margin: 0.2em;
-  width: 2em;
-  line-height: 2em; */
-  width: 30px;
-}
-
-.ios-calendar .react-datepicker__day--selected {
-  background: #007ABB;
-  border-radius: 50%;
-}
-
-.ios-calendar .react-datepicker__time-box--selected {
-  background: #007AFF;
-  /* border-radius: 50%; */
-}
-
-.react-datepicker__time-container {
-}
-
-.react-datepicker__time-box {
-  width: 100px;
-  border-right: 1px solid #B0B0B0;
-}
 
 .btn-base {
   @apply px-2 py-2 w-full rounded-lg text-sm font-semibold tracking-wide border transition-colors duration-300 truncate cursor-pointer;
 }
 
 .btn-confirm {
-  @apply text-white bg-blue-300 hover:bg-blue-400  hover:border-blue-400 active:bg-blue-600 active:border-blue-600;
+  @apply text-white bg-blue-300 border-blue-300 hover:bg-blue-400  hover:border-blue-400 active:bg-blue-600 active:border-blue-600;
 }
 
 .btn-cancel {
@@ -92,16 +45,12 @@
   @apply p-1 text-sm font-normal text-right w-[34%] 
 }
 
-body {
-  padding-right: var(--scrollbar-width, 0px);
-}
-
 .floating-buttons {
   right: var(--scrollbar-width, 0px);
 }
 
 .hide-scrollbar .floating-buttons {
-  right: 5px ;
+  left: var(--scrollbar-width, 0px) ;
 }
 
 @keyframes fadeInOut {
@@ -125,12 +74,7 @@ body {
 
 .error-toast {
   animation: fadeInOut 2s ease-in-out forwards;
-  pointer-events: none; /* Чтобы не блокировать клики */
-}
-
-html {
-  overflow-x: hidden;
-  width: 100vw;
+  pointer-events: none;
 }
 
 body {
@@ -165,7 +109,6 @@ body {
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* index.css */
 .rounded-row {
   position: relative;
 }
@@ -178,4 +121,58 @@ body {
 .rounded-row td:last-child {
   border-top-right-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
+}
+
+.ios-calendar .react-datepicker__header {
+  background: white;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+.ios-calendar .react-datepicker__current-month {
+  border-bottom: 1px solid #a4a4a4;
+  padding-bottom: 8px;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.ios-calendar .react-datepicker__day-names {
+  padding-left: 8px;
+  padding-right: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ios-calendar .react-datepicker__day {
+  width: 30px;
+  transition: all 0.2s ease-in-out;
+}
+
+.ios-calendar .react-datepicker__day--selected {
+  background: #80c7f9 !important;
+  border-radius: 100%;
+}
+
+.react-datepicker__time-container .react-datepicker__header::before {
+  content: "время";
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.react-datepicker__time-list-item {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 3px 8px !important;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  border-radius: 6px;
+  width: 80%;
+}
+
+.react-datepicker__time-list-item:hover {
+  background: #f5f5f5;
+}
+
+.react-datepicker__time-list-item--selected {
+  background: #80c7f9 !important;
 }

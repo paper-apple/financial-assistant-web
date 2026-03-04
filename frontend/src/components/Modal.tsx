@@ -43,11 +43,11 @@ export const Modal = ({ onModalClose: onClose, title, children, calendar}: Props
 
   return (
     <div
-      className="fixed inset-0 bg-gray-500/30 backdrop-blur-xs z-50 flex items-center justify-center"
+      className="fixed inset-0 bg-gray-200/30 backdrop-blur-xs z-50 flex items-center justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-3 w-full max-w-sm mx-auto shadow-md border border-gray-300 "
+        className="bg-white rounded-lg p-3 w-full max-w-sm mx-auto shadow-md border border-gray-300"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
       >

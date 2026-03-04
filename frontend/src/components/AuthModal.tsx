@@ -1,6 +1,5 @@
 // AuthModal.tsx
 import { useEffect, useState } from "react";
-// import { useAuthValidation } from "../hooks/useAuthValidation";
 import { FormField } from "./ui/FormField";
 import { ErrorBar } from "./ErrorBar";
 
@@ -53,7 +52,7 @@ export const AuthModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-500/30 backdrop-blur-xs flex items-center justify-center z-50" data-testid={"auth-modal"}>
+    <div className="fixed inset-0 bg-gray-200/30 backdrop-blur-xs flex items-center justify-center z-50" data-testid={"auth-modal"}>
       <div className="bg-white p-3 rounded-lg shadow-md w-96">
         <h2 className="text-xl font-semibold text-center mb-4 border-b border-gray-400">
           {isLoginMode ? "Вход" : "Регистрация"}
