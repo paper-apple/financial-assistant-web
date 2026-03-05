@@ -4,47 +4,99 @@
 
 *(Нажми на ссылку, чтобы попробовать!)*
 
-![Демонстрация работы](https://github.com/Risovyj-pirog/financial-assistant-web/blob/master/assets/Финансовый%20ассистент.gif)
+![Взаимодействие с записями](assets/gif/Взаимодействие%20с%20записями.gif) 
+![Главное окно на телефоне](assets/gif/Анализ%20записей.gif) 
 
-
-# Название проекта
+# Финансовый ассистент
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![NestJS](https://img.shields.io/badge/NestJS-10-red)](https://nestjs.com/)
 [![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
 
-## 🚀 Демо
-
-**[👉 Смотреть работающее приложение](https://financial-assistant-web-livid.vercel.app)**
-
-![Демо](https://github.com/Risovyj-pirog/financial-assistant-web/blob/master/assets/Финансовый%20ассистент.gif)
-
 ## 📋 О проекте
 
-Краткое описание проекта (2-3 предложения). Что это, зачем, какие проблемы решает.
+Приложение для ведения бюджета. Предназначено для фиксации расходов и их последующего анализа.
+
+Проект разработан в качестве дипломной работы и демонстрирует навыки fullstack-разработки.
 
 ## 🛠️ Стек технологий
 
 **Backend:**
 - NestJS + TypeScript
 - PostgreSQL + TypeORM
+- Node
 - JWT аутентификация
 - Jest (тестирование)
 
 **Frontend:**
 - React + TypeScript
-- Redux Toolkit
-- React Router
+- Vite
 - Axios
-- CSS Modules / Styled Components
+- Tailwind
 
 ## 📸 Скриншоты
 
-| Название экрана | Изображение |
-|----------------|-------------|
-| Главная страница | ![Главная](ссылка) |
-| Страница задач | ![Задачи](ссылка) |
-| Профиль | ![Профиль](ссылка) |
+| Главное окно на ПК | Главное окно на телефоне |
+|:------------------:|:------------------------:|
+| ![Главное окно на ПК](assets/screenshots/Основное%20окно.png) | ![Главное окно на телефоне](assets/screenshots/Основное%20окно%20на%20телефоне.png) |
+
+| Добавление и редактирование | Статистика |
+|:------------------:|:------------------------:|
+| ![Добавление и редактирование](assets/screenshots/Окно%20добавления%20и%20редактирования%20расхода.png) | ![Статистика](assets/screenshots/Статистика.png) |
+
+| Фильтры | Сортировка |
+|:---------:|:--------:|
+| ![Фильтры](assets/screenshots/Фильтры.png) | ![Сортировка](assets/screenshots/Сортировка.png) |
 
 ## 🏗️ Архитектура проекта
+FINANCIAL-ASSISTANT/
+├── frontend/
+│    ├── src/
+│    │   ├── components/
+│    │   │    ├── modules/
+│    │   │    └── ui/
+│    │   ├── hooks/
+│    │   ├── tests/
+│    │   │    ├── components/
+│    │   │    │    ├── modules/
+│    │   │    │    └── ui/
+│    │   │    ├── hooks/
+│    │   │    └── utils/
+│    │   └── utils/
+│    ├── api.ts
+│    ├── App.css
+│    ├── App.tsx
+│    ├── index.css
+│    ├── main.tsx
+│    └── types.tsx
+├── backend/
+│    ├── src/
+│    │   ├── auth/
+│    │   ├── categories/
+│    │   │    ├── dto/
+│    │   │    └── entities/
+│    │   ├── expenses/
+│    │   │    ├── dto/
+│    │   │    └── entities/
+│    │   ├── locations/
+│    │   │    ├── dto/
+│    │   │    └── entities/
+│    │   ├── tests/
+│    │   │    ├── auth/
+│    │   │    ├── categories/
+│    │   │    ├── expenses/
+│    │   │    ├── locations/
+│    │   │    └── users/
+│    │   ├── users/
+│    └── main.ts
+
+## 💾 Схема базы данных
+
+![ER-диаграмма](assets/screenshots/ER-диаграмма.png)
+
+**Основные сущности:**
+- `users` — пользователи
+- `expenses` — расходы
+- `categories` — категории расходов
+- `locations` — место совершения расхода

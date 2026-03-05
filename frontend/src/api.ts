@@ -2,7 +2,7 @@
 import axios from "axios";
 import { type Expense, type ExpenseCreate, type ExpenseUpdate } from "./types"
 
-// const API_BASE = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "/api";
+
 const API_BASE = import.meta.env.PROD ? "/api" : "http://localhost:3000";
 const api = axios.create({ 
   baseURL: API_BASE, 
@@ -12,7 +12,6 @@ const api = axios.create({
 export const login = async (username: string, password: string) => {
   const response = await api.post('/auth/login', { username, password });
   
-  // Сохраняем ID в localStorage для iOS
   if (response.data.user?.id) {
     localStorage.setItem('userId', response.data.user.id.toString());
   }
@@ -23,7 +22,6 @@ export const login = async (username: string, password: string) => {
 api.interceptors.request.use((config) => {
   config.withCredentials = true;
   
-  // Добавляем userId из localStorage
   const userId = localStorage.getItem('userId');
   if (userId) {
     config.headers['X-User-Id'] = userId;
@@ -37,8 +35,8 @@ export const register = (username: string, password: string) =>
 
 export const logout = () => api.post('/auth/logout');
 
-export const findUser = (username: string) =>
-  api.post('/auth/findUser', {username});
+// export const findUser = (username: string) =>
+//   api.post('/auth/findUser', {username});
 
 export const fetchExpenses = (filters?: any, sortParams?: any) => {
   const params = new URLSearchParams();

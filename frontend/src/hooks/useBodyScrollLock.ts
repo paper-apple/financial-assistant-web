@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { isSafari } from "../utils/isSafari";
 
+
 export const useBodyScrollLock = (isSafariBrowser = isSafari) => {
   useEffect(() => {
     if (document.documentElement.scrollHeight > window.innerHeight) {

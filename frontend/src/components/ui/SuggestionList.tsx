@@ -12,7 +12,7 @@ export const SuggestionsList = ({
 }) => (
   <ul
     className={`
-      absolute w-full bg-white shadow border-x border-b rounded-b z-10 overflow-auto
+      absolute w-full bg-white shadow border-x border-b border-gray-400 rounded-b z-10 overflow-auto
       transition-[max-height] duration-500 
       ${isOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}
     `}
@@ -21,7 +21,7 @@ export const SuggestionsList = ({
       <li
         key={s}
         onMouseDown={() => onSelect(s)}
-        className={`px-3 py-1 cursor-pointer ${
+        className={`px-3 py-1 border-b border-gray-300 cursor-pointer transition-colors duration-300 truncate ${
           idx === highlightedIndex ? "bg-blue-100" : "hover:bg-gray-100"
         }`}
       >
