@@ -49,6 +49,30 @@
 |:---------:|:--------:|
 | ![Фильтры](assets/screenshots/Фильтры.png) | ![Сортировка](assets/screenshots/Сортировка.png) |
 
+| Добавление и редактирование | Статистика |
+|:--------------------------:|:----------:|
+| <img src="assets/screenshots/add-edit-window.png" width="400"> | <img src="assets/screenshots/stats.png" width="400"> |
+
+<table>
+  <tr>
+    <th width="50%">Добавление и редактирование</th>
+    <th width="50%">Статистика</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="assets/screenshots/add-edit-window.png" width="400"/>
+    </td>
+    <td align="center">
+      <img src="assets/screenshots/stats.png" width="400"/>
+    </td>
+  </tr>
+</table>
+
+| | |
+|---|---|
+| <img src="assets/screenshots/add-edit-window.png" width="400"/> | <img src="stats.png" width="400"/> |
+| *Окно добавления и редактирования расхода* | *Страница статистики с графиками* |
+
 ## 🏗️ Архитектура проекта
 FINANCIAL-ASSISTANT/
 ├── frontend/

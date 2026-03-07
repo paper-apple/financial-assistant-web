@@ -1,5 +1,5 @@
 // auth.controller.ts
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpCode } from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
 
@@ -9,29 +9,35 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
+  @HttpCode(200)
   async login(
-    @Body() body: { username: string; password: string },
-    @Res() res: Response
-  ) {
+  @Body() body: { username: string; password: string }) {
+    // 1. Валидация пользователя
     const user = await this.authService.validateUser(body.username, body.password);
     
-    this.authService.setUserIdCookie(res, user.id);
+    // 2. Генерация JWT
+    const result = await this.authService.login(user);
     
-    return res.json(this.authService.formatUserResponse(user));
+    // 3. Отправка токена (и опционально в cookie)
+    return {
+      success: true,
+      ...result
+    }; 
   }
 
   @Post('register')
   async register(@Body() body, @Res() res: Response) {
     const user = await this.authService.register(body.username, body.password);
+    const result = await this.authService.login(user); // сразу логиним после регистрации
     
-    this.authService.setUserIdCookie(res, user.id);
-    
-    return res.json(this.authService.formatUserResponse(user));
+    return {
+      success: true,
+      ...result
+    };
   }
 
   @Post('logout')
-  async logout(@Res() res: Response) {
-    res.clearCookie('userId');
-    return res.json({ success: true });
+  async logout() {
+    return { success: true };
   }
 }

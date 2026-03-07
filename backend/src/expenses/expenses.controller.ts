@@ -2,38 +2,28 @@
 import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
-import { AuthGuard } from '../auth/auth.guard';
-import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req, Query } from '@nestjs/common';
+// import { AuthGuard } from '../auth/auth.guard';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req, Query, ParseIntPipe } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('expenses')
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ExpensesController {
   constructor(private readonly expensesService: ExpensesService) {}
 
   @Post()
-    create(@Body() createExpenseDto: CreateExpenseDto, @Req() req) {
-      return this.expensesService.create(createExpenseDto, req.userId);
+  create(
+    @Body() createExpenseDto: CreateExpenseDto,
+    @CurrentUser() user: User
+  ) {
+    return this.expensesService.create(createExpenseDto, user.id);
   }
-  // async create(@Body() createExpenseDto: CreateExpenseDto, @Req() req) {
-  //   console.log('Create expense request:', {
-  //     body: createExpenseDto,
-  //     user: req.user,
-  //     headers: req.headers,
-  //   });
-  
-  // try {
-  //   const expense = await this.expensesService.create(createExpenseDto, req.userId);
-  //   console.log('Expense created:', expense.id);
-  //   return expense;
-  // } catch (error) {
-  //   console.error('Error creating expense:', error);
-  //   throw error;
-  // }
-// }
 
   @Get()
   findAll(
-    @Req() req,
+    @CurrentUser() user: User,
     @Query('minPrice') minPrice?: number,
     @Query('maxPrice') maxPrice?: number,
     @Query('startDate') startDate?: Date,
@@ -55,29 +45,40 @@ export class ExpensesController {
       direction: sortDirection || 'ASC'
     } : undefined;
 
-    return this.expensesService.findAll(req.userId, filters, sortParams);
+    return this.expensesService.findAll(user.id, filters, sortParams);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number, @Req() req) {
-    return this.expensesService.findOne(id, req.userId);
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: User
+  ) {
+    return this.expensesService.findOne(id, user.id);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateExpenseDto: UpdateExpenseDto, @Req() req) {
-    return this.expensesService.update(id, updateExpenseDto, req.userId);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateExpenseDto: UpdateExpenseDto, 
+    @CurrentUser() user: User
+  ) {
+    return this.expensesService.update(id, updateExpenseDto, user.id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number, @Req() req) {
-    return this.expensesService.remove(id, req.userId);
+  remove(
+    @Param('id', ParseIntPipe) id: number, 
+    @CurrentUser() user: User
+  ) {
+    return this.expensesService.remove(id, user.id);
   }
 
   @Get('keywords/suggest')
   suggestKeywords(
-    @Req() req,
-    @Query('query') query: string, 
-    @Query('field') field?: 'title' | 'category' | 'location') {
-      return this.expensesService.suggestKeywords(query, req.userId, field);
+    @CurrentUser() user: User,
+    @Query('query') query: string,
+    @Query('field') field?: 'title' | 'category' | 'location'
+  ) {
+    return this.expensesService.suggestKeywords(query, user.id, field);
   }
 }

@@ -9,34 +9,31 @@ const api = axios.create({
   withCredentials: true, 
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const login = async (username: string, password: string) => {
   const response = await api.post('/auth/login', { username, password });
   
-  if (response.data.user?.id) {
-    localStorage.setItem('userId', response.data.user.id.toString());
+  if (response.data.access_token) {
+    localStorage.setItem('token', response.data.access_token);
   }
 
   return response;
 };
 
-api.interceptors.request.use((config) => {
-  config.withCredentials = true;
-  
-  const userId = localStorage.getItem('userId');
-  if (userId) {
-    config.headers['X-User-Id'] = userId;
-  }
-  
-  return config;
-});
-
 export const register = (username: string, password: string) =>
   api.post('/auth/register', { username, password });
 
-export const logout = () => api.post('/auth/logout');
-
-// export const findUser = (username: string) =>
-//   api.post('/auth/findUser', {username});
+export const logout = () => {
+  localStorage.removeItem('token');
+  return api.post('/auth/logout');
+};
 
 export const fetchExpenses = (filters?: any, sortParams?: any) => {
   const params = new URLSearchParams();

@@ -35,8 +35,10 @@ export const AuthModal = ({
   };
 
   const logInAsDemo = async (e: React.FormEvent) => {
-    e.preventDefault();
-    onAuth("testuser", "1234Ab");
+    e.preventDefault()
+    onAuth("testuser", "1234Ab")
+    setUsername("")
+    setPassword("")
   };
 
 

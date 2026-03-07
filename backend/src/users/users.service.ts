@@ -20,6 +20,13 @@ export class UsersService {
     });
   }
 
+  async findById(id: number): Promise<User | null> {
+    return this.usersRepository.findOne({ 
+      where: { id },
+      select: ['id', 'username']
+    });
+  }
+
   private validateUsername(username: string): void {
     if (username.length < 2) {
       throw new ConflictException('Имя пользователя должно состоять из двух и более символов');

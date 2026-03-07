@@ -1,12 +1,14 @@
 // auth.service.ts
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
@@ -17,20 +19,18 @@ export class AuthService {
     return this.usersService.create(username, password);
   }
 
-  setUserIdCookie(res: any, userId: number) {
-    res.cookie('userId', userId.toString(), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      path: '/',
-    });
-  }
-
-  formatUserResponse(user: any) {
+  async login(user: any) {
+    const payload = { 
+      sub: user.id, 
+      username: user.username 
+    };
+    
     return {
-      success: true,
-      user: { id: user.id, username: user.username },
-      userId: user.id.toString(),
+      access_token: this.jwtService.sign(payload),
+      user: {
+        id: user.id,
+        username: user.username
+      }
     };
   }
 }
