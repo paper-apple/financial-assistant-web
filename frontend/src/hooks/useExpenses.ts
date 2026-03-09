@@ -12,6 +12,17 @@ export const useExpenses = () => {
     direction: 'DESC'
   });
 
+  useEffect(() => {
+    loadExpenses();
+  }, []);
+
+  useEffect(() => {
+    if (lastUpdatedId !== null) {
+      const timer = setTimeout(() => setLastUpdatedId(null), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [lastUpdatedId]);
+
   const loadExpenses = useCallback(async (newFilters?: any, newSortParams?: any) => {
     try {
       const currentFilters = newFilters || filters;
@@ -26,17 +37,6 @@ export const useExpenses = () => {
       console.error('Ошибка загрузки расходов:', error);
     }
   }, [filters, sortParams]);
-
-  useEffect(() => {
-    loadExpenses();
-  }, []);
-
-  useEffect(() => {
-    if (lastUpdatedId !== null) {
-      const timer = setTimeout(() => setLastUpdatedId(null), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [lastUpdatedId]);
 
   const updateExpense = (updated: Expense) => {
     setExpenses(prev => prev.map(e => (e.id === updated.id ? updated : e)));
@@ -56,6 +56,7 @@ export const useExpenses = () => {
   return {
     expenses,
     lastUpdatedId,
+    setExpenses,
     loadExpenses,
     updateExpense,
     addExpense,

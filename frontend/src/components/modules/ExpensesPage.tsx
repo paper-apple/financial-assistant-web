@@ -27,6 +27,7 @@ export const ExpensesPage = () => {
   const {
     expenses,
     lastUpdatedId,
+    setExpenses,
     loadExpenses,
     updateExpense,
     addExpense,
@@ -72,14 +73,12 @@ export const ExpensesPage = () => {
     endDate: false,
   });
 
-  // Проверка авторизации при загрузке компонента
   useEffect(() => {
     checkAuth();
   }, []);
 
   const handleAuth = async (username: string, password: string) => {
     try {
-      console.log("Expenses Page", authError)
       setAuthError("");
       const fn = isLoginMode ? loginUser : registerUser;
       await fn(username, password);
@@ -93,6 +92,7 @@ export const ExpensesPage = () => {
 
   const handleLogout = async () => {
     filtersState.handleResetFilters();
+    setExpenses([]);
     await logoutUser();
     setAuthModalOpen(true);
   };

@@ -1,7 +1,7 @@
 // app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { ExpensesModule } from './expenses/expenses.module';
 import { CategoriesModule } from './categories/categories.module';
 import { LocationsModule } from './locations/locations.module';
@@ -11,7 +11,7 @@ import { Expense } from './expenses/entities/expense.entity';
 import { Category } from './categories/entities/category.entity';
 import { Location } from './locations/entities/location.entity';
 import { User } from './users/entities/user.entity';
-import { AppController } from './app.controller'; // Добавьте импорт
+import { AppController } from './app.controller';
 
 
 @Module({

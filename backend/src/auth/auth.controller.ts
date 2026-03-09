@@ -10,15 +10,9 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
-  async login(
-  @Body() body: { username: string; password: string }) {
-    // 1. Валидация пользователя
+  async login(@Body() body: { username: string; password: string }) {
     const user = await this.authService.validateUser(body.username, body.password);
-    
-    // 2. Генерация JWT
     const result = await this.authService.login(user);
-    
-    // 3. Отправка токена (и опционально в cookie)
     return {
       success: true,
       ...result
@@ -26,9 +20,9 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() body, @Res() res: Response) {
+  async register(@Body() body) {
     const user = await this.authService.register(body.username, body.password);
-    const result = await this.authService.login(user); // сразу логиним после регистрации
+    const result = await this.authService.login(user);
     
     return {
       success: true,

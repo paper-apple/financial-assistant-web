@@ -27,8 +27,15 @@ export const login = async (username: string, password: string) => {
   return response;
 };
 
-export const register = (username: string, password: string) =>
-  api.post('/auth/register', { username, password });
+export const register = async (username: string, password: string) => {
+  const response = await api.post('/auth/register', { username, password });
+
+  if (response.data.access_token) {
+    localStorage.setItem('token', response.data.access_token);
+  }
+  
+  return response;
+};
 
 export const logout = () => {
   localStorage.removeItem('token');
@@ -59,7 +66,6 @@ export const fetchExpenses = (filters?: any, sortParams?: any) => {
   return api.get(`/expenses?${params.toString()}`);
 };
 
-// POST /expenses/
 export const createExpense = async (data: ExpenseCreate): Promise<Expense> => {
   const res = await api.post("/expenses", data);
   console.log('Response:', res.data);
@@ -67,13 +73,11 @@ export const createExpense = async (data: ExpenseCreate): Promise<Expense> => {
   return res.data;
 };
 
-// PUT /expenses/:id
 export const updateExpense = async (id: number, updated: ExpenseUpdate): Promise<Expense> => {
   const res = await api.put(`/expenses/${id}`, updated);
   return res.data;
 };
 
-// DELETE /expenses/:id
 export const deleteExpense = async (id: number): Promise<void> => {
   await api.delete(`/expenses/${id}`);
 };

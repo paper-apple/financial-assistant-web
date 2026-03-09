@@ -28,7 +28,8 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "vitest run --config vitest.config.base.ts"
+    "test": "vitest run --config vitest.config.base.ts",
+    "db:restore": "node scripts/restore-db.js"
   },
   "overrides": {
     "@testing-library/jest-dom": {

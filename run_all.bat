@@ -1,13 +1,13 @@
 @echo off
 setlocal
 
-REM 🚀 Запуск фронтенда свернуто
+REM Запуск фронтенда свернуто
 start /MIN "" cmd /K "cd /d frontend && npm run dev"
 
-REM 🐍 Запуск бэкенда свернуто с активацией виртуального окружения
-start /MIN "" cmd /K "cd /d backend && npx ts-node -r tsconfig-paths/register src/main.ts"
+REM  Запуск бэкенда свернуто
+start /MIN "" cmd /K "cd /d backend && npm run start:dev"
 
-REM 🌐 Открытие браузера после небольшой паузы
+REM Открытие браузера
 timeout /t 2 >nul
 start http://localhost:5173
 

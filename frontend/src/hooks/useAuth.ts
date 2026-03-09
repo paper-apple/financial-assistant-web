@@ -20,7 +20,6 @@ export function useAuth() {
 
   const loginUser = async (username: string, password: string) => {
     try {
-            console.log("useAuth", authError)
       await login(username, password);
       setUser({ username });
     } catch (err: any) {
