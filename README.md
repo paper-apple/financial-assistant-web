@@ -174,28 +174,54 @@ FINANCIAL-ASSISTANT/<br>
 
 ## 🚀 Запуск через Docker
 
-**Требования:** [Docker](https://docker.com) и [Docker Compose](https://docs.docker.com/compose/)
+**Требования:** 
+- Node.js v22+
+- npm или yarn
+- Docker
+- Docker Compose
 
 #### 1. Клонирование репозитория
-git clone https://github.com/Risovyj-pirog/financial-assistant-web.git
+git clone https://github.com/paper-apple/financial-assistant-web.git
 
-#### 2. Создай файл .env (или используй .env.example)
+#### 2. Переход в папку
+cd financial-assistant-web
+
+#### 3. Создание .env-файла
 cp .env.example .env
 
-#### 3. Запуск сервисов
-docker-compose up -d
+#### 4. Установка dotenv
+npm install dotenv
 
-#### 4. Загрузка тестовой БД
+#### 5. Запуск сервисов
+docker compose up -d
+
+#### 6. Загрузка тестовой БД
 npm run db:restore
 
-#### 5. Открыть приложение
+#### 7. Открытие приложения
 http://localhost:5173
 
 ## 🚀 Ручной запуск
 
-git clone [https://](https://github.com/Risovyj-pirog/financial-assistant-web.git)
+**Требования:**
+- Node.js v22+
+- PostgreSQL v17+
+- npm или yarn
 
-.\setup.ps1
+#### 1. Клонирование репозитория
+git clone https://github.com/paper-apple/financial-assistant-web.git
 
+#### 2. Переход в папку
+cd financial-assistant-web
 
+#### 3. Создание .env-файла
+cp .env.example .env
+
+#### 4. Установка зависимостей
+npm run install-deps
+
+#### 5. Создание БД
+npm run db:setup
+
+#### 6. Запуск приложения
 .\run_all.bat

@@ -5,9 +5,9 @@ services:
     image: postgres:17-alpine
     container_name: project_postgres
     environment:
-      POSTGRES_DB: ${DB_NAME:-myapp}
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-financial_assistant_db}
+      POSTGRES_USER: ${PGUSER:-postgres}
+      POSTGRES_PASSWORD: ${PGPASSWORD:-postgres}
     ports:
       - "5432:5432"
     volumes:
@@ -29,9 +29,9 @@ services:
       NODE_ENV: development
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: ${DB_NAME:-myapp}
-      DB_USER: ${DB_USER:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_NAME: ${DB_NAME:-financial_assistant_db}
+      DB_USER: ${PGUSER:-postgres}
+      DB_PASSWORD: ${PGPASSWORD:-postgres}
       PORT: 3000
     ports:
       - "3000:3000"

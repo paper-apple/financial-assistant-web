@@ -29,7 +29,9 @@
   },
   "scripts": {
     "test": "vitest run --config vitest.config.base.ts",
-    "db:restore": "node scripts/restore-db.js"
+    "db:restore": "node scripts/restore-db.js",
+    "db:setup": "node scripts/setup-db.js",
+    "install-deps": "node scripts/install-deps.js"
   },
   "overrides": {
     "@testing-library/jest-dom": {

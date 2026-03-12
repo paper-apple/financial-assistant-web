@@ -1,9 +1,10 @@
+// restore-db.js
 require("dotenv").config();
 const { execSync } = require("child_process");
 
 const DUMP_PATH = "db/neon_dump.dump";
 const CONTAINER = "project_postgres";
-const DB_NAME = process.env.DB_NAME || "myapp";
+const DB_NAME = process.env.DB_NAME || "financial_assistant_db";
 
 function run(cmd) {
   execSync(cmd, { stdio: "inherit" });
@@ -17,9 +18,9 @@ run(
   `docker exec -it ${CONTAINER} sh -c "psql -U postgres -d ${DB_NAME} -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;'"`
 );
 
-console.log("Восстановление базы");
+console.log("Восстановление базы данных");
 run(
-  `docker exec -it ${CONTAINER} sh -c "pg_restore -U postgres -d ${DB_NAME} --no-owner --role=postgres /neon_dump.dump || true"`
+  `docker exec -it ${CONTAINER} sh -c "pg_restore -U postgres -d ${DB_NAME} /neon_dump.dump 2>/dev/null || true"`
 );
 
-console.log("\nБаза восстановлена");
+console.log("\nБаза данных восстановлена");
