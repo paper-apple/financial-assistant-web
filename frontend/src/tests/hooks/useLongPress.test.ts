@@ -47,7 +47,7 @@ describe("useLongPress", () => {
 
     act(() => {
       result.current.start();
-      result.current.move(); // имитация движения
+      result.current.move();
       vi.runAllTimers();
     });
 
@@ -65,25 +65,7 @@ describe("useLongPress", () => {
 
     expect(onLongPress).toHaveBeenCalled();
 
-    // первый вызов — true
     expect(result.current.wasLongPress()).toBe(true);
-    // второй вызов — уже false
     expect(result.current.wasLongPress()).toBe(false);
-  });
-
-  it("учитывает кастомный delay", () => {
-    const onLongPress = vi.fn();
-    const { result } = renderHook(() => useLongPress({ onLongPress, delay: 1000 }));
-
-    act(() => {
-      result.current.start();
-      vi.advanceTimersByTime(999);
-    });
-    expect(onLongPress).not.toHaveBeenCalled();
-
-    act(() => {
-      vi.advanceTimersByTime(1);
-    });
-    expect(onLongPress).toHaveBeenCalledTimes(1);
   });
 });

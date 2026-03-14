@@ -18,7 +18,7 @@ describe("LocationsService", () => {
     service = new LocationsService(locationsRepository as Repository<Location>);
   });
 
-  it("возвращает существующую локацию, если она найдена", async () => {
+  it("возврат существующей локации", async () => {
     const existing: Location = { id: 1, name: "Магазин", expenses: [] };
     (locationsRepository.findOne as any).mockResolvedValue(existing);
 
@@ -30,7 +30,7 @@ describe("LocationsService", () => {
     expect(locationsRepository.save).not.toHaveBeenCalled();
   });
 
-  it("создаёт и сохраняет локацию, если её нет", async () => {
+  it("создание и сохранение локации", async () => {
     (locationsRepository.findOne as any).mockResolvedValue(null);
 
     const created: Partial<Location> = { name: "Банк", expenses: [] };

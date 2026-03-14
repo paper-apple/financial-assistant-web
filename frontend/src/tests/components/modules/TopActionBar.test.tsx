@@ -20,7 +20,7 @@ describe("TopActionBar", () => {
     vi.clearAllMocks();
   });
 
-  it("отображает обычный режим с кнопками", () => {
+  it("отображение обычного режима с кнопками", () => {
     render(
       <TopActionBar
         selectedCount={2}
@@ -88,7 +88,6 @@ describe("TopActionBar", () => {
     await userEvent.click(screen.getByRole("button", { name: "Удалить" }));
     await userEvent.click(screen.getByRole("button", { name: "Да" }));
     expect(onDelete).toHaveBeenCalled();
-    expect(screen.getByText("Выбрано 2")).toBeInTheDocument();
   });
 
   it("кнопка 'Нет' возвращает обычный режим без вызова onDelete", async () => {

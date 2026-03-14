@@ -1,5 +1,5 @@
 // aggregate.test.ts
-import { describe, it, expect } from "vitest"; // или jest
+import { describe, it, expect } from "vitest";
 import { aggregateToMaxPoints } from "../../utils/aggregate";
 
 type Row = { key: string; total: number; count: number };

@@ -37,7 +37,7 @@ describe("ExpensesService", () => {
     );
   });
 
-  it("create вызывает category/location сервисы и сохраняет расход", async () => {
+  it("вызов category/location и сохранение расхода", async () => {
     const dto = { title: "Хлеб", price: 100, datetime: new Date(), category: "еда", location: "магазин" };
     const userId = 1;
 
@@ -55,7 +55,7 @@ describe("ExpensesService", () => {
     expect(result.id).toBe(123);
   });
 
-  it("findOne возвращает расход, если найден", async () => {
+  it("возврат расхода", async () => {
     const expense = { id: 1, user: { id: 2 } };
     (repo.findOne as any).mockResolvedValue(expense);
 
@@ -68,13 +68,13 @@ describe("ExpensesService", () => {
     expect(result).toBe(expense);
   });
 
-  it("findOne выбрасывает NotFoundException, если не найден", async () => {
+  it("NotFoundException, если не найден", async () => {
     (repo.findOne as any).mockResolvedValue(null);
 
     await expect(service.findOne(1, 2)).rejects.toThrow(NotFoundException);
   });
 
-  it("update обновляет поля и сохраняет", async () => {
+  it("обновление полей и сохранение", async () => {
     const expense = { id: 1, title: "старое", user: { id: 2 } };
     (service as any).findOne = vi.fn().mockResolvedValue(expense);
     (repo.save as any).mockResolvedValue({ ...expense, title: "новое" });
@@ -86,7 +86,7 @@ describe("ExpensesService", () => {
     expect(result.title).toBe("новое");
   });
 
-  it("remove вызывает findOne и удаляет", async () => {
+  it("вызов findOne и удаление", async () => {
     const expense = { id: 1, user: { id: 2 } };
     (service as any).findOne = vi.fn().mockResolvedValue(expense);
     (repo.remove as any).mockResolvedValue(undefined);
@@ -96,12 +96,12 @@ describe("ExpensesService", () => {
     expect(repo.remove).toHaveBeenCalledWith(expense);
   });
 
-  it("suggestKeywords возвращает [] если query слишком короткий", async () => {
+  it("возврат [], если query слишком короткий", async () => {
     const result = await service.suggestKeywords("a", 1);
     expect(result).toEqual([]);
   });
 
-  it("suggestKeywords вызывает queryBuilder и возвращает значения", async () => {
+  it("вызов queryBuilder и возврат значения", async () => {
     const qbMock = {
       leftJoin: vi.fn().mockReturnThis(),
       where: vi.fn().mockReturnThis(),

@@ -195,7 +195,6 @@ export class ExpensesService {
     };
 
     if (field && field in fieldConfigs) {
-      console.log('test')
       const config = fieldConfigs[field];
       return await fetchSuggestions(config.join, config.alias, config.column);
     }

@@ -12,11 +12,17 @@ describe("FloatingActionButtons", () => {
   const onLogout = vi.fn();
   const closeSelection = vi.fn();
 
+  global.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("рендерит 5 кнопок", () => {
+  it("рендер кнопок", () => {
     render(
       <FloatingActionButtons
         onAdd={onAdd}
@@ -32,28 +38,27 @@ describe("FloatingActionButtons", () => {
     expect(buttons).toHaveLength(5);
     buttons.forEach((btn) => {
       expect(btn).toHaveClass(
-        // "bg-blue-300 hover:bg-blue-500 text-white font-bold py-3.5 px-3.5 rounded-full border-1 transition-colors"
         `
-  bg-blue-300/40
-  hover:bg-blue-300
-  hover:opacity-100
-  active:bg-blue-400
-  active:opacity-100
-  text-white
-  font-bold
-  py-3.5 
-  px-3.5
-  rounded-full
-  border
-  transition-all
-  duration-500
-  ease-in-out
-`
+          bg-blue-300/40
+          hover:bg-blue-300
+          hover:opacity-100
+          active:bg-blue-400
+          active:opacity-100
+          text-white
+          font-bold
+          py-3.5 
+          px-3.5
+          rounded-full
+          border
+          transition-all
+          duration-500
+          ease-in-out
+        `
       );
     });
   });
 
-  it("клик по кнопке Add вызывает closeSelection и onAdd", async () => {
+  it("кнопка Add вызывает closeSelection и onAdd", async () => {
     render(
       <FloatingActionButtons
         onAdd={onAdd}
@@ -72,7 +77,7 @@ describe("FloatingActionButtons", () => {
     expect(onAdd).toHaveBeenCalled();
   });
 
-  it("клик по кнопке Filter вызывает closeSelection и onFilter", async () => {
+  it("кнопка Filter вызывает closeSelection и onFilter", async () => {
     render(
       <FloatingActionButtons
         onAdd={onAdd}
@@ -91,7 +96,7 @@ describe("FloatingActionButtons", () => {
     expect(onFilter).toHaveBeenCalled();
   });
 
-  it("клик по кнопке Sort вызывает closeSelection и onSort", async () => {
+  it("кнопка Sort вызывает closeSelection и onSort", async () => {
     render(
       <FloatingActionButtons
         onAdd={onAdd}
@@ -110,7 +115,7 @@ describe("FloatingActionButtons", () => {
     expect(onSort).toHaveBeenCalled();
   });
 
-  it("клик по кнопке Stats вызывает closeSelection и onStats", async () => {
+  it("кнопка Stats вызывает closeSelection и onStats", async () => {
     render(
       <FloatingActionButtons
         onAdd={onAdd}
@@ -129,7 +134,7 @@ describe("FloatingActionButtons", () => {
     expect(onStats).toHaveBeenCalled();
   });
 
-  it("клик по кнопке Logout вызывает closeSelection и onLogout", async () => {
+  it("кнопка Logout вызывает closeSelection и onLogout", async () => {
     render(
       <FloatingActionButtons
         onAdd={onAdd}

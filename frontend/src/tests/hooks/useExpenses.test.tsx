@@ -40,12 +40,11 @@ describe("useExpenses", () => {
     vi.useRealTimers();
   });
 
-  it("загружает расходы при монтировании", async () => {
+  it("загрузка расходов при монтировании", async () => {
     (fetchExpenses as Mock).mockResolvedValue({ data: mockData });
 
     const { result } = renderHook(() => useExpenses());
 
-    // ждём эффекта загрузки
     await act(async () => {});
 
     expect(fetchExpenses).toHaveBeenCalledTimes(1);
@@ -76,7 +75,6 @@ describe("useExpenses", () => {
       datetime: "2025-08-18T10:00:00.000Z" 
     };
 
-    // сначала положим что-то в стейт
     act(() => {
       result.current.addExpense(mockData[0]);
       result.current.addExpense(mockData[1]);
@@ -90,7 +88,7 @@ describe("useExpenses", () => {
     expect(result.current.lastUpdatedId).toBe(1);
   });
 
-  it("lastUpdatedId автоматически сбрасывается через 2 сек", () => {
+  it("lastUpdatedId автоматически сбрасывается через 2 секунды", () => {
     const { result } = renderHook(() => useExpenses());
 
     act(() => {

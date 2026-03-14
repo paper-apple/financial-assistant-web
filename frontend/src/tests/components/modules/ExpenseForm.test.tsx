@@ -72,7 +72,7 @@ describe('ExpenseForm', () => {
     vi.mocked(updateExpense).mockResolvedValue(mockExpense);
   });
 
-  it('рендерит все поля формы', () => {
+  it('рендер всех полей формы', () => {
     render(
       <ExpenseForm
         form={mockForm}
@@ -89,7 +89,7 @@ describe('ExpenseForm', () => {
     expect(screen.getByTestId('input-location')).toBeInTheDocument();
   });
 
-  it('отображает кнопку даты с правильным текстом', () => {
+  it('отображение кнопки даты с правильным текстом', () => {
     render(
       <ExpenseForm
         form={mockForm}
@@ -105,7 +105,7 @@ describe('ExpenseForm', () => {
     expect(dateButton).toBeInTheDocument();
   });
 
-  it('вызывает onCalendarOpen при клике на кнопку даты', () => {
+  it('вызов onCalendarOpen при клике на кнопку даты', () => {
     render(
       <ExpenseForm
         form={mockForm}
@@ -123,7 +123,7 @@ describe('ExpenseForm', () => {
     expect(mockOnCalendarOpen).toHaveBeenCalledTimes(1);
   });
 
-  it('создает новый расход при сабмите без initialData', async () => {
+  it('создание нового расхода при сабмите без initialData', async () => {
     render(
       <ExpenseForm
         form={mockForm}
@@ -140,13 +140,13 @@ describe('ExpenseForm', () => {
     await waitFor(() => {
       expect(createExpense).toHaveBeenCalledWith({
         ...mockForm,
-        price: 100.5, // Преобразованная цена
+        price: 100.5,
       });
       expect(mockOnCreated).toHaveBeenCalledWith(mockExpense);
     });
   });
 
-  it('обновляет существующий расход при сабмите с initialData', async () => {
+  it('обновление существующего расхода при сабмите с initialData', async () => {
     render(
       <ExpenseForm
         form={mockForm}
@@ -171,7 +171,7 @@ describe('ExpenseForm', () => {
     });
   });
 
-  it('обрабатывает изменения полей формы', () => {
+  it('обработка изменений полей формы', () => {
     render(
       <ExpenseForm
         form={mockForm}
@@ -188,7 +188,7 @@ describe('ExpenseForm', () => {
     expect(mockUpdateField).toHaveBeenCalledWith('title', 'New Title');
   });
 
-  it('обрабатывает ошибки при сохранении', async () => {
+  it('обрабатка ошибки при сохранении', async () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.mocked(createExpense).mockRejectedValue(new Error('API Error'));
 

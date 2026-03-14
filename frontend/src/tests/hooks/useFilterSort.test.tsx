@@ -101,7 +101,6 @@ describe("useFilterSort", () => {
       result.current.sortState.setSortDirection("ASC");
     });
 
-    // ждём, пока стейт обновится
     await waitFor(() => {
       expect(result.current.filtersState.minPrice).toBe("5");
       expect(result.current.filtersState.maxPrice).toBe("15");

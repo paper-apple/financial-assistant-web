@@ -1,25 +1,18 @@
-## 🚀 Демо
+# Financial Assistant
 
-**[👉 Смотреть работающее приложение](https://financial-assistant-web-livid.vercel.app)** 
-
-*(Нажми на ссылку, чтобы попробовать!)*
-
-![Взаимодействие с записями](assets/gif/interaction-with-records.gif) 
-![Анализ записей](assets/gif/record-analysis.gif) 
-
-# Финансовый ассистент
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/paper-apple/financial-assistant-web/pulls)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![NestJS](https://img.shields.io/badge/NestJS-10-red)](https://nestjs.com/)
-[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-blue)](https://www.postgresql.org/)
+[![NestJS](https://img.shields.io/badge/NestJS-11-red)](https://nestjs.com/)
 
 ## 📋 О проекте
 
-**BudgetFlow** — это fullstack-приложение для управления личными финансами, которое позволяет:
-- 📊 **Анализировать расходы** с помощью интерактивных таблицы, диаграммы и графика
-- 📱 **Синхронизироваться между устройствами** благодаря облачному бэкенду
-- 🔐 **Безопасно хранить данные** с JWT-аутентификацией
+Financial Assistant — это fullstack-приложение для управления личными финансами, которое позволяет:
+- Анализировать расходы с помощью интерактивных таблиц, диаграмм и графиков
+- Синхронизироваться между устройствами (в облачной версии)
+- Безопасно хранить данные с JWT-аутентификацией
 
 Проект построен на современных технологиях (NestJS + PostgreSQL + React) и демонстрирует:
 - Чистую архитектуру с разделением на модули
@@ -27,13 +20,43 @@
 - Адаптивный интерфейс
 - Интерактивную визуализацию данных
 
+## ✨ Функциональность
+
+- Добавление, редактирование и удаление расходов
+- Фильтрация по дате, цене и ключевым словам
+- Сортировка по полям
+- Система подсказок при заполнении полей
+- Таблица, диаграмма и график для анализа
+- Регистрация и JWT-аутентификация
+- Синхронизация между устройствами (в облачной версии)
+- Адаптивный дизайн
+
+## ▶️ Демо
+
+**[Открыть демо](https://financial-assistant-web-livid.vercel.app)** 
+
+<table>
+  <tr>
+    <th width="50%">Взаимодействие с записями</th>
+    <th width="50%">Анализ записей</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="assets/gif/interaction-with-records.gif" width="100%"/>
+    </td>
+    <td align="center">
+      <img src="assets/gif/record-analysis.gif" width="100%"/>
+    </td>
+  </tr>
+</table>
+
 ## 🛠️ Стек технологий
 
 **Backend:**
 - NestJS + TypeScript — основной фреймворк
 - PostgreSQL + TypeORM
-- Node
-- JWT аутентификация
+- Node.js
+- JWT-аутентификация
 
 **Frontend:**
 - React + TypeScript
@@ -41,39 +64,7 @@
 - Axios
 - Tailwind
 
-## 🛠️ Стек технологий
-
-**Backend:**
-- [NestJS](https://nestjs.com/) — основной фреймворк
-- [PostgreSQL](https://www.postgresql.org/) — база данных
-- [TypeORM](https://typeorm.io/) — ORM для работы с БД
-- [JWT](https://jwt.io/) — аутентификация
-- [Jest](https://jestjs.io/) — тестирование
-
-**Frontend:**
-- [React](https://reactjs.org/) — UI библиотека
-- [TypeScript](https://www.typescriptlang.org/) — типизация
-- [Redux Toolkit](https://redux-toolkit.js.org/) — управление состоянием
-- [React Router](https://reactrouter.com/) — навигация
-- [Axios](https://axios-http.com/) — HTTP-клиент
-
-## 🛠️ Стек технологий
-
-**Backend:**
-- NestJS — основной фреймворк
-- PostgreSQL — база данных
-- TypeORM — ORM для работы с БД
-- [JWT](https://jwt.io/) — аутентификация
-- [Jest](https://jestjs.io/) — тестирование
-
-**Frontend:**
-- [React](https://reactjs.org/) — UI библиотека
-- [TypeScript](https://www.typescriptlang.org/) — типизация
-- [Redux Toolkit](https://redux-toolkit.js.org/) — управление состоянием
-- [React Router](https://reactrouter.com/) — навигация
-- [Axios](https://axios-http.com/) — HTTP-клиент
-
-## 📸 Скриншоты
+## 📸 Скриншоты интерфейса
 
 <table>
   <tr>
@@ -82,10 +73,10 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="assets/screenshots/main-window.png" width="400"/>
+      <img src="assets/screenshots/main-window.png" width="300"/>
     </td>
     <td align="center">
-      <img src="assets/screenshots/main-window-on-phone.png" width="400"/>
+      <img src="assets/screenshots/main-window-on-phone.png" width="300"/>
     </td>
   </tr>
 </table>
@@ -120,47 +111,52 @@
   </tr>
 </table>
 
-## 🏗️ Архитектура проекта
+## 🧱 Архитектура проекта
+<details>
+<summary>Нажми, чтобы развернуть</summary>
+
 FINANCIAL-ASSISTANT/<br>
-├── frontend/<br>
-│    ├── src/<br>
-│    │   ├── components/<br>
-│    │   │    ├── modules/<br>
-│    │   │    └── ui/<br>
-│    │   ├── hooks/<br>
-│    │   ├── tests/<br>
-│    │   │    ├── components/<br>
-│    │   │    │    ├── modules/<br>
-│    │   │    │    └── ui/<br>
-│    │   │    ├── hooks/<br>
-│    │   │    └── utils/<br>
-│    │   └── utils/<br>
-│    ├── api.ts<br>
-│    ├── App.css<br>
-│    ├── App.tsx<br>
-│    ├── index.css<br>
-│    ├── main.tsx<br>
-│    └── types.tsx<br>
 ├── backend/<br>
-│    ├── src/<br>
-│    │   ├── auth/<br>
-│    │   ├── categories/<br>
-│    │   │    ├── dto/<br>
-│    │   │    └── entities/<br>
-│    │   ├── expenses/<br>
-│    │   │    ├── dto/<br>
-│    │   │    └── entities/<br>
-│    │   ├── locations/<br>
-│    │   │    ├── dto/<br>
-│    │   │    └── entities/<br>
-│    │   ├── tests/<br>
-│    │   │    ├── auth/<br>
-│    │   │    ├── categories/<br>
-│    │   │    ├── expenses/<br>
-│    │   │    ├── locations/<br>
-│    │   │    └── users/<br>
-│    │   ├── users/<br>
-│    └── main.ts<br>
+│   ├── src/<br>
+│   │   ├── auth/          # Аутентификация<br>
+│   │   ├── users/         # Пользователи<br>
+│   │   ├── categories/    # Категории расходов<br>
+│   │   ├── expenses/      # Транзакции<br>
+│   │   ├── locations/     # Места покупок<br>
+│   │   ├── tests/         # Тесты<br>
+│   │   ├── app.module.ts  # Корневой модуль<br>
+│   │   └── main.ts        # Точка входа<br>
+│   ├── package.json<br>
+│   ├── nest-cli.json<br>
+│   └── Dockerfile<br>
+│<br>
+├── frontend/<br>
+│   ├── src/<br>
+│   │   ├── components/    # UI-компоненты<br>
+│   │   │   ├── ui/        # Базовые (кнопки, инпуты)<br>
+│   │   │   └── modules/   # Сложные (формы, таблицы)<br>
+│   │   ├── hooks/         # Кастомные хуки<br>
+│   │   ├── utils/         # Утилиты<br>
+│   │   ├── tests/         # Тесты<br>
+│   │   ├── api.ts         # API-клиент<br>
+│   │   ├── App.tsx        # Корневой компонент<br>
+│   │   └── main.tsx       # Точка входа<br>
+│   ├── package.json<br>
+│   ├── vite.config.ts<br>
+│   └── Dockerfile<br>
+│<br>
+├── db/ # Дампы<br>
+│<br>
+├── scripts/               # Вспомогательные скрипты<br>
+│   ├── install-deps.js    # Установка зависимостей<br>
+│   ├── restore-db.js      # Загрузка тестовых данных<br>
+│   └── setup-db.js        # Создание базы данных<br>
+│<br>
+├── docker-compose.yml     # Оркестрация контейнеров<br>
+├── .env.example           # Пример переменных<br>
+└── README.md<br>
+
+</details>
 
 ## 💾 Схема базы данных
 
@@ -172,56 +168,110 @@ FINANCIAL-ASSISTANT/<br>
 - `categories` — категории расходов
 - `locations` — место совершения расхода
 
-## 🚀 Запуск через Docker
+## 🧪 Тестирование
+
+В проекте реализовано базовое тестирование ключевых модулей:
+
+**Backend:**
+- Unit-тесты сервисов (Auth, Expenses)
+
+**Frontend:**
+- Тесты UI-компонентов (Button, Input, Modal)
+- Тесты утилит (форматирование, валидация)
+
+**Запуск тестов:**
+```bash
+npm run run-all-tests
+```
+
+## 📈 Планы развития
+
+- [ ] Ночная тема
+- [ ] Возможность смены пароля и имени пользователя
+- [ ] Мультивалютность, отслеживание курса валют в реальном времени
+- [ ] Возможность установки лимита расходов
+- [ ] Прогнозирование расходов
+- [ ] Продвинутая статистика
+- [ ] Интеграционные тесты
+- [ ] Кэширование данных
+- [ ] Импорт и экспорт данных
+
+## 🐳 Запуск через Docker
 
 **Требования:** 
-- Node.js v22+
-- npm или yarn
-- Docker
-- Docker Compose
+- [Docker](https://docker.com)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-#### 1. Клонирование репозитория
+**1. Клонировать репозиторий:**
+```bash
 git clone https://github.com/paper-apple/financial-assistant-web.git
-
-#### 2. Переход в папку
 cd financial-assistant-web
+```
 
-#### 3. Создание .env-файла
-cp .env.example .env
+**2. Создать .env файл из примера:**
+```bash
+npm run setup-env
+```
 
-#### 4. Установка dotenv
-npm install dotenv
-
-#### 5. Запуск сервисов
+**3. Запустить контейнеры:**
+```bash
 docker compose up -d
+```
 
-#### 6. Загрузка тестовой БД
+**4. Загрузить тестовые данные в БД:**
+```bash
 npm run db:restore
+```
 
-#### 7. Открытие приложения
-http://localhost:5173
+**5. Открыть приложение:**
+Приложение доступно по адресу: [http://localhost:5173](http://localhost:5173)
 
-## 🚀 Ручной запуск
+
+## 🖐️ Ручной запуск
 
 **Требования:**
 - Node.js v22+
 - PostgreSQL v17+
 - npm или yarn
 
-#### 1. Клонирование репозитория
+**1. Клонировать репозиторий:**
+```bash
 git clone https://github.com/paper-apple/financial-assistant-web.git
-
-#### 2. Переход в папку
 cd financial-assistant-web
+```
 
-#### 3. Создание .env-файла
-cp .env.example .env
+**2. Создать .env файл из примера:**
+```bash
+npm run setup-env
+```
 
-#### 4. Установка зависимостей
+**3. Установить зависимости (backend + frontend):**
+```bash
 npm run install-deps
+```
 
-#### 5. Создание БД
+**4. Создать и настроить базу данных:**
+```bash
 npm run db:setup
+```
 
-#### 6. Запуск приложения
-.\run_all.bat
+**5. Запустить приложение:**
+- Автоматический запуск:
+```bash
+node start.js
+```
+- Ручной запуск:
+```bash
+cd backend; npm run start:dev # Терминал 1
+```
+```bash
+cd frontend; npm run dev # Терминал 2
+```
+
+**6. Открыть приложение:**
+Приложение доступно по адресу: [http://localhost:5173](http://localhost:5173)
+
+## 📞 Контакты
+
+- Telegram: [@flyingbrick](https://t.me/flyingbrick)
+- Gmail: birdcherrytea@gmail.com

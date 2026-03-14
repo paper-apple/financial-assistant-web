@@ -2,8 +2,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { Repository } from "typeorm";
 import { ConflictException, NotFoundException, UnauthorizedException } from "@nestjs/common";
-import { User } from "../../users/entities/user.entity";
-import { UsersService } from "../../users/users.service";
+import { User } from "@/users/entities/user.entity";
+import { UsersService } from "@/users/users.service";
 
 describe("UsersService", () => {
   let service: UsersService;
@@ -24,31 +24,31 @@ describe("UsersService", () => {
     }));
   });
 
-  it("create создаёт нового пользователя", async () => {
+  it("создание нового пользователя", async () => {
     (usersRepository.findOne as any).mockResolvedValue(null);
     (usersRepository.create as any).mockImplementation((u: User) => u);
     (usersRepository.save as any).mockImplementation((u: User) => ({ ...u, id: 1 }));
 
-    const result = await service.create("newUser", "12345");
+    const result = await service.create("newUser", "1234Ab");
 
     expect(result).toEqual({
       id: 1,
       username: "newUser",
-      password: "hashed-12345",
+      password: "hashed-1234Ab",
       expenses: undefined,
     });
     expect(usersRepository.create).toHaveBeenCalled();
     expect(usersRepository.save).toHaveBeenCalled();
   });
 
-  it("create выбрасывает ConflictException, если пользователь уже существует", async () => {
+  it("ConflictException, если пользователь уже существует", async () => {
     const existing: User = { id: 1, username: "exists", password: "hashed", expenses: [] };
     (usersRepository.findOne as any).mockResolvedValue(existing);
 
     await expect(service.create("exists", "12345")).rejects.toThrow(ConflictException);
   });
 
-  it("validateUser возвращает пользователя при правильном пароле", async () => {
+  it("возврат пользователя при правильном пароле", async () => {
     const user: User = { id: 1, username: "test", password: "hashed-12345", expenses: [] };
     (usersRepository.findOne as any).mockResolvedValue(user);
 
@@ -56,13 +56,13 @@ describe("UsersService", () => {
     expect(result).toEqual(user);
   });
 
-  it("validateUser выбрасывает NotFoundException, если пользователь не найден", async () => {
+  it("NotFoundException, если пользователь не найден", async () => {
     (usersRepository.findOne as any).mockResolvedValue(null);
 
-    await expect(service.validateUser("ghost", "12345")).rejects.toThrow(NotFoundException);
+    await expect(service.validateUser("ghost", "12345")).rejects.toThrow(UnauthorizedException);
   });
 
-  it("validateUser выбрасывает UnauthorizedException, если пароль неверный", async () => {
+  it("UnauthorizedException, если пароль неверный", async () => {
     const user: User = { id: 1, username: "test", password: "hashed-99999", expenses: [] };
     (usersRepository.findOne as any).mockResolvedValue(user);
 

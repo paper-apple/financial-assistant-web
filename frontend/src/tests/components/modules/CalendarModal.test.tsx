@@ -28,7 +28,7 @@ describe('CalendarModal', () => {
     vi.clearAllMocks();
   });
 
-  it('рендерит компонент с переданной датой', () => {
+  it('рендер компонента с переданной датой', () => {
     const testDate = new Date('2025-01-01T10:00:00');
     
     render(
@@ -43,7 +43,7 @@ describe('CalendarModal', () => {
     expect(screen.getByText('Inline Calendar')).toBeInTheDocument();
   });
 
-  it('вызывает onClose при клике на кнопку "Закрыть"', () => {
+  it('вызов onClose при клике на кнопку "Закрыть"', () => {
     render(
       <CalendarModal 
         value={null} 
@@ -58,7 +58,7 @@ describe('CalendarModal', () => {
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  it('вызывает onSave с выбранной датой при клике на "Сохранить"', () => {
+  it('вызов onSave с выбранной датой при клике на "Сохранить"', () => {
     const testDate = new Date('2025-01-01T10:00:00');
     
     render(
@@ -77,7 +77,7 @@ describe('CalendarModal', () => {
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  it('не вызывает onSave если дата не выбрана', () => {
+  it('нет вызова onSave, если дата не выбрана', () => {
     render(
       <CalendarModal 
         value={null} 
@@ -93,7 +93,7 @@ describe('CalendarModal', () => {
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  it('обновляет внутреннее состояние при изменении даты', () => {
+  it('обновление внутреннего состояния при изменении даты', () => {
     render(
       <CalendarModal 
         value={null} 

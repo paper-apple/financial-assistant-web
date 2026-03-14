@@ -33,7 +33,7 @@ describe("ExpenseCard", () => {
     vi.useRealTimers();
   });
 
-  it("рендерит контент (title, category, location, price, date)", () => {
+  it("рендер контента (title, category, location, price, date)", () => {
     const expense = makeExpense();
     render(
       <ul>
@@ -60,7 +60,7 @@ describe("ExpenseCard", () => {
     expect(screen.getByText(expectedDate)).toBeInTheDocument();
   });
 
-  it("по клику вызывает onEdit, когда selectionMode=false", () => {
+  it("вызов onEdit по клику, когда selectionMode=false", () => {
     const expense = makeExpense();
     const onEdit = vi.fn();
 
@@ -80,7 +80,7 @@ describe("ExpenseCard", () => {
     expect(onEdit).toHaveBeenCalledWith(expect.objectContaining({ id: 1 }));
   });
 
-  it("по клику вызывает onSelect(id), когда selectionMode=true", () => {
+  it("вызов onSelect(id) по клику, когда selectionMode=true", () => {
     const expense = makeExpense();
     const onSelect = vi.fn();
     const onEdit = vi.fn();
@@ -103,7 +103,7 @@ describe("ExpenseCard", () => {
     expect(onEdit).not.toHaveBeenCalled();
   });
 
-  it("лонг-пресс (>400мс) вызывает onLongPress(id) и подавляет последующий click", () => {
+  it("вызов onLongPress(id) и подавление последующего click", () => {
     const expense = makeExpense();
     const onLongPress = vi.fn();
     const onSelect = vi.fn();
@@ -136,7 +136,7 @@ describe("ExpenseCard", () => {
     expect(onEdit).not.toHaveBeenCalled();
   });
 
-  it("touchmove отменяет лонг-пресс", () => {
+  it("отмена лонг-пресс при помощи touchmove", () => {
     const expense = makeExpense();
     const onLongPress = vi.fn();
 
@@ -161,7 +161,7 @@ describe("ExpenseCard", () => {
     expect(onLongPress).not.toHaveBeenCalled();
   });
 
-  it("mouseleave до 400мс отменяет лонг-пресс", () => {
+  it("отмена лонг-пресс при помощи mouseleave", () => {
     const expense = makeExpense();
     const onLongPress = vi.fn();
 

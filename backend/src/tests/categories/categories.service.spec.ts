@@ -18,7 +18,7 @@ describe("CategoriesService", () => {
     service = new CategoriesService(categoriesRepository as Repository<Category>);
   });
 
-  it("возвращает существующую категорию, если она найдена", async () => {
+  it("возврат существующей категорию", async () => {
     const existing: Category = { id: 1, name: "Еда", expenses: [] };
     (categoriesRepository.findOne as any).mockResolvedValue(existing);
 
@@ -30,7 +30,7 @@ describe("CategoriesService", () => {
     expect(categoriesRepository.save).not.toHaveBeenCalled();
   });
 
-  it("создаёт и сохраняет категорию, если её нет", async () => {
+  it("создание и сохранение категории", async () => {
     (categoriesRepository.findOne as any).mockResolvedValue(null);
 
     const created: Partial<Category> = { name: "Транспорт", expenses: [] };

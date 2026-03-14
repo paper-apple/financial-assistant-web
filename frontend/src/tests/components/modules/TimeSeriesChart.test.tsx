@@ -34,12 +34,12 @@ describe("TimeSeriesChart", () => {
     vi.clearAllMocks();
   });
 
-  it("отображает 'Нет данных' при пустом массиве", () => {
+  it("отображение 'Нет данных' при пустом массиве", () => {
     render(<TimeSeriesChart expenses={[]} />);
     expect(screen.getByText("Нет данных")).toBeInTheDocument();
   });
 
-  it("рендерит Line с данными и опциями", () => {
+  it("рендер Line с данными и опциями", () => {
     render(<TimeSeriesChart expenses={expenses} />);
     const line = screen.getByTestId("line-mock");
     expect(line).toBeInTheDocument();
@@ -50,13 +50,13 @@ describe("TimeSeriesChart", () => {
     expect(data.datasets[1].label).toBe("Количество транзакций");
   });
 
-  it("отображает нижние подписи диапазона", () => {
+  it("отображение нижних подписей диапазона", () => {
     render(<TimeSeriesChart expenses={expenses} />);
     expect(screen.getByText("2023-01-01")).toBeInTheDocument();
     expect(screen.getByText("2023-01-03")).toBeInTheDocument();
   });
 
-  it("вызывает detectPeriod, groupByPeriod и aggregateToMaxPoints", async () => {
+  it("вызов detectPeriod, groupByPeriod и aggregateToMaxPoints", async () => {
     render(<TimeSeriesChart expenses={expenses} />);
     const { detectPeriod } = await import("../../../utils/groupByPeriod");
     const { groupByPeriod } = await import("../../../utils/groupByPeriod");

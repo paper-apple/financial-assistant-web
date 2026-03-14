@@ -5,7 +5,6 @@ import { useExpenseForm } from '../../hooks/useExpenseForm';
 import type { Expense } from '../../types';
 import { makeCategory, makeLocation } from "../createCategoryAndLocationFields"
 
-// Моковые данные для тестов
 const mockExpense: Expense = {
   id: 1,
   title: 'Хлеб',
@@ -24,7 +23,7 @@ describe('useExpenseForm', () => {
       category: '',
       price: '',
       location: '',
-      datetime: expect.any(String) // Дата должна быть строкой
+      datetime: expect.any(String)
     });
     
     expect(result.current.editingExpense).toBeNull();
@@ -38,7 +37,7 @@ describe('useExpenseForm', () => {
     });
     
     expect(result.current.form.title).toBe('Макароны');
-    expect(result.current.form.category).toBe(''); // Другие поля не изменились
+    expect(result.current.form.category).toBe('');
   });
 
   it('updateFormField обновляет поля формы', () => {
@@ -73,7 +72,6 @@ describe('useExpenseForm', () => {
     });
     
     expect(result.current.form.title).toBe('Second');
-    // Другие поля остались без изменений
     expect(result.current.form.category).toBe('');
   });
 
@@ -101,31 +99,24 @@ describe('useExpenseForm', () => {
       location: 'Копеечка',
       datetime: '2025-01-01T12:00:00.000Z'
     });
-    // editingExpense не должен измениться при setFormFromExpense
     expect(result.current.editingExpense).toEqual(mockExpense);
   });
 
   it('resetForm очищает form и editingExpense', () => {
     const { result } = renderHook(() => useExpenseForm());
     
-    // Сначала заполняем форму
     act(() => {
-      // result.current.updateFormField('title', 'Test');
-      // result.current.updateFormField('price', '200');
       result.current.setFormFromExpense(mockExpense);
       
     });
     
-    // Проверяем что форма заполнена
     expect(result.current.form.title).toBe('Хлеб');
     expect(result.current.editingExpense).not.toBeNull();
     
-    // Сбрасываем
     act(() => {
       result.current.resetForm();
     });
     
-    // Проверяем сброс
     expect(result.current.form).toEqual({
       title: '',
       category: '',
@@ -139,12 +130,10 @@ describe('useExpenseForm', () => {
   it('setEditingExpense(null) сбрасывет форму и setEditingExpense', () => {
     const { result } = renderHook(() => useExpenseForm());
     
-    // Сначала устанавливаем расход
     act(() => {
       result.current.setEditingExpense(mockExpense);
     });
     
-    // Затем сбрасываем в null
     act(() => {
       result.current.setEditingExpense(null);
     });
@@ -168,8 +157,7 @@ describe('useExpenseForm', () => {
     const { result } = renderHook(() => useExpenseForm());
     
     act(() => {
-      // @ts-ignore - тестируем с частичным объектом
-      result.current.setFormFromExpense(partialExpense);
+      result.current.setFormFromExpense(partialExpense as Expense);
     });
     
     expect(result.current.form).toEqual({

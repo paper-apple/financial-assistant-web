@@ -49,8 +49,17 @@
   right: var(--scrollbar-width, 0px);
 } */
 
+@-moz-document url-prefix() {
+  .floating-buttons {
+    right: -12px !important;
+  }
+  .hide-scrollbar .floating-buttons {
+    right: 0px !important;
+  }
+}
+
 .hide-scrollbar .floating-buttons {
-  left: var(--scrollbar-width, 0px) ;
+  left: var(--scrollbar-width, 0px);
 }
 
 @keyframes fadeInOut {
@@ -100,8 +109,8 @@ body {
 
 .hide-scrollbar {
   overflow-y: hidden;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  /* scrollbar-width: none; Firefox */
+  -ms-overflow-style: none; /* Edge */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -124,12 +133,9 @@ body {
 
 .ios-calendar .react-datepicker__header {
   background: white;
-  border-bottom: 1px solid #a9a9a9;
 }
 
 .ios-calendar .react-datepicker__current-month {
-  border-bottom: 1px solid #a4a4a4;
-  padding-bottom: 8px;
   font-size: 14px;
   font-weight: normal;
 }

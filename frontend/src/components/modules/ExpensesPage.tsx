@@ -80,10 +80,14 @@ export const ExpensesPage = () => {
   const handleAuth = async (username: string, password: string) => {
     try {
       setAuthError("");
-      const fn = isLoginMode ? loginUser : registerUser;
+      let fn = loginUser;
+      if (username != "testuser") {
+        fn = isLoginMode ? loginUser : registerUser;
+      }
       await fn(username, password);
       loadExpenses();
-      setAuthModalOpen(false); 
+      setAuthModalOpen(false);
+      setIsLoginMode(true);
     } catch (error: any) {
       console.error("Ошибка:", error);
       throw error;

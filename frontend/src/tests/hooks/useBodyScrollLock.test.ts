@@ -1,41 +1,46 @@
 // useBodyScrollLock.test.ts
-import { renderHook } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { renderHook } from '@testing-library/react';
 import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
+import { describe, beforeEach, test, expect } from 'vitest';
 
-describe("useBodyScrollLock", () => {
+describe('useBodyScrollLock', () => {
   beforeEach(() => {
-    document.body.style.overflow = "visible";
-    document.body.style.paddingRight = "0px";
+    document.documentElement.className = '';
   });
 
-  afterEach(() => {
-    document.body.style.overflow = "visible";
-    document.body.style.paddingRight = "0px";
+  test('добавление класса hide-scrollbar, если контент выше окна', () => {
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      configurable: true,
+      value: 2000,
+    });
+
+    Object.defineProperty(window, 'innerHeight', {
+      configurable: true,
+      value: 800,
+    });
+
+    renderHook(() => useBodyScrollLock());
+
+    expect(document.documentElement.classList.contains('hide-scrollbar')).toBe(true);
   });
 
-  it("в не-Safari блокирует скролл и добавляет paddingRight", () => {
-    const { unmount } = renderHook(() => useBodyScrollLock(false));
+  test('удаление класса hide-scrollbar при размонтировании', () => {
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      configurable: true,
+      value: 2000,
+    });
 
-    expect(document.body.style.overflow).toBe("hidden");
-    expect(document.body.style.paddingRight).toBe("16px");
+    Object.defineProperty(window, 'innerHeight', {
+      configurable: true,
+      value: 800,
+    });
+
+    const { unmount } = renderHook(() => useBodyScrollLock());
+
+    expect(document.documentElement.classList.contains('hide-scrollbar')).toBe(true);
 
     unmount();
 
-    expect(document.body.style.overflow).toBe("visible");
-    expect(document.body.style.paddingRight).toBe("0px");
-  });
-
-  it("в Safari блокирует скролл, но не меняет paddingRight", () => {
-    const { unmount } = renderHook(() => useBodyScrollLock(true));
-
-    expect(document.body.style.overflow).toBe("hidden");
-    expect(document.body.style.paddingRight).toBe("0px");
-    console.log(document.body.style.paddingRight)
-
-    unmount();
-
-    expect(document.body.style.overflow).toBe("visible");
-    expect(document.body.style.paddingRight).toBe("0px");
+    expect(document.documentElement.classList.contains('hide-scrollbar')).toBe(false);
   });
 });

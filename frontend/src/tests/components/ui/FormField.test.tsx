@@ -14,34 +14,34 @@ describe("FormField", () => {
     vi.clearAllMocks();
   });
 
-  it("рендерит label и placeholder", () => {
+  it("рендер label и placeholder", () => {
     render(<FormField label="Имя" value="" placeholder="Введите имя" />);
     expect(screen.getByText("Имя")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Введите имя")).toBeInTheDocument();
   });
 
-  it("вызывает onChange при вводе текста", async () => {
+  it("вызов onChange при вводе текста", async () => {
     render(<FormField value="" onChange={onChange} testId="field" />);
     const input = screen.getByTestId("field");
     await userEvent.type(input, "abc");
     expect(onChange).toHaveBeenCalled();
   });
 
-  it("показывает кнопку очистки и вызывает onClear", async () => {
+  it("отображение кнопки очистки и вызов onClear", async () => {
     render(<FormField value="x" onClear={onClear} />);
     const btn = screen.getByRole("button", { name: "×" });
     await userEvent.click(btn);
     expect(onClear).toHaveBeenCalled();
   });
 
-  it("в режиме readOnly вызывает onFieldClick при клике", async () => {
+  it("вызов onFieldClick в режиме readOnly  при клике", async () => {
     render(<FormField value="readonly" readOnly calendarOpen={onFieldClick} />);
     const input = screen.getByDisplayValue("readonly");
     await userEvent.click(input);
     expect(onFieldClick).toHaveBeenCalled();
   });
 
-  it("открывает список подсказок при фокусе", async () => {
+  it("открытие списка подсказок при фокусе", async () => {
     render(
       <FormField
         value=""
@@ -56,7 +56,7 @@ describe("FormField", () => {
     expect(screen.getByText("two")).toBeInTheDocument();
   });
 
-  it("навигация стрелками меняет highlightedIndex и Enter выбирает подсказку", async () => {
+  it("при навигации стрелками изменяется highlightedIndex и при нажатии Enter выбирается подсказка", async () => {
     render(
       <FormField
         value=""
@@ -74,7 +74,7 @@ describe("FormField", () => {
     expect(onSuggestionSelect).toHaveBeenCalledWith("apple");
   });
 
-  it("ArrowUp циклически выбирает последнюю подсказку", async () => {
+  it("циклический выбор последней подсказки при ArrowUp", async () => {
     render(
       <FormField
         value=""

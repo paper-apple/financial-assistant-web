@@ -2,15 +2,14 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 require("dotenv").config({
-  path: require("path").resolve(__dirname, "../../.env")
+  path: require("path").join(process.cwd(), "../.env")
 });
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(cookieParser());
 
   app.enableCors({
     origin: [ 
@@ -27,7 +26,6 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
 }
-console.log('DB_USER =', process.env.DB_USER);
 console.log('DB_NAME =', process.env.DB_NAME);
 
 bootstrap();

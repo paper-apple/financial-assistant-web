@@ -13,7 +13,6 @@ import { Location } from './locations/entities/location.entity';
 import { User } from './users/entities/user.entity';
 import { AppController } from './app.controller';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({

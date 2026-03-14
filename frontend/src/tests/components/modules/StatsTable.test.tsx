@@ -13,14 +13,14 @@ describe("StatsTable", () => {
     { key: "Транспорт", count: 1, total: 50 },
   ];
 
-  it("рендерит заголовки для поля category", () => {
+  it("рендер заголовков для поля category", () => {
     render(<StatsTable field="category" rows={rows} totalCount={3} grandTotal={150} />);
     expect(screen.getByText("Категория")).toBeInTheDocument();
     expect(screen.getByText("Кол-во")).toBeInTheDocument();
     expect(screen.getByText("Сумма")).toBeInTheDocument();
   });
 
-  it("рендерит строки таблицы", () => {
+  it("рендер строк таблицы", () => {
     render(<StatsTable field="category" rows={rows} totalCount={3} grandTotal={150} />);
     expect(screen.getByText("Еда")).toBeInTheDocument();
     expect(screen.getByText("Транспорт")).toBeInTheDocument();
@@ -28,16 +28,16 @@ describe("StatsTable", () => {
     expect(screen.getByText("50")).toBeInTheDocument();
   });
 
-  it("рендерит итоговую строку", () => {
+  it("рендери итоговой строки", () => {
     render(<StatsTable field="category" rows={rows} totalCount={3} grandTotal={150} />);
     expect(screen.getByText("Итого")).toBeInTheDocument();
     expect(screen.getByText("3")).toBeInTheDocument();
     expect(screen.getByText("150")).toBeInTheDocument();
   });
 
-  it("использует класс third-column mr-3 если не Safari", () => {
+  it("использование класса third-column mr-1, если не Safari", () => {
     render(<StatsTable field="category" rows={rows} totalCount={3} grandTotal={150} />);
     const sumHeader = screen.getAllByText("Сумма")[0];
-    expect(sumHeader).toHaveClass("third-column mr-3");
+    expect(sumHeader).toHaveClass("third-column mr-1");
   });
 });

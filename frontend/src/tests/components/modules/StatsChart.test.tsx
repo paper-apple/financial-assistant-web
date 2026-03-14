@@ -27,18 +27,18 @@ describe("StatsChart", () => {
     ],
   };
 
-  it("рендерит Pie с переданными данными", () => {
+  it("рендер Pie с переданными данными", () => {
     render(<StatsChart chartData={chartData} />);
     expect(screen.getByTestId("pie-mock")).toBeInTheDocument();
   });
 
-  it("передаёт опции с maintainAspectRatio=false и responsive=true", () => {
+  it("передача опций с maintainAspectRatio=false и responsive=true", () => {
     render(<StatsChart chartData={chartData} />);
     expect(lastOptions.maintainAspectRatio).toBe(false);
     expect(lastOptions.responsive).toBe(true);
   });
 
-  it("tooltip label формирует правильные строки", () => {
+  it("формирование правильных строк", () => {
     render(<StatsChart chartData={chartData} />);
 
     const labelFn = lastOptions.plugins.tooltip.callbacks.label;

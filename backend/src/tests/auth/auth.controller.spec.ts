@@ -1,69 +1,114 @@
 // auth.controller.spec.ts
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import type { Response } from "express";
-import { AuthController } from "../../auth/auth.controller";
-import { AuthService } from "../../auth/auth.service";
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { Test } from '@nestjs/testing';
+import { AuthController } from '@/auth/auth.controller';
+import { AuthService } from '@/auth/auth.service';
 
-describe("AuthController", () => {
-  let controller: AuthController;
-  let authService: Partial<AuthService>;
-  let res: Partial<Response>;
 
-  beforeEach(() => {
-    authService = {
-      validateUser: vi.fn(),
-      register: vi.fn(),
-    };
+describe('AuthController', () => {
+  let authController: AuthController;
+  let authService: AuthService;
 
-    res = {
-      cookie: vi.fn().mockReturnThis(),
-      json: vi.fn().mockReturnThis(),
-      clearCookie: vi.fn().mockReturnThis(),
-    };
+  const mockAuthService = {
+    validateUser: vi.fn(),
+    login: vi.fn(),
+    register: vi.fn(),
+  };
 
-    controller = new AuthController(authService as AuthService);
+  beforeEach(async () => {
+    const module = await Test.createTestingModule({
+      controllers: [AuthController],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: mockAuthService,
+        },
+      ],
+    }).compile();
+
+    authController = module.get<AuthController>(AuthController);
+    authService = module.get<AuthService>(AuthService);
   });
 
-  it("login вызывает validateUser и устанавливает cookie", async () => {
-    const user = { id: 1, username: "test" };
-    (authService.validateUser as any).mockResolvedValue(user);
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-    await controller.login({ username: "test", password: "123" }, res as Response);
+  describe('login', () => {
+    it('успешный логин', async () => {
+      const loginDto = { username: 'test', password: '1234Ab' };
+      const mockUser = { id: 1, username: 'test' };
+      const mockLoginResult = {
+        access_token: 'jwt-token',
+        user: mockUser
+      };
 
-    expect(authService.validateUser).toHaveBeenCalledWith("test", "123");
-    expect(res.cookie).toHaveBeenCalledWith("userId", "1", {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      mockAuthService.validateUser.mockResolvedValue(mockUser);
+      mockAuthService.login.mockResolvedValue(mockLoginResult);
+
+      const result = await authController.login(loginDto);
+
+      expect(result).toEqual({
+        success: true,
+        ...mockLoginResult
+      });
+      
+      expect(mockAuthService.validateUser).toHaveBeenCalledWith('test', '1234Ab');
+      expect(mockAuthService.login).toHaveBeenCalledWith(mockUser);
     });
-    expect(res.json).toHaveBeenCalledWith({
-      success: true,
-      user: { id: 1, username: "test" },
+
+    it('ошибка от validateUser', async () => {
+      const loginDto = { username: 'test', password: 'wrong' };
+      const error = new Error('Неверные данные');
+      
+      mockAuthService.validateUser.mockRejectedValue(error);
+
+      await expect(authController.login(loginDto)).rejects.toThrow(error);
+      
+      expect(mockAuthService.login).not.toHaveBeenCalled();
     });
   });
 
-  it("register вызывает register и устанавливает cookie", async () => {
-    const user = { id: 2, username: "newUser" };
-    (authService.register as any).mockResolvedValue(user);
+  describe('register', () => {
+    it('регистрация и логин пользователя', async () => {
+      const registerDto = { username: 'test', password: '1234Ab' };
+      const mockUser = { id: 2, username: 'test' };
+      const mockLoginResult = {
+        access_token: 'jwt-token',
+        user: mockUser
+      };
 
-    await controller.register({ username: "newUser", password: "123" }, res as Response);
+      mockAuthService.register.mockResolvedValue(mockUser);
+      mockAuthService.login.mockResolvedValue(mockLoginResult);
 
-    expect(authService.register).toHaveBeenCalledWith("newUser", "123");
-    expect(res.cookie).toHaveBeenCalledWith("userId", "2", {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      const result = await authController.register(registerDto);
+
+      expect(result).toEqual({
+        success: true,
+        ...mockLoginResult
+      });
+      
+      expect(mockAuthService.register).toHaveBeenCalledWith('test', '1234Ab');
+      expect(mockAuthService.login).toHaveBeenCalledWith(mockUser);
     });
-    expect(res.json).toHaveBeenCalledWith({
-      success: true,
-      user: { id: 2, username: "newUser" },
+
+    it('ошибка от register', async () => {
+      const registerDto = { username: 'test', password: '1234Ab' };
+      const error = new Error('Пользователь уже существует');
+      
+      mockAuthService.register.mockRejectedValue(error);
+
+      await expect(authController.register(registerDto)).rejects.toThrow(error);
+      
+      expect(mockAuthService.login).not.toHaveBeenCalled();
     });
   });
 
-  it("logout очищает cookie и возвращает success", async () => {
-    await controller.logout(res as Response);
+  describe('logout', () => {
+    it('success: true', async () => {
+      const result = await authController.logout();
 
-    expect(res.clearCookie).toHaveBeenCalledWith("userId");
-    expect(res.json).toHaveBeenCalledWith({ success: true });
+      expect(result).toEqual({ success: true });
+    });
   });
 });

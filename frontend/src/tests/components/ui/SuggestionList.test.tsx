@@ -12,7 +12,7 @@ describe("SuggestionsList", () => {
     vi.clearAllMocks();
   });
 
-  it("рендерит все элементы списка", () => {
+  it("рендер всех элементов списка", () => {
     render(
       <SuggestionsList
         list={list}
@@ -26,7 +26,7 @@ describe("SuggestionsList", () => {
     expect(screen.getByText("cherry")).toBeInTheDocument();
   });
 
-  it("применяет класс bg-blue-100 к выделенному элементу", () => {
+  it("применение класса bg-blue-100 к выделенному элементу", () => {
     render(
       <SuggestionsList
         list={list}
@@ -39,7 +39,7 @@ describe("SuggestionsList", () => {
     expect(banana).toHaveClass("bg-blue-100");
   });
 
-  it("вызывает onSelect при клике на элемент", async () => {
+  it("вызов onSelect при клике на элемент", async () => {
     render(
       <SuggestionsList
         list={list}
@@ -53,7 +53,7 @@ describe("SuggestionsList", () => {
     expect(onSelect).toHaveBeenCalledWith("cherry");
   });
 
-  it("скрывает список, если isOpen=false", () => {
+  it("скрытие списка, если isOpen=false", () => {
     const { container } = render(
       <SuggestionsList
         list={list}
@@ -65,7 +65,7 @@ describe("SuggestionsList", () => {
     expect(container.firstChild).toHaveClass("max-h-0", "opacity-0");
   });
 
-  it("открывает список, если isOpen=true", () => {
+  it("открытие список, если isOpen=true", () => {
     const { container } = render(
       <SuggestionsList
         list={list}

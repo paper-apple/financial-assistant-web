@@ -37,7 +37,7 @@ describe("useExpenseFormValidation", () => {
     expect(result.current.isValid()).toBeFalsy();
   });
 
-  it("getFieldError возвращает false до сабмита", () => {
+  it("getFieldError возвращает false до submit", () => {
     const { result } = renderHook(() =>
       useExpenseFormValidation(invalidForm)
     );
@@ -45,7 +45,7 @@ describe("useExpenseFormValidation", () => {
     expect(result.current.getFieldError("title")).toBe(false);
   });
 
-  it("getFieldError возвращает true после сабмита, если поле пустое", () => {
+  it("getFieldError возвращает true после submit, если поле пустое", () => {
     const { result } = renderHook(() =>
       useExpenseFormValidation(invalidForm)
     );
@@ -58,7 +58,7 @@ describe("useExpenseFormValidation", () => {
     expect(result.current.getFieldError("category")).toBe(true);
   });
 
-  it("getFieldError возвращает false после сабмита, если поле заполнено", () => {
+  it("getFieldError возвращает false после submit, если поле заполнено", () => {
     const { result } = renderHook(() =>
       useExpenseFormValidation(validForm)
     );
@@ -71,7 +71,7 @@ describe("useExpenseFormValidation", () => {
     expect(result.current.getFieldError("category")).toBe(false);
   });
 
-  it("validateAndSubmit вызывает onValid, если форма валидна", () => {
+  it("validateAndSubmit вызывает onValid, если форма правильно заполнена", () => {
     const { result } = renderHook(() =>
       useExpenseFormValidation(validForm)
     );
@@ -85,7 +85,7 @@ describe("useExpenseFormValidation", () => {
     expect(onValid).toHaveBeenCalled();
   });
 
-  it("validateAndSubmit не вызывает onValid, если форма невалидна", () => {
+  it("validateAndSubmit не вызывает onValid, если форма правильно заполнена", () => {
     const { result } = renderHook(() =>
       useExpenseFormValidation(invalidForm)
     );

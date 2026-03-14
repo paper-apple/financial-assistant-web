@@ -30,7 +30,7 @@ describe("SortForm", () => {
     return { setSortField, setSortDirection, applySorts, onClose };
   };
 
-  it("рендерит все опции сортировки", () => {
+  it("рендер всех опций сортировки", () => {
     setup();
 
     expect(screen.getByText("Название")).toBeInTheDocument();
@@ -43,14 +43,14 @@ describe("SortForm", () => {
     expect(screen.getByText("По убыванию")).toBeInTheDocument();
   });
 
-  it("вызывает setSortField при выборе поля", () => {
+  it("вызов setSortField при выборе поля", () => {
     const { setSortField } = setup();
 
     fireEvent.click(screen.getByText("Категория"));
     expect(setSortField).toHaveBeenCalledWith("category");
   });
 
-  it("вызывает setSortDirection при выборе направления", () => {
+  it("вызов setSortDirection при выборе направления", () => {
     const { setSortDirection } = setup();
 
     fireEvent.click(screen.getByText("По убыванию"));
@@ -72,7 +72,7 @@ describe("SortForm", () => {
     expect(onClose).toHaveBeenCalled();
   });
 
-  it("подсвечивает выбранное поле и направление", () => {
+  it("подсветка выбранного поля и направления", () => {
     setup({ sortField: "price", sortDirection: "DESC" });
 
     const priceBtn = screen.getByText("Стоимость").closest("button");

@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { Modal } from "../../../components/modules/Modal";
 
 describe("Модальное окно", () => {
-  test("Рендер", () => {
+  test("рендер", () => {
     render(
       <Modal onModalClose={() => {}}>
         <span>Modal Content</span>
@@ -14,7 +14,7 @@ describe("Модальное окно", () => {
     expect(screen.getByText("Modal Content")).toBeInTheDocument();
   });
 
-  test("Вызов onClose при нажатии на фон", () => {
+  test("вызов onClose при нажатии на фон", () => {
     const onClose = vi.fn();
     render(
       <Modal onModalClose={onClose}>
@@ -26,7 +26,7 @@ describe("Модальное окно", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  test("Вызов onClose не должен происходить при нажатии на модальном окне", () => {
+  test("вызов onClose не должен происходить при нажатии на модальном окне", () => {
     const onClose = vi.fn();
     render(
       <Modal onModalClose={onClose}>
@@ -38,7 +38,7 @@ describe("Модальное окно", () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  test("Закрытие модального окна при нажатии Esc", () => {
+  test("закрытие модального окна при нажатии Esc", () => {
     const onClose = vi.fn();
     render(
       <Modal onModalClose={onClose}>

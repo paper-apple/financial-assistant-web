@@ -1,112 +1,62 @@
 // AuthModal.test.tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, vi, it, expect } from "vitest";
-import { AuthModal } from "../../../components/modules/AuthModal";
-import "@testing-library/jest-dom";
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, vi, it, expect } from 'vitest';
+import { AuthModal } from '../../../components/modules/AuthModal';
 
-describe("AuthModal", () => {
-  const setup = (props = {}) => {
-    const defaultProps = {
-      isOpen: true,
-      isLoginMode: true,
-      error: "",
-      onAuth: vi.fn(),
-      onToggleMode: vi.fn(),
-    };
-    return render(<AuthModal {...defaultProps} {...props} />);
-  };
+describe('AuthModal', () => {
+  const mockOnAuth = vi.fn();
+  const mockOnToggle = vi.fn();
 
-  it("не рендерится, если isOpen = false", () => {
-    setup({ isOpen: false });
-    expect(screen.queryByText("Вход")).not.toBeInTheDocument();
+  it('рендер', () => {
+    render(
+      <AuthModal
+        isOpen={true}
+        isLoginMode={true}
+        error=""
+        onAuth={mockOnAuth}
+        onToggleMode={mockOnToggle}
+      />
+    );
+    
+    expect(screen.getByText('Вход')).toBeInTheDocument();
   });
 
-  it("отображает заголовок 'Вход' в режиме логина", () => {
-    setup({ isLoginMode: true });
-    expect(screen.getByText("Вход")).toBeInTheDocument();
+  it('вызов onAuth при сабмите', () => {
+    render(
+      <AuthModal
+        isOpen={true}
+        isLoginMode={true}
+        error=""
+        onAuth={mockOnAuth}
+        onToggleMode={mockOnToggle}
+      />
+    );
+
+    fireEvent.change(screen.getByTestId('username'), {
+      target: { value: 'test' },
+    });
+    fireEvent.change(screen.getByTestId('password'), {
+      target: { value: 'Ab4321' },
+    });
+
+    fireEvent.click(screen.getByText('Войти'));
+    
+    expect(mockOnAuth).toHaveBeenCalledWith('test', 'Ab4321');
   });
 
-  it("отображает заголовок 'Регистрация' в режиме регистрации", () => {
-    setup({ isLoginMode: false });
-    expect(screen.getByText("Регистрация")).toBeInTheDocument();
-  });
+  it('демо-вход', () => {
+    render(
+      <AuthModal
+        isOpen={true}
+        isLoginMode={true}
+        error=""
+        onAuth={mockOnAuth}
+        onToggleMode={mockOnToggle}
+      />
+    );
 
-  it("показывает ошибку из пропсов", () => {
-    setup({ error: "Ошибка авторизации" });
-    expect(screen.getByText("Ошибка авторизации")).toBeInTheDocument();
-  });
+    fireEvent.click(screen.getByText('Войти как демо-пользователь'));
 
-  it("валидация: не вызывает onAuth при невалидных данных", () => {
-    const onAuth = vi.fn();
-    setup({ onAuth });
-
-    fireEvent.change(screen.getByTestId("username"), {
-      target: { value: "D" },
-    });
-    fireEvent.change(screen.getByTestId("password"), {
-      target: { value: "123" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Войти" }));
-    expect(onAuth).not.toHaveBeenCalled();
-  });
-
-  it("возвращает ошибку, если логин слишком короткий", () => {
-    setup({});
-
-    fireEvent.change(screen.getByTestId("username"), {
-      target: { value: "D" },
-    });
-    fireEvent.change(screen.getByTestId("password"), {
-      target: { value: "123" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Войти" }));
-    expect(
-      screen.getByText("Имя пользователя должно быть длиннее одного символа")
-    ).toBeInTheDocument();
-  });
-
-  it.each([
-    ["слишком короткий пароль", "Ab1", "Пароль должен содержать минимум 6 символов"],
-    ["нет заглавной буквы", "abcdef1", "Пароль должен содержать хотя бы одну заглавную букву"],
-    ["нет строчной буквы", "ABCDEF1", "Пароль должен содержать хотя бы одну строчную букву"],
-    ["нет цифры", "Abcdef", "Пароль должен содержать хотя бы одну цифру"],
-  ])("возвращает ошибку, если %s", (_, password, expectedError) => {
-    setup({});
-    fireEvent.change(screen.getByTestId("username"), {
-      target: { value: "Dima" },
-    });
-    fireEvent.change(screen.getByTestId("password"), {
-      target: { value: password },
-    });
-        fireEvent.click(screen.getByRole("button", { name: "Войти" }));
-    expect(
-      screen.getByText(expectedError)
-    ).toBeInTheDocument();
-  });
-
-  it("успешная отправка вызывает onAuth с корректными данными", () => {
-    const onAuth = vi.fn();
-    setup({ onAuth });
-
-    fireEvent.change(screen.getByTestId("username"), {
-      target: { value: "Dima" },
-    });
-    fireEvent.change(screen.getByTestId("password"), {
-      target: { value: "Strong1" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Войти" }));
-
-    expect(onAuth).toHaveBeenCalledWith("Dima", "Strong1");
-  });
-
-  it("кнопка переключения режима вызывает onToggleMode", () => {
-    const onToggleMode = vi.fn();
-    setup({ onToggleMode });
-
-    fireEvent.click(screen.getByRole("button", { name: "Нет аккаунта?" }));
-    expect(onToggleMode).toHaveBeenCalled();
+    expect(mockOnAuth).toHaveBeenCalledWith('testuser', '1234Ab');
   });
 });

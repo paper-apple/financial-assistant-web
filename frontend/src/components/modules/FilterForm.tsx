@@ -46,16 +46,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 
   const wasAppliedRef = useRef(false);
 
-  // const getCombinedErrorText = () => {
-  //   const errors = [];
-  //   if (priceError) errors.push("Некорректная цена");
-  //   if (dateError) errors.push("Некорректная дата");
-  //   return errors.length > 0 ? errors.join(" ") : "";
-  // };
-
-// const [activeError, setActiveError] = useState<string | null>(null);
-// const [errorQueue, setErrorQueue] = useState<string[]>([]);
-
   const [showErrorTooltip, setShowErrorTooltip] = useState(false);
 
   const getCombinedErrorText = () => {
@@ -180,11 +170,6 @@ export const FilterForm: React.FC<FilterFormProps> = ({
             onClear={() => setEndDate(null)}
           />
         </div>
-        {/* <div className={errorText}>
-          {dateError && (
-            <p>Начало отсчёта позже конца</p>
-          )}
-        </div> */}
       </div>
 
       <div>
@@ -203,31 +188,11 @@ export const FilterForm: React.FC<FilterFormProps> = ({
               error={priceError}
             />
           </div>
-        {/* <div className={errorText}>
-          {priceError && (
-            <p>Минимальная цена больше максимальной</p>
-          )}
-        </div> */}
       </div>
-            {/* <div className="relative">
-              {getCombinedErrorText() && (
-                <ErrorBar errorText={getCombinedErrorText()}/>
-                // <div className="py-2 px-3 bg-red-50 border border-red-200 rounded-lg">
-                //   <p className="text-sm text-red-600 text-center">
-                //     Пожалуйста, заполните все обязательные поля
-                //   </p>
-                // </div>
-              )}
-            </div> */}
       <div className="relative">
         {showErrorTooltip && (
           <div>
-          <ErrorBar errorText={getCombinedErrorText()}/>
-            {/* <div className="py-2 px-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600 text-center">
-                Пожалуйста, заполните все обязательные поля
-              </p>
-          </div> */}
+            <ErrorBar errorText={getCombinedErrorText()}/>
           </div>
         )}
       </div>

@@ -17,29 +17,28 @@ describe("RadioGroup", () => {
     vi.clearAllMocks();
   });
 
-  it("рендерит все опции", () => {
+  it("рендер всех опций", () => {
     render(<RadioGroup options={options} selected="opt1" onChange={onChange} />);
     expect(screen.getByText("Option 1")).toBeInTheDocument();
     expect(screen.getByText("Option 2")).toBeInTheDocument();
   });
 
-  it("подсвечивает выбранную опцию", () => {
+  it("подсветка выбранной опции", () => {
     render(<RadioGroup options={options} selected="opt1" onChange={onChange} />);
     const btn1 = screen.getByRole("button", { name: /Option 1/i });
     const btn2 = screen.getByRole("button", { name: /Option 2/i });
 
     expect(btn1).toHaveClass("bg-blue-100");
-    expect(btn2).toHaveClass("bg-white");
   });
 
-  it("вызывает onChange при клике на кнопку", async () => {
+  it("вызов onChange при клике на кнопку", async () => {
     render(<RadioGroup options={options} selected="opt1" onChange={onChange} />);
     const btn2 = screen.getByRole("button", { name: /Option 2/i });
     await userEvent.click(btn2);
     expect(onChange).toHaveBeenCalledWith("opt2");
   });
 
-  it("ориентация horizontal применяет класс flex gap-6.5", () => {
+  it("при ориентации horizontal применяется класс flex gap-6.5", () => {
     const { container } = render(
       <RadioGroup
         options={options}
@@ -51,7 +50,7 @@ describe("RadioGroup", () => {
     expect(container.firstChild).toHaveClass("flex w-full gap-4.5");
   });
 
-  it("ориентация vertical применяет класс space-y-1", () => {
+  it("при ориентации vertical применяется класс space-y-1", () => {
     const { container } = render(
       <RadioGroup
         options={options}

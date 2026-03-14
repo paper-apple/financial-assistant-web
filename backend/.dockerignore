@@ -4,3 +4,14 @@ dist
 .git
 .gitignore
 README.md
+*.log
+.vscode
+.idea
+coverage
+.temp
+vitest.config.ts
+*.test.ts
+*.spec.ts
+test/
+tests/
+__tests__/

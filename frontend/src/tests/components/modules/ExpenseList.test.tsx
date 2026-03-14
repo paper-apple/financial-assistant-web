@@ -14,12 +14,12 @@ const sampleExpense: Expense = {
 };
 
 describe("ExpenseList", () => {
-  it("отображает сообщение, если список пуст", () => {
+  it("отображение сообщения, если список пуст", () => {
     render(<ExpenseList expenses={[]} lastUpdatedId={null} />);
     expect(screen.getByText("Записей нет")).toBeInTheDocument();
   });
 
-  it("рендерит карточки расходов", () => {
+  it("рендер карточки расходов", () => {
     render(<ExpenseList expenses={[sampleExpense]} lastUpdatedId={null} />);
     expect(screen.getByTestId("expense-card-1")).toBeInTheDocument();
     expect(screen.getByText("Кофе")).toBeInTheDocument();
@@ -28,7 +28,7 @@ describe("ExpenseList", () => {
     expect(screen.getByText("150")).toBeInTheDocument();
   });
 
-  it("подсвечивает выбранный элемент", () => {
+  it("подсветка выбранного элемента", () => {
     render(
       <ExpenseList
         expenses={[sampleExpense]}
@@ -41,7 +41,7 @@ describe("ExpenseList", () => {
     expect(card).toHaveClass("bg-blue-50");
   });
 
-  it("подсвечивает последний обновлённый элемент", () => {
+  it("подсветка последнего обновлённого элемента", () => {
     render(
       <ExpenseList
         expenses={[sampleExpense]}
@@ -52,7 +52,7 @@ describe("ExpenseList", () => {
     expect(highlight).toHaveClass("opacity-100");
   });
 
-  it("вызывает onEdit при клике, если selectionMode=false", () => {
+  it("вызов onEdit при клике, если selectionMode=false", () => {
     const onEdit = vi.fn();
     render(
       <ExpenseList
@@ -65,7 +65,7 @@ describe("ExpenseList", () => {
     expect(onEdit).toHaveBeenCalledWith(sampleExpense);
   });
 
-  it("вызывает onSelect при клике, если selectionMode=true", () => {
+  it("вызов onSelect при клике, если selectionMode=true", () => {
     const onSelect = vi.fn();
     render(
       <ExpenseList

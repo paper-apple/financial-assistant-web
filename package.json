@@ -6,7 +6,7 @@
     "@vitejs/plugin-react-swc": "^3.10.2",
     "chart.js": "^4.5.0",
     "cookie-parser": "^1.4.7",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.3.1",
     "fs": "^0.0.1-security",
     "lodash.debounce": "^4.0.8",
     "os": "^0.1.2",
@@ -15,13 +15,13 @@
     "vitest": "^3.2.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
     "@types/cookie-parser": "^1.4.9",
     "@types/lodash.debounce": "^4.0.9",
     "@types/react": "^19.2.7",
     "jsdom": "^27.0.0",
     "tailwindcss": "^4.1.11",
     "vite": "^7.0.0",
-    "@testing-library/jest-dom": "^6.9.1",
     "vitest": "^3.2.4"
   },
   "engines": {
@@ -31,7 +31,10 @@
     "test": "vitest run --config vitest.config.base.ts",
     "db:restore": "node scripts/restore-db.js",
     "db:setup": "node scripts/setup-db.js",
-    "install-deps": "node scripts/install-deps.js"
+    "install-deps": "node scripts/install-deps.js",
+    "run-all-tests": "node scripts/run-all-tests",
+    "run-app": "node scripts/run-app.js",
+    "setup-env": "node -e \"require('fs').copyFileSync('.env.example', '.env')\""
   },
   "overrides": {
     "@testing-library/jest-dom": {

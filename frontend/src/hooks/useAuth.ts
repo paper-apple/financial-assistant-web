@@ -23,7 +23,7 @@ export function useAuth() {
       await login(username, password);
       setUser({ username });
     } catch (err: any) {
-      setAuthError(err.response?.data?.message || "Ошибка входа");
+      setAuthError(err.response?.data?.message || "Сервер не отвечает. Пожалуйста, подождите");
       throw err;
     }
   };

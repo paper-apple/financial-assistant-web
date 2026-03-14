@@ -2,11 +2,10 @@
 import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
-// import { AuthGuard } from '../auth/auth.guard';
 import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req, Query, ParseIntPipe } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { CurrentUser } from 'src/auth/current-user.decorator';
-import { User } from 'src/users/entities/user.entity';
+import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
+import { CurrentUser } from '@/auth/current-user.decorator';
+import { User } from '@/users/entities/user.entity';
 
 @Controller('expenses')
 @UseGuards(JwtAuthGuard)

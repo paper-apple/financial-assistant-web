@@ -4,12 +4,10 @@ import * as api from "../../api";
 import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 import { useKeywordSuggestions } from "../../hooks/useKeywordSuggestions";
 
-// Мокаем debounce: он сразу вызывает функцию без задержки
 vi.mock("lodash.debounce", () => ({
   default: (fn: any) => fn,
 }));
 
-// Мокаем API
 vi.mock("../../api", () => ({
   suggestKeywords: vi.fn(),
 }));

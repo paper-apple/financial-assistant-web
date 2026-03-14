@@ -13,7 +13,6 @@ EXPOSE 5173
 
 CMD ["npm", "run", "dev", "--", "--host"]
 
-# Этап для production сборки
 FROM node:22-alpine AS build
 
 WORKDIR /usr/src/app
@@ -28,7 +27,6 @@ COPY . .
 
 RUN npm run build
 
-# Production этап с nginx
 FROM nginx:stable-alpine AS production
 
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html

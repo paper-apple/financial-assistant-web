@@ -20,7 +20,7 @@ describe("useAuth", () => {
       vi.restoreAllMocks();
     });
 
-  it("checkAuth устанавливает user при успешном запросе", async () => {
+  it("устанавливка user при успешном запросе", async () => {
     (fetchExpenses as Mock).mockResolvedValueOnce({
       data: [{ user: { username: "dima" } }],
     });
@@ -35,7 +35,7 @@ describe("useAuth", () => {
     expect(result.current.authModalOpen).toBe(false);
   });
 
-  it("checkAuth открывает модалку при ошибке", async () => {
+  it("открытие модального окна при ошибке", async () => {
     (fetchExpenses as Mock).mockRejectedValueOnce(new Error("fail"));
 
     const { result } = renderHook(() => useAuth());
@@ -70,10 +70,8 @@ describe("useAuth", () => {
 
     const { result } = renderHook(() => useAuth());
 
-    // Проверяем начальное состояние
     expect(result.current.authError).toBe("");
 
-    // Вызываем метод с ошибкой
     let caughtError;
     await act(async () => {
       try {
@@ -83,15 +81,12 @@ describe("useAuth", () => {
       }
     });
 
-    // Проверяем что ошибка была выброшена
     expect(caughtError).toBeDefined();
 
-    // Проверяем состояние после ошибки
     await waitFor(() => {
       expect(result.current.authError).toBe("Неверный пароль");
     });
 
-    // Убеждаемся что пользователь не установлен
     expect(result.current.user).toBeNull();
   });
 
@@ -130,7 +125,6 @@ describe("useAuth", () => {
 
     const { result } = renderHook(() => useAuth());
 
-    // сначала залогиним
     act(() => {
       result.current.setUser?.({ username: "dima" });
     });

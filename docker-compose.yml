@@ -4,6 +4,8 @@ services:
   postgres:
     image: postgres:17-alpine
     container_name: project_postgres
+    env_file:
+      - .env
     environment:
       POSTGRES_DB: ${DB_NAME:-financial_assistant_db}
       POSTGRES_USER: ${PGUSER:-postgres}
@@ -25,6 +27,8 @@ services:
       context: ./backend
       target: development
     container_name: project_backend
+    env_file:
+      - .env
     environment:
       NODE_ENV: development
       DB_HOST: postgres
@@ -50,6 +54,8 @@ services:
       context: ./frontend
       target: development
     container_name: project_frontend
+    env_file:
+      - .env
     environment:
       VITE_API_URL: http://localhost:3000
     ports:
