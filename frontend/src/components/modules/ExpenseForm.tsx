@@ -14,6 +14,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { useEffect, useState } from "react";
 import {ErrorBar} from "./ErrorBar"
+import { TranslationKey, useTranslation } from "../../hooks/useTranslation";
 
 type Props = {
   form: FormState;
@@ -25,11 +26,11 @@ type Props = {
   onModalClose: () => void;
 };
 
-const FIELDS_CONFIG: { key: keyof FormState; label: string; placeholder: string, testId: string, icon: React.ElementType }[] = [
-  { key: "title", label: "Название", placeholder: "...введите название расхода", testId: 'input-title', icon: TagIcon},
-  { key: "category", label: "Категория", placeholder: "...введите категорию расхода", testId: 'input-category', icon: RectangleStackIcon },
-  { key: "price", label: "Стоимость", placeholder: "...введите стоимость расхода", testId: 'input-price', icon: CurrencyDollarIcon },
-  { key: "location", label: "Место", placeholder: "...введите место оплаты расхода", testId: 'input-location', icon: MapPinIcon },
+const FIELDS_CONFIG: { key: keyof FormState; label: TranslationKey; testId: string, icon: React.ElementType }[] = [
+  { key: "title", label: "title", testId: 'input-title', icon: TagIcon},
+  { key: "category", label: "category", testId: 'input-category', icon: RectangleStackIcon },
+  { key: "price", label: "cost", testId: 'input-price', icon: CurrencyDollarIcon },
+  { key: "location", label: "place", testId: 'input-location', icon: MapPinIcon },
 ];
 
 export const ExpenseForm = ({
@@ -100,6 +101,8 @@ export const ExpenseForm = ({
     }
   }, [showErrorTooltip]);
   
+  const { t } = useTranslation()
+
   return (
     <div>
       <div className="grid grid-cols-1 gap-2">
@@ -130,7 +133,7 @@ export const ExpenseForm = ({
         <div>
           <div>
             <FormField
-              label="Дата"
+              label="date"
               testId="button-date"
               value={
                 form.datetime
@@ -153,7 +156,7 @@ export const ExpenseForm = ({
       <div className="relative">
         {showErrorTooltip && (
           <div>
-          <ErrorBar errorText="Пожалуйста, заполните все обязательные поля"/>
+            <ErrorBar errorText="error_empty_fields"/>
           </div>
         )}
       </div>
@@ -162,17 +165,17 @@ export const ExpenseForm = ({
           onClick={closeModal}
           className="btn-base btn-cancel"
         >
-          Отмена
+          {t("cancel")}
         </button>
         {onUpdated && (
           <button onClick={handleEditExpense} className={`btn-base w-[100px]
           ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
-            Изменить
+            {t("change")}
           </button>
         )}
         <button onClick={handleAddExpense} className={`btn-base w-[100px] 
           ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
-          Создать
+            {t("create")}
         </button>
       </div>
     </div>

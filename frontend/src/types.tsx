@@ -83,6 +83,8 @@ export type SortState = {
   setSortDirection: React.Dispatch<React.SetStateAction<SortParams['direction']>>;
 };
 
+export type ThemeField = "light" | "dark";
+
 export type GroupField = "title" | "category" | "location";
 
 type SortField = GroupField | "price" | "datetime";
@@ -100,13 +102,14 @@ export type FormState = {
   datetime: string;
 };
 
-  export type Modals = {
-    add: boolean;
-    update: boolean;
-    filters: boolean;
-    sort: boolean;
-    stats: boolean;
-    calendar: boolean;
-    startDate: boolean;
-    endDate: boolean;
-  };
+export type Modals = {
+  add: boolean;
+  update: boolean;
+  filters: boolean;
+  sort: boolean;
+  stats: boolean;
+  settings: boolean;
+  calendar: boolean;
+  startDate: boolean;
+  endDate: boolean;
+};

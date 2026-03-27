@@ -4,31 +4,35 @@ import type { ChartData } from "chart.js";
 import { detectPeriod, groupByPeriod, type Period } from "../../utils/groupByPeriod";
 import type { Expense } from "../../types";
 import { aggregateToMaxPoints } from "../../utils/aggregate";
+import { getColor } from "../../hooks/useGetComputedStyle";
+import { useTranslation } from "../../hooks/useTranslation";
 
 type Props = {
   expenses: Expense[];
 };
 
 export function TimeSeriesChart({ expenses }: Props) {
+  const { t } = useTranslation()
+
   if (expenses.length === 0) {
-    return <p>Нет данных</p>;
+    return <p>{t('no_data')}</p>;
   }
 
-  // Автоопределяем период
+  // Автоопределение периода
   const period: Period = detectPeriod(expenses);
 
-  // Группируем только в этом диапазоне
+  // Группировака в диапазоне
   const rawRows = groupByPeriod(expenses, period);
   const rows = aggregateToMaxPoints(rawRows, 20);
 
   const startLabel = rows.length > 0 ? rows[0].key.split("–")[0] : "";
   const endLabel = rows.length > 0 ? rows[rows.length - 1].key.split("–")[0] : "";
-
+  
   const data: ChartData<"line"> = {
     labels: rows.map(r => r.key),
     datasets: [
       {
-        label: "Сумма расходов",
+        label: t('expence_amount'),
         data: rows.map(r => r.total),
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
@@ -37,7 +41,7 @@ export function TimeSeriesChart({ expenses }: Props) {
         yAxisID: "y",
       },
       {
-        label: "Количество транзакций",
+        label: t('number_of_transactions'),
         data: rows.map(r => r.count),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
@@ -63,12 +67,14 @@ export function TimeSeriesChart({ expenses }: Props) {
             },
             plugins: {
               tooltip: {
+                titleColor: getColor('--text'),
+                bodyColor: getColor('--text'),
                 callbacks: {
                   label: ctx => `${ctx.dataset.label}: ${ctx.formattedValue}`,
                 },
               },
               legend: {
-                labels: { boxWidth: 3.5, boxHeight: 3.5 },
+                labels: { boxWidth: 3.5, boxHeight: 3.5, color: getColor('--text') },
               },
             },
             scales: {
@@ -76,21 +82,38 @@ export function TimeSeriesChart({ expenses }: Props) {
                 display: false,
               },
               y: {
-                title: { display: true, text: "Сумма" },
+                title: { display: true, text: t('sum'), color: getColor('--text') },
                 beginAtZero: true,
                 position: "left",
+                ticks: {
+                  color: getColor('--text'),
+                },
+                grid: {
+                  color: getColor('--tip-text'),
+                },
+                border: {
+                  color: getColor('--tip-text'),
+                  width: 1,
+                },
               },
               y1: {
-                title: { display: true, text: "Кол-во" },
+                title: { display: true, text: t('quantity'), color: getColor('--text') },
                 beginAtZero: true,
                 position: "right",
                 grid: { drawOnChartArea: false },
+                ticks: {
+                  color: getColor('--text'),
+                },
+                border: {
+                  color: getColor('--tip-text'),
+                  width: 1,
+                },
               },
             },
           }}
         />
       </div>
-      <div className="flex justify-between text-xs text-gray-600 mt-1">
+      <div className="flex justify-between text-xs text-(--text) mt-1">
         <span>{startLabel}</span>
         <span>{endLabel}</span>
       </div>

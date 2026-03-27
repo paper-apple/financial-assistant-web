@@ -10,6 +10,7 @@ import {
   ArrowDownIcon
 } from '@heroicons/react/24/solid';
 import { RadioGroup } from '../ui/RadioGroup';
+import { TranslationKey, useTranslation } from '../../hooks/useTranslation';
 
 type Props = {
   sortState: SortState;
@@ -17,17 +18,17 @@ type Props = {
   onClose: () => void;
 };
 
-const FIELD_OPTIONS: { value: SortParams['field']; label: string; icon: React.ElementType }[] = [
-  { value: 'title', label: 'Название', icon: TagIcon },
-  { value: 'category', label: 'Категория', icon: RectangleStackIcon },
-  { value: 'price', label: 'Стоимость', icon: CurrencyDollarIcon },
-  { value: 'location', label: 'Место', icon: MapPinIcon },
-  { value: 'datetime', label: 'Дата', icon: CalendarDaysIcon },
+const FIELD_OPTIONS: { value: SortParams['field']; label: TranslationKey; icon: React.ElementType }[] = [
+  { value: 'title', label: 'title', icon: TagIcon },
+  { value: 'category', label: 'category', icon: RectangleStackIcon },
+  { value: 'price', label: 'cost', icon: CurrencyDollarIcon },
+  { value: 'location', label: 'place', icon: MapPinIcon },
+  { value: 'datetime', label: 'date', icon: CalendarDaysIcon },
 ];
 
-const DIRECTION_OPTIONS: { value: SortParams['direction']; label: string; icon: React.ElementType }[] = [
-  { value: 'ASC', label: 'По возрастанию', icon: ArrowUpIcon },
-  { value: 'DESC', label: 'По убыванию', icon: ArrowDownIcon },
+const DIRECTION_OPTIONS: { value: SortParams['direction']; label: TranslationKey; icon: React.ElementType }[] = [
+  { value: 'ASC', label: 'ascending_order', icon: ArrowUpIcon },
+  { value: 'DESC', label: 'descending_order', icon: ArrowDownIcon },
 ];
 
 export function SortForm({ sortState, applySorts, onClose }: Props) {
@@ -38,40 +39,34 @@ export function SortForm({ sortState, applySorts, onClose }: Props) {
     onClose();
   };
 
+  const { t } = useTranslation()
+
   return (
     <div>
-      <div className="pb-2">
-        <label className="label-text">Поле для сортировки</label>
-        <div className="p-2 rounded-md border border-gray-400">
-          <RadioGroup<SortParams['field']>
-            options={FIELD_OPTIONS} 
-            selected={sortField} 
-            onChange={setSortField} 
-          />
-        </div>
-      </div>
-      <div className="pb-2">
-        <label className="label-text">Направление сортировки</label>
-        <div className="p-2 rounded-md border border-gray-400">
-          <RadioGroup<SortParams['direction']>
-            options={DIRECTION_OPTIONS} 
-            selected={sortDirection} 
-            onChange={setSortDirection} 
-          />
-        </div>
-      </div>
+      <RadioGroup<SortParams['field']>
+        heading='sorting_field'
+        options={FIELD_OPTIONS} 
+        selected={sortField} 
+        onChange={setSortField} 
+      />
+      <RadioGroup<SortParams['direction']>
+        heading='sorting_direction'
+        options={DIRECTION_OPTIONS} 
+        selected={sortDirection} 
+        onChange={setSortDirection} 
+      />
       <div className="flex justify-end gap-2">
         <button
           onClick={onClose}
           className="btn-base btn-cancel"
         >
-          Отменить
+          {t('cancel')}
         </button>
         <button
           onClick={handleApply}
           className="btn-base btn-confirm"
         >
-          Применить
+          {t('apply')}
         </button>
       </div>
     </div>

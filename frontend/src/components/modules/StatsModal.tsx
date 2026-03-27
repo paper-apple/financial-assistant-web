@@ -21,6 +21,7 @@ import { buildChartData } from "../../utils/buildChartData";
 import { TagIcon, RectangleStackIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { RadioGroup } from "../ui/RadioGroup";
 import { TimeSeriesChart } from "./TimeSeriesChart";
+import { TranslationKey, useTranslation } from "../../hooks/useTranslation";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
@@ -39,10 +40,10 @@ type Props = {
   initialField?: GroupField;
 };
 
-const GROUP_OPTIONS: { value: GroupField; label: string; icon: React.ElementType }[] = [
-  { value: "title", label: "Название", icon: TagIcon },
-  { value: "category", label: "Категория", icon: RectangleStackIcon },
-  { value: "location", label: "Место", icon: MapPinIcon },
+const GROUP_OPTIONS: { value: GroupField; label: TranslationKey; icon: React.ElementType }[] = [
+  { value: "title", label: "title", icon: TagIcon },
+  { value: "category", label: "category", icon: RectangleStackIcon },
+  { value: "location", label: "place", icon: MapPinIcon },
 ];
 
 export function StatsModal({ onClose, expenses, initialField = "category" }: Props) {
@@ -57,22 +58,20 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
   const threshold = 0.015;
   const chartData = useMemo(() => buildChartData(rows, grandTotal, threshold), [rows, grandTotal]);
 
+  const { t } = useTranslation()
+
   return (
-    <div className="w-full bg-white rounded-lg ">
-      <div className="relative mb-2 flex flex-wrap items-center gap-1">
+    <div className="w-full bg-(--bg-secondary) rounded-lg ">
+      <div className="relative mb-2 flex flex-wrap items-center">
         {mode !== "time" ? (
           <>
-            <label className="text-sm text-center text-gray-600 w-full">
-              Группировать по:
-            </label>
-            <div className="w-full rounded-lg p-2 mb-1 border border-gray-400">
             <RadioGroup<GroupField>
+              heading="group_by"
               options={GROUP_OPTIONS}
               selected={field}
               onChange={setField}
               orientation="horizontal"
             />
-            </div>
           </>
         ) : (
           <div/> 
@@ -80,7 +79,7 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
 
         <div
           className={`w-full ${
-            mode === "time" ? "h-102" : "h-85"
+            mode === "time" ? "h-106" : "h-84"
           }`}
         >
           {rows.length > 0 ? (
@@ -92,28 +91,34 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
               <TimeSeriesChart expenses={expenses} />
             )
           ) : (
-            <p>Нет данных</p>
+            <div className={`w-full flex items-center justify-center
+              ${
+                mode === "time" ? "h-108" : "h-64"
+              }
+            `}>
+              <p className="upper-text">{t('no_data')}</p>
+            </div>
           )}
         </div>
       </div>
 
       <div className="flex gap-2">
         <button onClick={onClose} className="btn-base btn-cancel">
-          Закрыть
+          {t('cancel')}
         </button>
         {mode !== "table" && (
           <button onClick={() => setMode("table")} className="btn-base btn-confirm">
-            Таблица
+            {t('table')}
           </button>
         )}
         {mode !== "pie" && (
           <button onClick={() => setMode("pie")} className="btn-base btn-confirm">
-            Диаграмма
+            {t('chart')}
           </button>
         )}
         {mode !== "time" && (
           <button onClick={() => setMode("time")} className="btn-base btn-confirm">
-            График
+            {t('graph')}
           </button>
         )}
       </div>

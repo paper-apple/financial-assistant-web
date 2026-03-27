@@ -12,6 +12,7 @@ import type {
   SortState,
   Modals
 } from "../../types";
+import { SettingsModal } from "./SettingsModal";
 
 type Props = {
   modals: Modals;
@@ -26,10 +27,11 @@ type Props = {
   closeModal: (modal: keyof Modals) => void;
   openModal: (modal: keyof Modals) => void;
   handleCreated: (expense: Expense) => void;
+  handleLogout: () => void;
   handleUpdated: (expense: Expense) => void;
   handleAddKeyword: (word: string) => void;
   updateFormField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;};
-
+  
 export const ExpenseModals = ({
   modals,
   suggestions,
@@ -41,6 +43,7 @@ export const ExpenseModals = ({
   closeModal,
   openModal,
   handleCreated,
+  handleLogout,
   handleUpdated,
   applyFilters,
   applySorts,
@@ -49,7 +52,7 @@ export const ExpenseModals = ({
 }: Props) => (
   <>
     {modals.add && (
-      <Modal onModalClose={() => closeModal("add")} title="Добавление расхода">
+      <Modal onModalClose={() => closeModal("add")} title="expense_adding">
         <ExpenseForm 
           form={form} 
           onCreated={handleCreated} 
@@ -61,7 +64,7 @@ export const ExpenseModals = ({
     )}
 
     {modals.update && editingExpense && (
-      <Modal onModalClose={() => closeModal("update")} title="Редактирование расхода">
+      <Modal onModalClose={() => closeModal("update")} title="expense_editing">
         <ExpenseForm 
           form={form}
           initialData={editingExpense}
@@ -75,7 +78,7 @@ export const ExpenseModals = ({
     )}
 
     {modals.filters && (
-      <Modal onModalClose={() => closeModal("filters")} title="Фильтры">
+      <Modal onModalClose={() => closeModal("filters")} title="filters">
         <FilterForm 
           suggestions={suggestions}
           filtersState={filtersState}
@@ -118,7 +121,7 @@ export const ExpenseModals = ({
     )}
 
     {modals.sort && (
-      <Modal onModalClose={() => closeModal("sort")} title="Сортировка">
+      <Modal onModalClose={() => closeModal("sort")} title="sort">
         <SortForm 
           sortState={sortState}
           applySorts={applySorts} 
@@ -128,11 +131,20 @@ export const ExpenseModals = ({
     )}
 
     {modals.stats && (
-      <Modal onModalClose={() => closeModal("stats")} title="Статистика">
+      <Modal onModalClose={() => closeModal("stats")} title="stats">
         <StatsModal 
           expenses={sortedExpenses} 
           initialField="category" 
           onClose={() => closeModal("stats")} 
+        />
+      </Modal>
+    )}
+
+    {modals.settings && (
+      <Modal onModalClose={() => closeModal("settings")} title="settings">
+        <SettingsModal 
+          onClose={() => closeModal("settings")}
+          logout={handleLogout}
         />
       </Modal>
     )}

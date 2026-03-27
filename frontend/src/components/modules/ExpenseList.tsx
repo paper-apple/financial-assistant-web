@@ -1,4 +1,5 @@
 // ExpenseList.tsx
+import { useTranslation } from "../../hooks/useTranslation";
 import { type Expense } from "../../types";
 import { ExpenseCard } from "./ExpenseCard";
 
@@ -21,6 +22,8 @@ export const ExpenseList = ({
   selectedIds = [],
   lastUpdatedId,
 }: Props) => {
+  const { t } = useTranslation()
+  
   return (
     <div>
       { (expenses.length > 0) ? (
@@ -41,8 +44,8 @@ export const ExpenseList = ({
           />))}
         </ul>
       ) : (
-        <div className="w-full min-h-110 flex items-center justify-center">
-          <p className="text-2xl text-gray-500 font-medium">Записей нет</p>
+        <div className="w-full min-h-130 flex items-center justify-center">
+          <p className="upper-text">{t('no_data')}</p>
         </div>
       )
       }

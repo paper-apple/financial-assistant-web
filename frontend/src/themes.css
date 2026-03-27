@@ -1,0 +1,71 @@
+/* themes.css */
+
+.theme-light {
+  --bg-from: #eff6ff;
+  --bg-modal: #e5e7eb;
+  --bg-secondary: #ffffff;
+  --bg-to: #dbeafe;
+  --btn-cancel: #ffffff;
+  --btn-cancel-border: #bdc0c7;
+  --btn-cancel-text: #6a7282;
+  --btn-cancel-hover: #f5f5f5;
+  --btn-cancel-active: #eaeaea;
+  --btn-confirm-text: #ffffff;
+  --btn-delete-active: #f33434;
+  --btn-delete-bg: #ff5858;
+  --btn-delete-hover: #fd3a3a;
+  --btn-delete-text: #ffffff;
+  --btn-disabled-text: #c7c7c7;
+  --btn-floating-text: #ffffff;
+  --card-border: #e5e7eb;
+  --card-border-selected: #4a91e2;
+  --card-highlight: #dcfce7;
+  --card-selected: #eff6ff;
+  --checked-option: #e2f0fc;
+  --error: #fae2e2;
+  --input-border: #bdc0c7;
+  --main-color: #80c7f9;
+  --main-hover-color: #63baf9;
+  --main-active-color: #5aabe4;
+  --modal-border: #d1d5dc;
+  --ring: #eff6ff;
+  --scroll-up-btn: #ffffff;
+  --text: #364153;
+  --tip-text: #bdc0c7;
+  --top-bar-border: #bdc0c7;
+}
+
+.theme-dark {
+  --bg-from: #516c9b;
+  --bg-secondary: #262c3f;
+  --bg-to: #263f61;
+  --btn-cancel: #26283f;
+  --btn-cancel-active: #424a6b;
+  --btn-cancel-border: #516c9b;
+  --btn-cancel-hover: #323852;
+  --btn-cancel-text: #b7c4e1;
+  --btn-confirm-text: #bccae8;
+  --btn-delete-active: #cd4d4d;
+  --btn-delete-bg: #ab4c4c;
+  --btn-delete-hover: #c14848;
+  --btn-delete-text: #bccae8;
+  --btn-disabled-text: #484e5c;
+  --btn-floating-text: #b7c4e1;
+  --card-border: #516c9b;
+  --card-border-selected: #6c91d0;
+  --card-highlight: #3c6b4c;
+  --card-selected: #383b5c;
+  --checked-option: #393d5d;
+  --error: #553636;
+  --input-border: #516c9b;
+  --main-color: #516c9b;
+  --main-hover-color: #5774a7;
+  --main-active-color: #617eb0;
+  --modal-bg: #262e3f;
+  --modal-border: #516c9b;
+  --ring: #3e4867;
+  --scroll-up-btn: #b7c4e1;
+  --text: #bccae8;
+  --tip-text: #526778;
+  --top-bar-border: #516c9b;
+}

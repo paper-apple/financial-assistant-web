@@ -1,10 +1,11 @@
 // FilterForm.tsx
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { FiltersState, Modals } from '../../types';
 import { handlePriceChange } from '../../utils/sanitizePrice';
 import { FormField } from '../ui/FormField';
 import { useFilterFormValidation } from '../../hooks/useFilterFormValidation';
 import { ErrorBar } from './ErrorBar';
+import { TranslationKey, useTranslation } from '../../hooks/useTranslation';
 
 interface FilterFormProps {
   suggestions: string[];
@@ -14,8 +15,6 @@ interface FilterFormProps {
   onModalOpen: (modal: keyof Modals) => void;
   onModalClose: () => void;
 }
-
-const errorText: string = "min-h-[26px] max-h-[26px] overflow-y-auto text-red-400 text-center"
 
 export const FilterForm: React.FC<FilterFormProps> = ({
   suggestions,
@@ -41,6 +40,8 @@ export const FilterForm: React.FC<FilterFormProps> = ({
     backup();
   }, []);
 
+  const { t } = useTranslation()
+  
   const { dateError, priceError, validateAndSubmit, isValid } =
     useFilterFormValidation({startDate, endDate, minPrice, maxPrice});
 
@@ -48,12 +49,13 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 
   const [showErrorTooltip, setShowErrorTooltip] = useState(false);
 
-  const getCombinedErrorText = () => {
-    const errors = [];
-    if (priceError) errors.push("Некорректная цена");
-    if (dateError) errors.push("Некорректная дата");
-    return errors.length > 0 ? errors.join("\n") : "";
-  };
+  const errorText = useMemo(() => {
+    let error: TranslationKey = 'incorrect_price';
+    if (dateError) error = "incorrect_date";
+    if (priceError && dateError) error = "incorrect_date_and_price";
+    
+    return error;
+  }, [priceError, dateError]);
 
   const handleApply = () => {
     if (!isValid()) {
@@ -85,52 +87,57 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 
   return (
     <div>
-      <label className="label-text">Поиск по ключевому слову</label>
-      <div className="mb-2 p-2 relative rounded-lg border border-gray-400">
+      {/* Блок добавления ключевых слов */}
+      <label className="label-text">{t('keyword_search')}</label>
+      <div className="p-2 relative rounded-t-lg border border-(--input-border)">
         <div className="flex items-end gap-2 pb-2">
           <FormField
             value={keywordInput}
             onChange={(e) => setKeywordInput(e.target.value)}
-            placeholder="...введите слово целиком или его часть"
+            placeholder={t('keyword_plaseholder')}
             suggestions={suggestions}
             onSuggestionSelect={(val) => handleAddKeyword(val)}
           />
         </div>
         <div className="flex gap-2">
           <button onClick={() => setKeywordsList([])} className="w-full btn-base btn-cancel">
-            Очистить список
+            {t('clear_list')}
           </button>
           <button onClick={() => handleAddKeyword(keywordInput)} className="w-full btn-base btn-confirm">
-            Добавить слово
+            {t('add_word')}
         </button>
         </div>
-        <div className="absolute left-0 right-0 mt-2 h-px bg-gray-400"/>
-        <div className="rounded-lg mt-2 py-2 flex flex-wrap items-start gap-1 min-h-[88px] max-h-[88px] overflow-y-auto">
+      </div>
+
+      {/* Блок ключевых слов */}
+      <div className="border-x border-b border-(--input-border) rounded-b-lg mb-2">
+        <div className="rounded-lg pl-2 pt-2 pb-2 flex flex-wrap items-start gap-1 min-h-[88px] max-h-[88px] overflow-y-auto">
           {keywordsList.length > 0 ? (
             keywordsList.map((word) => (
               <span
                 key={word}
-                className="inline-flex items-center h-8 border border-gray-400 text-gray-500 text-sm font-semibold tracking-wide px-2 rounded-md"
+                className="inline-flex items-center h-8 border border-(--input-border) text-sm font-semibold tracking-wide px-2 rounded-md"
               >
                 <button
                   onClick={() =>
                     setKeywordsList((prev) => prev.filter((k) => k !== word))
                   }
-                  className="text-gray-500 text-sm font-semibold tracking-wide cursor-pointer" 
+                  className="text-(--text) text-sm font-semibold tracking-wide cursor-pointer" 
                 >
                   {word} ×
                 </button>
               </span>
             ))
           ) : (
-            <span className="text-gray-400 text-sm w-full text-center pt-7">Ключевые слова не добавлены</span>
+            <span className="text-(--tip-text) text-sm w-full text-center pt-6">{t('keywords_are_not_added')}</span>
           )}
         </div>
       </div>
-
+      
+      {/* Блок добавления интервала времени */}
       <div>
-        <label className="label-text">Интервал времени</label>
-        <div className="grid grid-cols-2 gap-4 mb-2">
+        <label className="label-text">{t('time_interval')}</label>
+        <div className="grid grid-cols-2 gap-2 mb-2">
           <FormField
             testId="input-date-from"
             value={
@@ -144,7 +151,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
                   }).replace(',', '')
                 : ""
             }
-            placeholder={'От'}
+            placeholder={t('from')}
             error={dateError}
             readOnly
             calendarOpen={() => openModal("startDate")}
@@ -163,7 +170,7 @@ export const FilterForm: React.FC<FilterFormProps> = ({
                   }).replace(',', '')
                 : ""
             }
-            placeholder={'До'}
+            placeholder={t('to')}
             error={dateError}
             readOnly
             calendarOpen={() => openModal("endDate")}
@@ -172,37 +179,39 @@ export const FilterForm: React.FC<FilterFormProps> = ({
         </div>
       </div>
 
+      {/* Блок добавления интервала цен */}
       <div>
-        <label className="label-text">Диапазон цен</label>
-          <div className="grid grid-cols-2 gap-4">
+        <label className="label-text">{t('price_range')}</label>
+          <div className="grid grid-cols-2 gap-2">
             <FormField
               value={minPrice}
               onChange={e => handlePriceChange(e.target.value, setMinPrice)}
-              placeholder={'От'}
+              placeholder={t('from')}
               error={priceError}
             />
             <FormField
               value={maxPrice}
               onChange={e => handlePriceChange(e.target.value, setMaxPrice)}
-              placeholder={'До'}
+              placeholder={t('to')}
               error={priceError}
             />
           </div>
       </div>
       <div className="relative">
-        {showErrorTooltip && (
+        {(showErrorTooltip && (dateError || priceError)) && (
           <div>
-            <ErrorBar errorText={getCombinedErrorText()}/>
+            <ErrorBar errorText={errorText}/>
           </div>
         )}
       </div>
-
+      
+      {/* Кнопки */}
       <div className="flex gap-2 mt-3">
-        <button onClick={onClose} className="btn-base btn-cancel">Отмена</button>
-        <button onClick={handleResetFilters} className="btn-base btn-cancel">Сбросить</button>
+        <button onClick={onClose} className="btn-base btn-cancel">{t('cancel')}</button>
+        <button onClick={handleResetFilters} className="btn-base btn-cancel">{t('reset')}</button>
         <button onClick={handleApply} className={`btn-base
           ${ isValid() ? "btn-confirm" : "btn-disabled"}`}>
-            Применить
+            {t('apply')}
         </button>
       </div>
     </div>

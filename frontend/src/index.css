@@ -1,48 +1,56 @@
 @import "tailwindcss";
-
+@import './themes.css';
 
 .btn-base {
-  @apply px-2 py-2 w-full rounded-lg text-sm font-semibold tracking-wide border transition-colors duration-300 truncate cursor-pointer;
+  @apply px-2 py-2 w-full rounded-lg text-sm font-medium tracking-wide border transition-colors duration-300 truncate cursor-pointer;
 }
 
 .btn-confirm {
-  @apply text-white bg-blue-300 border-blue-300 hover:bg-blue-400  hover:border-blue-400 active:bg-blue-600 active:border-blue-600;
+  @apply text-(--btn-confirm-text) bg-(--main-color) border-(--main-color) hover:bg-(--main-hover-color) hover:border-(--main-hover-color) active:bg-(--main-active-color) active:border-(--main-active-color);
 }
 
 .btn-cancel {
-  @apply text-gray-500 border bg-white border-gray-400 hover:bg-gray-100 active:bg-gray-200
+  @apply text-(--btn-cancel-text) border bg-(--btn-cancel) border-(--btn-cancel-border) hover:bg-(--btn-cancel-hover) active:bg-(--btn-cancel-active)
 }
 
 .btn-delete {
-  @apply text-white bg-red-400 hover:bg-red-600 border-red-500 hover:border-red-500 active:bg-red-700 active:border-red-700
+  @apply text-(--btn-delete-text) bg-(--btn-delete-bg) hover:bg-(--btn-delete-hover) active:bg-(--btn-delete-active) border-(--btn-delete-bg) hover:border-(--btn-delete-hover) active:border-(--btn-delete-active)
 }
 
 .btn-disabled {
-  @apply border-gray-200 text-gray-500 bg-gray-200 hover:bg-gray-200
+  @apply text-(--btn-disabled-text) border bg-(--btn-cancel) border-(--btn-cancel-border) hover:bg-(--btn-cancel-hover) active:bg-(--btn-cancel-active)
 }
 
 .input-delete {
-  @apply flex items-center justify-center w-5 h-5 rounded-full border border-gray-500 text-[14px] text-gray-500 cursor-pointer 
+  @apply flex items-center justify-center w-5 h-5 rounded-full border border-(--input-border) text-[14px] text-(--input-border) cursor-pointer 
 }
 
 .div-input {
-  @apply flex items-center w-full border border-gray-400 rounded-md p-1
+  @apply flex items-center w-full border border-(--input-border) rounded-md p-1
 }
 
 .label-text {
-  @apply text-center text-sm pl-1 text-gray-700 tracking-wide
+  @apply text-center text-sm text-(--text) tracking-wide
+}
+
+.label-div {
+  @apply flex justify-start items-end gap-1.5 pb-0.5
+}
+
+.upper-text {
+  @apply text-xl text-(--text) text-center mb-4 drop-shadow-md items-center justify-center
 }
 
 .first-column {
-  @apply p-1 text-sm font-normal w-[50%]
+  @apply p-1 text-(--text) text-sm font-normal w-[50%]
 }
 
 .second-column {
-  @apply p-1 text-sm font-normal text-center w-[17%]
+  @apply p-1 text-(--text) text-sm font-normal text-center w-[17%]
 }
 
 .third-column {
-  @apply p-1 text-sm font-normal text-right w-[34%] 
+  @apply p-1 text-(--text) text-sm font-normal text-right w-[34%] 
 }
 
 /* .floating-buttons {
@@ -82,7 +90,7 @@
 }
 
 .error-toast {
-  animation: fadeInOut 2s ease-in-out forwards;
+  animation: fadeInOut 3s ease forwards;
   pointer-events: none;
 }
 
@@ -100,11 +108,11 @@ body {
 
 *::-webkit-scrollbar {
   width: 5px;
-  background: transparent;
+  background: var(--bg-secondary);
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgb(171, 213, 246);
+  background: var(--main-color);
 }
 
 .hide-scrollbar {
@@ -131,53 +139,158 @@ body {
   border-bottom-right-radius: 0.75rem;
 }
 
-.ios-calendar .react-datepicker__header {
-  background: white;
+/* CSS-переменные */
+#root {
+  --calendar-bg: var(--bg-secondary);
+  --calendar-border: var(--input-border);
+  --calendar-radius: 0.5rem;
+  --calendar-day-size: 30px;
+  --calendar-padding: 8px;
 }
 
-.ios-calendar .react-datepicker__current-month {
+/* Общие стили */
+#root .react-datepicker,
+#root .react-datepicker__header,
+#root .react-datepicker__time,
+#root .react-datepicker__time-list-item {
+  background: var(--calendar-bg);
+}
+
+#root .react-datepicker,
+#root .react-datepicker__header,
+#root .react-datepicker__time-container {
+  border-color: var(--calendar-border);
+}
+
+#root .react-datepicker {
+  border-radius: var(--calendar-radius);
+  width: 100%;
+}
+
+/* Заголовок */
+#root .react-datepicker__header {
+  font-size: 14px;
+  border-top-left-radius: var(--calendar-radius);
+}
+
+#root .react-datepicker__header:not(.react-datepicker__header--has-time-select) {
+  border-top-right-radius: var(--calendar-radius);
+}
+
+/* Навигация */
+#root .react-datepicker__navigation {
+  margin-inline: 6px;
+}
+
+#root .react-datepicker__navigation-icon::before {
+  border-color: var(--text);
+}
+
+/* Месяц */
+#root .react-datepicker__month {
+  margin: 0;
+}
+
+#root .react-datepicker__current-month {
+  color: var(--text);
   font-size: 14px;
   font-weight: normal;
 }
 
-.ios-calendar .react-datepicker__day-names {
-  padding-left: 8px;
-  padding-right: 8px;
+#root .react-datepicker__month-container {
+  float: left;
+  width: 76%;
+}
+
+/* Дни недели и дни */
+#root .react-datepicker__day-names,
+#root .react-datepicker__week {
+  padding-left: var(--calendar-padding);
+  padding-right: var(--calendar-padding);
   display: flex;
   justify-content: space-between;
 }
 
-.ios-calendar .react-datepicker__day {
-  width: 30px;
-  transition: all 0.2s ease-in-out;
+#root .react-datepicker__day-names {
+  margin-bottom: 0;
 }
 
-.ios-calendar .react-datepicker__day--selected {
-  background: #80c7f9 !important;
-  border-radius: 100%;
+#root .react-datepicker__day,
+#root .react-datepicker__day-name {
+  color: var(--text);
 }
 
-.react-datepicker__time-container .react-datepicker__header::before {
-  content: "время";
-  font-size: 14px;
-  font-weight: normal;
+#root .react-datepicker__day:hover {
+  outline: 1px solid var(--calendar-border);
+  background: var(--calendar-bg) !important;
 }
 
-.react-datepicker__time-list-item {
-  display: flex !important;
+#root .ios-calendar .react-datepicker__day--selected,
+#root .ios-calendar .react-datepicker__day--selected:hover {
+  background: var(--checked-option) !important;
+}
+
+#root .ios-calendar .react-datepicker__day--keyboard-selected {
+  background: var(--bg-secondary);
+}
+
+/* Время */
+#root .react-datepicker__time-container {
+  border-left: 1px solid var(--calendar-border);
+}
+
+#root .react-datepicker__time-container .react-datepicker__time-box {
+  border-right: 1px solid var(--calendar-border);
+}
+
+#root .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+  border-bottom-right-radius: var(--calendar-radius);
+}
+
+#root .react-datepicker__time-list-item {
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin: 3px 8px !important;
+  margin: 3px 8px;
   text-align: center;
-  transition: all 0.2s ease-in-out;
   border-radius: 6px;
   width: 80%;
+  color: var(--text);
 }
 
-.react-datepicker__time-list-item:hover {
-  background: #f5f5f5;
+#root .react-datepicker__time-list-item:hover {
+  border: 1px solid var(--calendar-border);
+  background: var(--calendar-bg);
 }
 
-.react-datepicker__time-list-item--selected {
-  background: #80c7f9 !important;
+#root .react-datepicker__time-list-item--selected {
+  background: var(--checked-option) !important;
+  font-weight: normal;
+  color: var(--text);
+}
+
+/* Кастомный заголовок времени */
+.react-datepicker__time-container .react-datepicker__header::before {
+  content: var(--time-label);
+  letter-spacing: 0.5px;
+  color: var(--text);
+  font-size: 14px;
+  padding-right: 3px;
+  background: var(--calendar-bg);
+}
+
+
+.fade-in-up {
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

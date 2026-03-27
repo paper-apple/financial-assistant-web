@@ -11,11 +11,12 @@ import { TopActionBar } from "./TopActionBar";
 import { AuthModal } from "./AuthModal";
 import type { Expense } from "../../types";
 import { useAuth } from "../../hooks/useAuth";
+import { useTranslation } from "../../hooks/useTranslation";
 
 export const ExpensesPage = () => {
   const {
     user,
-    authError, setAuthError,
+    authError,
     authModalOpen, setAuthModalOpen,
     isLoginMode, setIsLoginMode,
     checkAuth,
@@ -68,6 +69,7 @@ export const ExpensesPage = () => {
     filters: false,
     sort: false,
     stats: false,
+    settings: false,
     calendar: false,
     startDate: false,
     endDate: false,
@@ -77,9 +79,10 @@ export const ExpensesPage = () => {
     checkAuth();
   }, []);
 
+  const { t } = useTranslation()
+
   const handleAuth = async (username: string, password: string) => {
     try {
-      setAuthError("");
       let fn = loginUser;
       if (username != "testuser") {
         fn = isLoginMode ? loginUser : registerUser;
@@ -145,6 +148,9 @@ export const ExpensesPage = () => {
 
   return (
     <section>
+      <h1 className="upper-text">
+        {t('financial_assistant')}
+      </h1>
       <AuthModal
         isOpen={authModalOpen}
         isLoginMode={isLoginMode}
@@ -158,7 +164,7 @@ export const ExpensesPage = () => {
         onFilter={() => openModal("filters")}
         onSort={() => openModal("sort")}
         onStats={() => openModal("stats")}
-        onLogout={() => handleLogout()}
+        onSettings={() => openModal("settings")}
         closeSelection={() => handleCancelSelection()} 
       />
       {user && (
@@ -194,6 +200,7 @@ export const ExpensesPage = () => {
             closeModal={closeModal}
             openModal={openModal}
             handleCreated={handleCreated}
+            handleLogout={handleLogout}
             handleUpdated={handleUpdated}
             applyFilters={applyFilters}
             applySorts={applySorts}

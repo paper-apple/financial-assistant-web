@@ -1,13 +1,17 @@
 // StatsChart.tsx
 import type { ChartData } from "chart.js"
 import { Pie } from "react-chartjs-2"
+import { getColor } from "../../hooks/useGetComputedStyle";
+import { useTranslation } from "../../hooks/useTranslation";
 
 type Props = {
   chartData: ChartData<"pie", number[], string>;
 };
 
 export const StatsChart = ({ chartData }: Props) => 
-{          
+{            
+  const { t } = useTranslation()
+
   return (
     <div className="w-full h-full">
       <Pie
@@ -16,6 +20,11 @@ export const StatsChart = ({ chartData }: Props) =>
           maintainAspectRatio: false,
           responsive: true,
           plugins: {
+            legend: {
+              labels: {
+                color: getColor('--text'),
+              }
+            },
             tooltip: {
               callbacks: {
                 label: function (context) {
@@ -23,7 +32,7 @@ export const StatsChart = ({ chartData }: Props) =>
                   const i = context.dataIndex;
                   const total = ds.data[i];
                   const { count, proportion } = ds.meta[i];
-                  return [`Сумма: ${total}`, `Кол-во: ${count}`, `Доля: ${proportion} %`];
+                  return [`${t('sum')}: ${total}`, `${t('quantity')}: ${count}`, `${t('sum')}: ${proportion} %`];
                 },
               },
             },

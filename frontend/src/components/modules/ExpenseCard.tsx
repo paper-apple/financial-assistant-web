@@ -29,7 +29,7 @@ const InfoRow = ({
 }) => (
   <div className={`${className} flex items-center gap-1`}>
     {Icon && (
-      <Icon className="w-4 h-4 text-blue-300" />)
+      <Icon className="w-4 h-4 text-(--main-color)" />)
     }
     {text}
   </div>
@@ -62,9 +62,9 @@ export const ExpenseCard = ({
     <li
       key={expense.id}
       data-testid={`expense-card-${expense.id}`}
-      className={`relative transition-colors cursor-pointer px-3 py-3 max-sm:py-2 rounded-lg border overflow-hidden
-        shadow-md hover:bg-blue-50 duration-300 select-none
-        ${selected ? "bg-blue-50 border-blue-500" : "bg-white border-gray-200"}`}
+      className={`relative overflow-hidden transition-colors cursor-pointer select-none shadow-md px-3 py-3 max-sm:py-2 
+        bg-(--bg-secondary) rounded-lg border border-(--card-border) hover:bg-(--card-selected) duration-300
+        ${selected ? "bg-(--card-selected) border-(--card-border-selected)" : ""}`}
       onMouseDown={start}
       onTouchStart={start}
       onMouseUp={cancel}
@@ -76,7 +76,7 @@ export const ExpenseCard = ({
       {/* Подсветка обновления */}
       <div
         data-testid={`highlight-${expense.id}`}
-        className={`absolute inset-0 rounded bg-green-100 pointer-events-none
+        className={`absolute inset-0 rounded bg-(--card-highlight) pointer-events-none
           transition-opacity duration-700
           ${highlight ? "opacity-100" : "opacity-0"}`}
       />
@@ -86,15 +86,15 @@ export const ExpenseCard = ({
 
         <InfoRow
           text={expense.title}
-          className="font-semibold text-sm text-gray-700"
+          className="font-semibold text-sm text-(--text)"
         />
 
-        <div className="hidden sm:block space-y-2">
+        <div className="hidden sm:block space-y-2 text-(--text)">
           <InfoRow icon={RectangleStackIcon} text={expense.category.name} />
           <InfoRow icon={MapPinIcon} text={expense.location.name} />
         </div>
 
-        <div className="flex justify-between text-xs text-gray-800">
+        <div className="flex justify-between text-xs text-(--text)">
           <InfoRow
             icon={CurrencyDollarIcon}
             text={expense.price}

@@ -29,10 +29,11 @@ export class UsersService {
 
   private validateUsername(username: string): void {
     if (username.length < 2) {
-      throw new ConflictException('Имя пользователя должно состоять из двух и более символов');
+      throw new ConflictException('error_short_username');
+
     }
     if (username.length > 30) {
-      throw new ConflictException('Имя пользователя не должно быть более 30 символов');
+      throw new ConflictException('error_long_username');
     }
   }
 
@@ -43,23 +44,23 @@ export class UsersService {
     
     if (password.length < 6 || !hasLowerCase || !hasUpperCase || !hasNumber) {
       throw new ConflictException(
-        'Пароль должен содержать более 5 символов, цифры, строчные и заглавные буквы'
+        'incorrect_password'
       );
     }
   }
 
   async create(username: string, password: string): Promise<User> {
-    // 1. Проверка уникальности
+    // Проверка уникальности
     const existingUser = await this.findOne(username);
     if (existingUser) {
-      throw new ConflictException('Пользователь уже существует');
+      throw new ConflictException('user_exist');
     }
     
-    // 2. Валидация формата
+    // Валидация формата
     this.validateUsername(username);
     this.validatePassword(password);
 
-    // 3. Создание пользователя
+    // Создание пользователя
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({ username, password: hashedPassword });
     return this.usersRepository.save(user);
@@ -68,12 +69,12 @@ export class UsersService {
   async validateUser(username: string, password: string): Promise<User> {
     const user = await this.findOne(username);
     if (!user) {
-      throw new UnauthorizedException('Неверное имя пользователя или пароль');
+      throw new UnauthorizedException('invalid_username_or_password');
     }
     
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      throw new UnauthorizedException('Неверное имя пользователя или пароль');
+      throw new UnauthorizedException('invalid_username_or_password');
     }
     
     return user;

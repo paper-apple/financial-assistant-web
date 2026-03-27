@@ -2,11 +2,12 @@
 import { type ReactNode, useEffect, useRef, useId } from "react";
 import { addModalToStack, removeModalFromStack, getTopModalId } from "../../utils/modalStack";
 import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
+import { TranslationKey, useTranslation } from "../../hooks/useTranslation";
 
 type Props = {
   onModalClose: () => void;
   children: ReactNode;
-  title?: string;
+  title?: TranslationKey;
   calendar?: boolean;
 };
 
@@ -16,7 +17,8 @@ export const Modal = ({ onModalClose: onClose, title, children, calendar}: Props
     useBodyScrollLock(true);
   }
   const modalIdRef = useRef<number | null>(null);
-
+  const { t } = useTranslation()
+  
   useEffect(() => {
     if (modalIdRef.current === null) {
       const id = addModalToStack(); // Добавление номера модалки в список и его получение
@@ -43,17 +45,17 @@ export const Modal = ({ onModalClose: onClose, title, children, calendar}: Props
 
   return (
     <div
-      className="fixed inset-0 bg-gray-200/30 backdrop-blur-xs z-50 flex items-center justify-center"
+      className="fixed flex items-center justify-center bg-(--modal-bg)/30 backdrop-blur-xs inset-0 z-50"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-3 w-full max-w-sm mx-auto shadow-md border border-gray-300"
+        className="bg-(--bg-secondary) rounded-lg p-3 w-full max-w-sm mx-auto shadow-md border border-(--modal-border)"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
       >
         {title && (
-          <h3 id={titleId} className="text-lg mb-2 text-center border-b border-gray-400">
-            {title}
+          <h3 id={titleId} className="text-lg mb-2 text-(--text) text-center">
+            {t(title)}
           </h3>
         )}
         {children}

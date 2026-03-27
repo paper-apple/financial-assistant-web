@@ -1,13 +1,16 @@
 // useAuth.ts
 import { useState } from "react";
 import { fetchExpenses, login, logout, register } from "../api";
+import { TranslationKey, useTranslation } from "./useTranslation";
 
 export function useAuth() {
   const [user, setUser] = useState<{ username: string } | null>(null);
-  const [authError, setAuthError] = useState<string>("");
+  const [authError, setAuthError] = useState<TranslationKey>("cancel");
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
 
+  const { t } = useTranslation()
+  
   const checkAuth = async () => {
     try {
       const response = await fetchExpenses();
@@ -23,7 +26,7 @@ export function useAuth() {
       await login(username, password);
       setUser({ username });
     } catch (err: any) {
-      setAuthError(err.response?.data?.message || "Сервер не отвечает. Пожалуйста, подождите");
+      setAuthError(err.response?.data?.message || 'error_server');
       throw err;
     }
   };

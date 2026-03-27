@@ -1,5 +1,6 @@
 // App.tsx
 import { ExpensesPage } from "./components/modules/ExpensesPage";
+import { SettingsProvider } from "./context/SettingsContext";
 
 window.addEventListener('online', () => {
   console.log('Сеть восстановлена');
@@ -8,14 +9,13 @@ window.addEventListener('online', () => {
 
 export function App() {
   return (
-    <main className="relative flex justify-center min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 animate-gradient-x bg-fixed">
-      <div  className="main relative max-w-screen-sm w-full p-4 m-2 rounded-2xl bg-white/60">
-        <h1 className="text-xl font-normal text-center text-gray-700 mb-4 drop-shadow-md">
-            ФИНАНСОВЫЙ АССИСТЕНТ
-        </h1>
-        <ExpensesPage />
-      </div>
-    </main>
+    <SettingsProvider>
+      <main className="relative flex justify-center min-h-screen bg-linear-to-b from-(--bg-from) to-(--bg-to) animate-gradient-x bg-fixed">
+        <div className="main relative max-w-screen-sm w-full p-4 m-2 rounded-2xl bg-(--bg-secondary)/60">
+          <ExpensesPage />
+        </div>
+      </main>
+    </SettingsProvider>
   );
 }
 

@@ -1,8 +1,10 @@
 // CalendarModal.tsx
-import { useState } from "react";
-import DatePicker from "react-datepicker";
+import { useEffect, useState } from "react";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ru } from "date-fns/locale";
+import { enUS, Locale, ru } from "date-fns/locale";
+import { Language, useSettings } from "../../context/SettingsContext";
+import { useTranslation } from "../../hooks/useTranslation";
 
 
 type CalendarModalProps = {
@@ -11,9 +13,21 @@ type CalendarModalProps = {
   onClose: () => void;
 };
 
+registerLocale('ru', ru);
+registerLocale('en', enUS);
+
+const localeMap: Record<Language, Locale> = {
+  ru: ru,
+  en: enUS,
+};
+
 export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
   const [modalDate, setModalDate] = useState<Date | null>(value);
+  const { language } = useSettings();
+  const currentLocale = localeMap[language];
 
+  const { t } = useTranslation()
+  
   return (
     <div data-testid="calendar-modal">
       <div className="flex justify-center">
@@ -22,8 +36,8 @@ export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
           onChange={(date: Date | null) => setModalDate(date)}
           showTimeSelect
           timeFormat="HH:mm"
-          timeIntervals={15}
-          locale={ru}
+          timeIntervals={30}
+          locale={currentLocale}
           dateFormat="dd.MM.yyyy HH:mm"
           calendarClassName="ios-calendar"
           timeCaption=""
@@ -31,12 +45,12 @@ export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
           fixedHeight
         />
       </div>
-      <div className="flex gap-2 pt-2 px-1">
+      <div className="flex gap-2 pt-2">
         <button
           onClick={onClose}
           className="w-full btn-base btn-cancel"
         >
-          Закрыть
+          {t('cancel')}
         </button>
         <button
           onClick={() => {
@@ -47,7 +61,7 @@ export function CalendarModal({ value, onSave, onClose }: CalendarModalProps) {
           }}
           className="w-full btn-base btn-confirm"
         >
-          Сохранить
+          {t('apply')}
         </button>
       </div>
     </div>

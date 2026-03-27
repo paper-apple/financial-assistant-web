@@ -1,5 +1,6 @@
 // buildChartData.ts
 import type { ChartData, ChartDataset } from "chart.js";
+import { getColor } from "../hooks/useGetComputedStyle";
 
 type Row = { key: string; total: number; count: number };
 
@@ -16,7 +17,7 @@ export function buildChartData(
   rows: Row[],
   grandTotal: number,
   threshold: number,
-  maxSegments = 9
+  maxSegments = 9,
 ): ExtendedChartData {
   if (grandTotal === 0) {
     return { labels: [], datasets: [] };
@@ -77,6 +78,7 @@ export function buildChartData(
           "#9ca3af", "#ec4899", "#14b8a6",
           "#f97316",
     ],
+    borderColor: getColor('--bg-secondary'),
   };
 
   return {

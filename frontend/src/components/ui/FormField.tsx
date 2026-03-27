@@ -2,10 +2,11 @@
 import { SuggestionsList } from "./SuggestionList";
 import type { FormState } from "../../types";
 import { useEffect, useState } from "react";
+import { TranslationKey, useTranslation } from "../../hooks/useTranslation";
 
 
 type FormFieldProps = {
-  label?: string;
+  label?: TranslationKey;
   name?: keyof FormState;
   value: string;
   testId?: string;
@@ -39,8 +40,9 @@ export const FormField: React.FC<FormFieldProps> = ({
 }) => {
   
   const [isFocused, setIsFocused] = useState(false);
-
+  
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const { t } = useTranslation()
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!suggestions || suggestions.length === 0) return;
@@ -77,16 +79,16 @@ export const FormField: React.FC<FormFieldProps> = ({
     <div className="relative w-full">
       <div>
         {label && (
-          <div className="flex justify-start pl-1 items-end gap-0.5 pb-0.5">
-            {Icon && <Icon className="flex items-center mb-0.5 w-4 h-4 text-blue-300"/>}
-            <label className="label-text">{label}</label>
+          <div className="label-div">
+            {Icon && <Icon className="flex items-center mb-0.5 w-4 h-4 text-(--main-color)"/>}
+            <label className="label-text">{t(label)}</label>
           </div>
         )}
       </div>
       <div className={`
         div-input transition-all duration-200
-        ${error ? 'bg-red-50' : ''}
-        ${isFocused ? 'ring-4 ring-blue-50' : ''}
+        ${error ? 'bg-(--error)' : ''}
+        ${isFocused ? 'ring-3 ring-(--ring)' : ''}
         }
       `}>
         <input
@@ -107,8 +109,8 @@ export const FormField: React.FC<FormFieldProps> = ({
             }, 100);
           }}
           onKeyDown={handleKeyDown}
-          className={`flex-1 min-w-0 outline-none text-gray-700
-            placeholder:text-sm placeholder:text-gray-400 
+          className={`flex-1 min-w-0 outline-none text-(--text)
+            placeholder:text-sm placeholder:text-(--tip-text)
             ${readOnly ? "cursor-pointer" : ""} 
           `}
         />
