@@ -2,23 +2,23 @@
 @import './themes.css';
 
 .btn-base {
-  @apply px-2 py-2 w-full rounded-lg text-sm font-medium tracking-wide border transition-colors duration-300 truncate cursor-pointer;
+  @apply px-2 py-2 w-full rounded-lg text-sm font-medium tracking-wide border transition-colors duration-300 truncate cursor-pointer
 }
 
 .btn-confirm {
-  @apply text-(--btn-confirm-text) bg-(--main-color) border-(--main-color) hover:bg-(--main-hover-color) hover:border-(--main-hover-color) active:bg-(--main-active-color) active:border-(--main-active-color);
+  @apply text-(--btn-confirm-text) bg-(--main-color) border-(--main-color) hover:bg-(--main-hover-color) hover:border-(--main-hover-color)
 }
 
 .btn-cancel {
-  @apply text-(--btn-cancel-text) border bg-(--btn-cancel) border-(--btn-cancel-border) hover:bg-(--btn-cancel-hover) active:bg-(--btn-cancel-active)
+  @apply text-(--btn-cancel-text) border bg-(--btn-cancel) border-(--btn-cancel-border) hover:bg-(--btn-cancel-hover)
 }
 
 .btn-delete {
-  @apply text-(--btn-delete-text) bg-(--btn-delete-bg) hover:bg-(--btn-delete-hover) active:bg-(--btn-delete-active) border-(--btn-delete-bg) hover:border-(--btn-delete-hover) active:border-(--btn-delete-active)
+  @apply text-(--btn-delete-text) bg-(--btn-delete-bg) hover:bg-(--btn-delete-hover) border-(--btn-delete-bg) hover:border-(--btn-delete-hover)
 }
 
 .btn-disabled {
-  @apply text-(--btn-disabled-text) border bg-(--btn-cancel) border-(--btn-cancel-border) hover:bg-(--btn-cancel-hover) active:bg-(--btn-cancel-active)
+  @apply text-(--btn-disabled-text) border bg-(--btn-cancel) border-(--btn-cancel-border) hover:bg-(--btn-cancel-hover)
 }
 
 .input-delete {
@@ -30,7 +30,7 @@
 }
 
 .label-text {
-  @apply text-center text-sm text-(--text) tracking-wide
+  @apply text-sm text-(--text) tracking-wide
 }
 
 .label-div {
@@ -279,7 +279,6 @@ body {
   background: var(--calendar-bg);
 }
 
-
 .fade-in-up {
   animation: fadeInUp 0.3s ease forwards;
 }
@@ -293,4 +292,38 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.modal-in {
+  animation: modalIn 0.15s ease forwards;
+}
+
+.modal-out {
+  animation: modalOut 0.15s ease forwards;
+}
+
+.modal-no-scale {
+  transform: none !important;
 }

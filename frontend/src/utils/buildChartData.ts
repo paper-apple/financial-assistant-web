@@ -1,6 +1,7 @@
 // buildChartData.ts
 import type { ChartData, ChartDataset } from "chart.js";
 import { getColor } from "../hooks/useGetComputedStyle";
+import { useTranslation } from "../hooks/useTranslation";
 
 type Row = { key: string; total: number; count: number };
 
@@ -19,6 +20,8 @@ export function buildChartData(
   threshold: number,
   maxSegments = 9,
 ): ExtendedChartData {
+  const { t } = useTranslation()
+
   if (grandTotal === 0) {
     return { labels: [], datasets: [] };
   }
@@ -55,7 +58,7 @@ export function buildChartData(
 
   // Добавление "Прочее"
   if (otherTotal > 0) {
-    major.push({ key: "Прочее", total: otherTotal, count: otherCount });
+    major.push({ key: t('other'), total: otherTotal, count: otherCount });
   }
 
   const meta = major.map(r => ({

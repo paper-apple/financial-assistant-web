@@ -20,8 +20,6 @@ type Props = {
 };
 
 const btnClass = `
-  hover:opacity-100
-  active:opacity-100
   font-bold
   py-3.5 
   px-3.5
@@ -109,7 +107,7 @@ export const FloatingActionButtons = ({
         <div className="max-w-screen-sm mx-auto">
           <div className="flex justify-between">
             {roundButtons.map(({ onClick, icon: Icon }, idx) => (
-              <button key={idx} onClick={onClick} className={`${btnClass} text-(--btn-floating-text) bg-(--main-color)/40 hover:bg-(--main-hover-color) active:bg-(--main-active-color) rounded-full`}>
+              <button key={idx} onClick={onClick} className={`${btnClass} text-(--btn-floating-text) bg-(--main-color)/40 hover:bg-(--main-hover-color) rounded-full`}>
                 <Icon className={`${iconCls}`}/>
               </button>
             ))}

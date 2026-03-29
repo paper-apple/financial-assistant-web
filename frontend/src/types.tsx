@@ -113,3 +113,18 @@ export type Modals = {
   startDate: boolean;
   endDate: boolean;
 };
+
+// type ModalKey =
+//   | "add"
+//   | "update"
+//   | "filters"
+//   | "sort"
+//   | "stats"
+//   | "settings"
+//   | "calendar"
+//   | "startDate"
+//   | "endDate";
+
+// type ModalState = "closed" | "open" | "closing";
+
+// export type Modals = Record<ModalKey, ModalState>;

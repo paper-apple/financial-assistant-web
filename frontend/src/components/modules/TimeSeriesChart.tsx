@@ -69,6 +69,7 @@ export function TimeSeriesChart({ expenses }: Props) {
               tooltip: {
                 titleColor: getColor('--text'),
                 bodyColor: getColor('--text'),
+                backgroundColor: `rgba(${getColor('--tip-bg')}, 0.7)`,
                 callbacks: {
                   label: ctx => `${ctx.dataset.label}: ${ctx.formattedValue}`,
                 },
