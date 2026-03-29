@@ -7,27 +7,33 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-blue)](https://www.postgresql.org/)
 [![NestJS](https://img.shields.io/badge/NestJS-11-red)](https://nestjs.com/)
 
-## 📋 О проекте
+<p align="left">
+  <a href="README.ru.md">Русский</a>
+</p>
 
-Financial Assistant — это fullstack-приложение для управления финансами, которое позволяет:
-- Взаимодействовать с расходами и анализировать их
-- Использовать различные устройства для работы и синхронизироваться между ними
-- Безопасно хранить данные
+## 📋 About the Project
 
-Проект построен на технологиях NestJS + PostgreSQL + React и демонстрирует:
-- Чистую архитектуру с разделением на модули
-- REST API с валидацией и обработкой ошибок
-- Адаптивный интерфейс
-- Интерактивную визуализацию данных
+Financial Assistant is a fullstack personal finance management application that allows users to:
 
-## ▶️ Демо
+- Manage and analyze expenses
+- Work across multiple devices with cloud synchronization
+- Store data securely
 
-**[Попробовать приложение онлайн](https://financial-assistant-web-livid.vercel.app)** 
+Built with **NestJS + PostgreSQL + React**, the project demonstrates:
+
+- Clean modular architecture
+- REST API with validation and error handling
+- Responsive user interface
+- Interactive data visualization
+
+## ▶️ Demo
+
+**[Try the live app](https://financial-assistant-web-livid.vercel.app)**
 
 <table>
   <tr>
-    <th width="50%">Взаимодействие с записями</th>
-    <th width="50%">Анализ записей</th>
+    <th width="50%">Expense Management</th>
+    <th width="50%">Expense Analytics</th>
   </tr>
   <tr>
     <td align="center">
@@ -39,249 +45,238 @@ Financial Assistant — это fullstack-приложение для управ�
   </tr>
 </table>
 
-## ⚙️ Функциональность
+## ⚙️ Features
 
-- Добавление, редактирование и удаление записей
-- Фильтрация по дате, цене и ключевым словам
-- Сортировка по любому полю (название, категория, локация, сумма, дата)
-- Система подсказок при заполнении полей (автодополнение)
-- Таблица, диаграмма и график для анализа
-- Регистрация и безопасный вход (JWT)
-- Синхронизация между устройствами (в облачной версии)
-- Адаптивный интерфейс для различных устройств
+- Create, edit, and delete expense records
+- Filter by date, amount, and keywords
+- Sort by any field (title, category, location, amount, date)
+- Smart autocomplete suggestions
+- Table, charts, and graphs for analytics
+- Secure registration and login (JWT)
+- Cross-device synchronization (cloud version)
+- Fully responsive interface
 
-## 🛠️ Стек технологий
+## 🛠️ Tech Stack
 
 **Backend:**
-- NestJS + TypeScript — основной фреймворк
+- NestJS + TypeScript
 - PostgreSQL + TypeORM
 - Node.js
-- JWT-аутентификация
+- JWT Authentication
 
 **Frontend:**
 - React + TypeScript
 - Vite
 - Axios
-- Tailwind
+- Tailwind CSS
 
-## 📸 Скриншоты интерфейса
+## 📸 UI Screenshots
 
 <table>
   <tr>
-    <th width="65%">Главное окно на ПК</th>
-    <th width="35%">Главное окно на телефоне</th>
+    <th width="64%">Desktop Main View</th>
+    <th width="36%">Mobile Main View</th>
   </tr>
   <tr>
     <td align="center">
-      <img src="assets/screenshots/main-window.png" width="100%"/>
+      <img src="assets/screenshots/main-window-en.png" width="100%"/>
     </td>
     <td align="center">
-      <img src="assets/screenshots/main-window-on-phone-dark.png" width="100%"/>
+      <img src="assets/screenshots/main-window-on-phone-en.png" width="100%"/>
     </td>
   </tr>
 </table>
 
 <table>
   <tr>
-    <th width="50%">Добавление и редактирование</th>
-    <th width="50%">Статистика</th>
+    <th width="50%">Add & Edit</th>
+    <th width="50%">Statistics</th>
   </tr>
   <tr>
     <td align="center">
-      <img src="assets/screenshots/add-edit-window.png" width="100%"/>
+      <img src="assets/screenshots/add-edit-window-en.png" width="100%"/>
     </td>
     <td align="center">
-      <img src="assets/screenshots/stats-dark.png" width="100%"/>
+      <img src="assets/screenshots/stats-en.png" width="100%"/>
     </td>
   </tr>
 </table>
 
 <table>
   <tr>
-    <th width="50%">Фильтры</th>
-    <th width="50%">Сортировка</th>
+    <th width="50%">Filters</th>
+    <th width="50%">Sorting</th>
   </tr>
   <tr>
     <td align="center">
-      <img src="assets/screenshots/filters.png" width="100%"/>
+      <img src="assets/screenshots/filters-en.png" width="100%"/>
     </td>
     <td align="center">
-      <img src="assets/screenshots/sort-dark.png" width="100%"/>
+      <img src="assets/screenshots/sort-en.png" width="100%"/>
     </td>
   </tr>
 </table>
 
-## 🧱 Архитектура проекта
+## 🧱 Project Architecture
+
 <details>
-<summary>Нажмите, чтобы развернуть</summary>
+<summary>Click to expand</summary>
 
 FINANCIAL-ASSISTANT/<br>
 ├── backend/<br>
 │   ├── src/<br>
-│   │   ├── auth/          # Аутентификация<br>
-│   │   ├── users/         # Пользователи<br>
-│   │   ├── categories/    # Категории расходов<br>
-│   │   ├── expenses/      # Транзакции<br>
-│   │   ├── locations/     # Места покупок<br>
-│   │   ├── tests/         # Тесты<br>
-│   │   ├── app.module.ts  # Корневой модуль<br>
-│   │   └── main.ts        # Точка входа<br>
+│   │   ├── auth/          # Authentication<br>
+│   │   ├── users/         # Users<br>
+│   │   ├── categories/    # Expense categories<br>
+│   │   ├── expenses/      # Transactions<br>
+│   │   ├── locations/     # Purchase locations<br>
+│   │   ├── tests/         # Tests<br>
+│   │   ├── app.module.ts  # Root module<br>
+│   │   └── main.ts        # Entry point<br>
 │   ├── package.json<br>
 │   ├── nest-cli.json<br>
 │   └── Dockerfile<br>
 │<br>
 ├── frontend/<br>
 │   ├── src/<br>
-│   │   ├── components/    # UI-компоненты<br>
-│   │   │   ├── ui/        # Базовые (кнопки, инпуты)<br>
-│   │   │   └── modules/   # Сложные (формы, таблицы)<br>
-│   │   ├── hooks/         # Кастомные хуки<br>
-│   │   ├── utils/         # Утилиты<br>
-│   │   ├── context/       # Контекст<br>
-│   │   ├── i18n/          # Словарь переводов<br>
-│   │   ├── tests/         # Тесты<br>
-│   │   ├── api.ts         # API-клиент<br>
-│   │   ├── App.tsx        # Корневой компонент<br>
-│   │   └── main.tsx       # Точка входа<br>
+│   │   ├── components/    # UI components<br>
+│   │   │   ├── ui/        # Base components<br>
+│   │   │   └── modules/   # Complex modules<br>
+│   │   ├── hooks/         # Custom hooks<br>
+│   │   ├── utils/         # Utilities<br>
+│   │   ├── context/       # Context<br>
+│   │   ├── i18n/          # Translations<br>
+│   │   ├── tests/         # Tests<br>
+│   │   ├── api.ts         # API client<br>
+│   │   ├── App.tsx        # Root component<br>
+│   │   └── main.tsx       # Entry point<br>
 │   ├── package.json<br>
 │   ├── vite.config.ts<br>
 │   └── Dockerfile<br>
-│<br>
-├── db/ # Дампы<br>
-│<br>
-├── scripts/               # Вспомогательные скрипты<br>
-│   ├── install-deps.js    # Установка зависимостей<br>
-│   ├── restore-db.js      # Загрузка тестовых данных<br>
-│   └── setup-db.js        # Создание базы данных<br>
-│<br>
-├── docker-compose.yml     # Оркестрация контейнеров<br>
-├── .env.example           # Пример переменных<br>
-└── README.md<br>
 
 </details>
 
-## 💾 Схема базы данных
+## 💾 Database Schema
 
 <div align="center">
 
-![ER-диаграмма](assets/screenshots/ER-diagramm.png)
+![ER Diagram](assets/screenshots/ER-diagramm.png)
 
 </div>
 
-**Основные сущности:**
-- `users` — пользователи
-- `expenses` — расходы
-- `categories` — категории расходов
-- `locations` — место совершения расхода
+**Core entities:**
+- `users`
+- `expenses`
+- `categories`
+- `locations`
 
-## 🧪 Тестирование
+## 🧪 Testing
 
-В проекте реализовано базовое тестирование ключевых модулей:
+The project includes basic test coverage for key modules.
 
 **Backend:**
-- Unit-тесты сервисов (Auth, Expenses)
+- Service unit tests (Auth, Expenses)
 
 **Frontend:**
-- Тесты UI-компонентов (Button, Input, Modal)
-- Тесты утилит (форматирование, валидация)
+- UI component tests (Button, Input, Modal)
+- Utility tests (formatting, validation)
 
-**Запуск тестов:**
+**Run tests:**
 ```bash
 npm run run-all-tests
 ```
 
-## 📈 Планы развития
+## 📈 Roadmap
 
-- [x] Ночная тема
-- [ ] Возможность смены пароля и имени пользователя
-- [ ] Мультивалютность, отслеживание курса валют в реальном времени
-- [ ] Возможность установки лимита расходов
-- [ ] Прогнозирование расходов
-- [ ] Продвинутая статистика
-- [ ] Интеграционные тесты
-- [ ] Кэширование данных
-- [ ] Импорт и экспорт данных
+- [x] Dark mode
+- [ ] Change password and username
+- [ ] Multi-currency support with real-time exchange rates
+- [ ] Expense limit management
+- [ ] Expense forecasting
+- [ ] Advanced analytics
+- [ ] Integration tests
+- [ ] Data caching
+- [ ] Import and export
 
-## 🐳 Запуск через Docker
+## 🐳 Run with Docker
 
-**Требования:** 
+**Requirements:** 
 - [Docker](https://docker.com)
 - [Docker Compose](https://docs.docker.com/compose/)
 
-**1. Клонировать репозиторий:**
+**1. Clone the repository:**
 ```bash
 git clone https://github.com/paper-apple/financial-assistant-web.git
 cd financial-assistant-web
 ```
 
-**2. Создать .env файл из примера:**
+**2. Create an .env file from the example:**
 ```bash
 npm run setup-env
 ```
 
-**3. Запустить контейнеры:**
+**3. Launch Docker Desktop**
+> Wait until Docker is fully started (status "Running")
+
+**4. Launch containers:**
 ```bash
 docker compose up -d
 ```
 
-**4. Загрузить тестовые данные в БД:**
+**5. Load test data into the database:**
 ```bash
 npm run db:restore
 ```
 
-**5. Открыть приложение:**<br>
-- Приложение доступно по адресу: [http://localhost:5173](http://localhost:5173)
+**6. Start the application:**<br>
+- The application is available at: [http://localhost:5173](http://localhost:5173)
 
-## 🖐️ Ручной запуск
+## 🖐️ Manual setup
 
-**Требования:**
+**Requirements:**
 - Node.js v22+
 - PostgreSQL v17+
-- npm или yarn
+- npm or yarn
 
-**1. Клонировать репозиторий:**
+**1. Clone the repository:**
 ```bash
 git clone https://github.com/paper-apple/financial-assistant-web.git
 cd financial-assistant-web
 ```
 
-**2. Создать .env файл из примера:**
+**2. Create an .env file from the example:**
 ```bash
 npm run setup-env
 ```
 
-**3. Установить зависимости (backend + frontend):**
+**3. Install dependencies (backend + frontend):**
 ```bash
 npm run install-deps
 ```
 
-**4. Создать и настроить базу данных:**
+**4. Create and set up the database:**
 ```bash
 npm run db:setup
 ```
 
-**5. Запустить приложение:**
-- Автоматический запуск:
+**5. Start the application:**
+- Automatic launch:
 ```bash
 node start.js
 ```
-- Ручной запуск:
+- Manual launch:
 ```bash
-cd backend; npm run start:dev # Терминал 1
+cd backend; npm run start:dev # Terminal 1
 ```
 ```bash
-cd frontend; npm run dev # Терминал 2
+cd frontend; npm run dev # Terminal 2
 ```
 
-**6. Открыть приложение:**<br>
-- Приложение доступно по адресу: [http://localhost:5173](http://localhost:5173)
+**6. Open the application:**<br>
+- The application is available at: [http://localhost:5173](http://localhost:5173)
 
-## 📞 Контакты
+## 📞 Contact
 
-<!-- - Telegram: [@flyingbrick](https://t.me/flyingbrick)
-- Gmail: birdcherrytea@gmail.com
-- LinkedIn: [sdads](https://www.linkedin.com/in/dzmitry-paklonski-8636773b8/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BX4m%2BQnAeTbi34TvRk5fFZw%3D%3D) -->
-
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:birdcherrytea@gmail.com)</br>
-[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/flyingbrick)</br>
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/dzmitry-paklonski-8636773b8/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BX4m%2BQnAeTbi34TvRk5fFZw%3D%3D)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](birdcherrytea@gmail.com)</br>
+[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/submarino_amarillo)</br>
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/dzmitry-paklonski/)

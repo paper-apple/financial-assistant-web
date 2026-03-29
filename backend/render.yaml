@@ -2,6 +2,7 @@ services:
   - type: web
     name: financial-assistant-backend
     env: node
+    rootDir: backend
     buildCommand: npm install && npm run build
     startCommand: node dist/main.js
     envVars:

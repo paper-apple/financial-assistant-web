@@ -29,8 +29,8 @@ type Props = {
 const FIELDS_CONFIG: { key: keyof FormState; label: TranslationKey; testId: string, icon: React.ElementType }[] = [
   { key: "title", label: "title", testId: 'input-title', icon: TagIcon},
   { key: "category", label: "category", testId: 'input-category', icon: RectangleStackIcon },
-  { key: "price", label: "cost", testId: 'input-price', icon: CurrencyDollarIcon },
   { key: "location", label: "place", testId: 'input-location', icon: MapPinIcon },
+  { key: "price", label: "cost", testId: 'input-price', icon: CurrencyDollarIcon },
 ];
 
 export const ExpenseForm = ({

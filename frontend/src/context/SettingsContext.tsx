@@ -20,7 +20,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
   
   const [language, setLanguage] = useState<Language>(() => {
-    return (localStorage.getItem('language') as Language) || 'ru';
+    return (localStorage.getItem('language') as Language) || 'en';
   });
 
   // Сохранение в localStorage и применение к body при изменении

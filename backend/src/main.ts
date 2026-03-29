@@ -15,7 +15,7 @@ async function bootstrap() {
     origin: [ 
       "http://localhost:5173", 
       "https://financial-assistant-web-livid.vercel.app",
-      "https://financial-assistant-web.onrender.com",
+      "https://financial-assistant-web-v7pb.onrender.com",
       /\.vercel\.app$/,
       /\.onrender\.com$/,
     ],

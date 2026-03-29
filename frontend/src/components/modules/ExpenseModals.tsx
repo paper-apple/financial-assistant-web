@@ -30,7 +30,12 @@ type Props = {
   handleLogout: () => void;
   handleUpdated: (expense: Expense) => void;
   handleAddKeyword: (word: string) => void;
-  updateFormField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;};
+  updateFormField: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
+  isModalOpen: boolean;
+  isCalendarOpen: boolean;
+  handleCloseModal: () => void;
+  handleCloseCalendar: () => void;
+};
   
 export const ExpenseModals = ({
   modals,
@@ -48,23 +53,27 @@ export const ExpenseModals = ({
   applyFilters,
   applySorts,
   handleAddKeyword,
-  updateFormField
+  updateFormField,
+  isModalOpen,
+  isCalendarOpen,
+  handleCloseModal,
+  handleCloseCalendar,
 }: Props) => (
   <>
     {modals.add && (
-      <Modal onModalClose={() => closeModal("add")} title="expense_adding">
+      <Modal onRemoveModal={() => closeModal("add")} title="expense_adding" isModalOpen={isModalOpen} onModalClose={handleCloseModal}>
         <ExpenseForm 
           form={form} 
           onCreated={handleCreated} 
           updateField={updateFormField}
           onModalOpen={openModal}
-          onModalClose={() => closeModal("add")}
+          onModalClose={handleCloseModal}
         />
       </Modal>
     )}
 
     {modals.update && editingExpense && (
-      <Modal onModalClose={() => closeModal("update")} title="expense_editing">
+      <Modal onRemoveModal={() => closeModal("update")} title="expense_editing" isModalOpen={isModalOpen} onModalClose={handleCloseModal}>
         <ExpenseForm 
           form={form}
           initialData={editingExpense}
@@ -72,78 +81,78 @@ export const ExpenseModals = ({
           onUpdated={handleUpdated} 
           updateField={updateFormField}
           onModalOpen={openModal}
-          onModalClose={() => closeModal("update")}
+          onModalClose={handleCloseModal}
           />
       </Modal>
     )}
 
     {modals.filters && (
-      <Modal onModalClose={() => closeModal("filters")} title="filters">
+      <Modal onRemoveModal={() => closeModal("filters")} title="filters" isModalOpen={isModalOpen} onModalClose={handleCloseModal}>
         <FilterForm 
           suggestions={suggestions}
           filtersState={filtersState}
           handleAddKeyword={handleAddKeyword}
           applyFilters={applyFilters} 
           onModalOpen={openModal}
-          onModalClose={() => closeModal("filters")}
+          onModalClose={handleCloseModal}
         />
       </Modal>
     )}
 
     {modals.calendar && form &&(
-      <Modal onModalClose={() => closeModal("calendar")} calendar>
+      <Modal onRemoveModal={() => closeModal("calendar")} isModalOpen={isCalendarOpen} calendar onModalClose={handleCloseCalendar}>
         <CalendarModal 
           value={form.datetime ? new Date(form.datetime) : null}          
           onSave={(date) => updateFormField("datetime", date.toISOString())}          
-          onClose={() => closeModal("calendar")}
+          onClose={handleCloseCalendar}
           />
       </Modal>
     )}
 
     {modals.startDate && (
-      <Modal onModalClose={() => closeModal("startDate")} calendar>
+      <Modal onRemoveModal={() => closeModal("startDate")} isModalOpen={isCalendarOpen} calendar onModalClose={handleCloseCalendar}>
         <CalendarModal 
           value={filtersState.startDate} 
           onSave={(date) => filtersState.setStartDate(date)}          
-          onClose={() => closeModal("startDate")}
+          onClose={handleCloseCalendar}
           />
       </Modal>
     )}
 
     {modals.endDate &&(
-      <Modal onModalClose={() => closeModal("endDate")} calendar>
+      <Modal onRemoveModal={() => closeModal("endDate")} isModalOpen={isCalendarOpen} calendar onModalClose={handleCloseCalendar}>
         <CalendarModal 
           value={filtersState.endDate}
           onSave={(date) => filtersState.setEndDate(date)}          
-          onClose={() => closeModal("endDate")}
+          onClose={handleCloseCalendar}
           />
       </Modal>
     )}
 
     {modals.sort && (
-      <Modal onModalClose={() => closeModal("sort")} title="sort">
+      <Modal onRemoveModal={() => closeModal("sort")} title="sort" isModalOpen={isModalOpen} onModalClose={handleCloseModal}>
         <SortForm 
           sortState={sortState}
           applySorts={applySorts} 
-          onClose={() => closeModal("sort")}
+          onClose={handleCloseModal}
         />
       </Modal>
     )}
 
     {modals.stats && (
-      <Modal onModalClose={() => closeModal("stats")} title="stats">
+      <Modal onRemoveModal={() => closeModal("stats")} title="stats" isModalOpen={isModalOpen} onModalClose={handleCloseModal}>
         <StatsModal 
           expenses={sortedExpenses} 
           initialField="category" 
-          onClose={() => closeModal("stats")} 
+          onClose={handleCloseModal} 
         />
       </Modal>
     )}
 
     {modals.settings && (
-      <Modal onModalClose={() => closeModal("settings")} title="settings">
+      <Modal onRemoveModal={() => closeModal("settings")} title="settings" isModalOpen={isModalOpen} onModalClose={handleCloseModal}>
         <SettingsModal 
-          onClose={() => closeModal("settings")}
+          onClose={handleCloseModal}
           logout={handleLogout}
         />
       </Modal>

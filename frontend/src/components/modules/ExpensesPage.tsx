@@ -75,6 +75,7 @@ export const ExpensesPage = () => {
     endDate: false,
   });
 
+  // Первоначальная проверка, что пользователь в системе
   useEffect(() => {
     checkAuth();
   }, []);
@@ -92,7 +93,7 @@ export const ExpensesPage = () => {
       setAuthModalOpen(false);
       setIsLoginMode(true);
     } catch (error: any) {
-      console.error("Ошибка:", error);
+      console.error("Error:", error);
       throw error;
     }
   };
@@ -104,18 +105,32 @@ export const ExpensesPage = () => {
     setAuthModalOpen(true);
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isCalendarOpen, setIsCalendarOpen] = useState(true)
+
+  const handleCloseCalendar = async () => {
+    setIsCalendarOpen(false)
+  };
+
+  const handleCloseModal = async () => {
+    setIsModalOpen(false)
+  };
+
   const openModal = useCallback((modal: keyof typeof modals) => {
     if (!user) {
       setAuthModalOpen(true);
       return;
     }
     setModals(prev => ({ ...prev, [modal]: true }));
+
   }, [user]);
 
   const closeModal = useCallback((modal: keyof typeof modals) => {
-    setModals(prev => ({ ...prev, [modal]: false }));
+    setModals(prev => ({ ...prev, [modal]: false }))
+    setIsModalOpen(true)
+    setIsCalendarOpen(true)
     if (modal === "update" || modal === "add") {
-      resetForm();     
+      setTimeout(() => {resetForm()}, 100);
     }
     else if (modal === "filters") {
       filtersState.setKeywordInput('');
@@ -206,6 +221,10 @@ export const ExpensesPage = () => {
             applySorts={applySorts}
             handleAddKeyword={handleAddKeyword}
             updateFormField={updateFormField}
+            isModalOpen={isModalOpen}
+            isCalendarOpen={isCalendarOpen}
+            handleCloseModal={handleCloseModal}
+            handleCloseCalendar={handleCloseCalendar}
           />
         </>
       )}
