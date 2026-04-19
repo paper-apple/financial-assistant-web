@@ -32,7 +32,7 @@ export const StatsChart = ({ chartData }: Props) =>
                   const i = context.dataIndex;
                   const total = ds.data[i];
                   const { count, proportion } = ds.meta[i];
-                  return [`${t('sum')}: ${total}`, `${t('quantity')}: ${count}`, `${t('sum')}: ${proportion} %`];
+                  return [`${t('sum')}: ${total}`, `${t('quantity')}: ${count}`, `${t('proportion')}: ${proportion} %`];
                 },
               },
             },

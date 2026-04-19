@@ -54,6 +54,7 @@ export const Modal = ({ onRemoveModal: onRemove, title, children, calendar, isMo
       `}
       onAnimationEnd={(e) => {
         if (!isModalOpen && e.target === e.currentTarget) {
+          console.log('remove!!!')
           onRemove();
         }
       }}

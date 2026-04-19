@@ -6,7 +6,6 @@ import { enUS, Locale, ru } from "date-fns/locale";
 import { Language, useSettings } from "../../context/SettingsContext";
 import { useTranslation } from "../../hooks/useTranslation";
 
-
 type CalendarModalProps = {
   value: Date | null;
   onSave: (date: Date) => void;

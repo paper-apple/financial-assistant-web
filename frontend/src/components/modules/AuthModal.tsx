@@ -8,7 +8,7 @@ import { useSettings } from "../../context/SettingsContext";
 interface AuthModalProps {
   isOpen: boolean;
   isLoginMode: boolean;
-  error: TranslationKey;
+  error: TranslationKey | null;
   onAuth: (username: string, password: string) => void;
   onToggleMode: () => void;
 }
@@ -42,9 +42,7 @@ export const AuthModal = ({
     try {
       if (language == 'ru') {
         await onAuth("testuser", "1234Ab")
-        console.log('ru')
       } else {
-        console.log('en')
         await onAuth("testuser_en", "1234Ab")
       }
       setUsername("")
@@ -99,7 +97,7 @@ export const AuthModal = ({
             type="password"
           />
           <div className="relative">
-            {showErrorTooltip && (
+            {showErrorTooltip && error && (
               <div>
                 <ErrorBar errorText={error}/>
               </div>

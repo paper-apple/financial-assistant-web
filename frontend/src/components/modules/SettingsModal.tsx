@@ -35,13 +35,13 @@ export const SettingsModal = ({ onClose, logout }: Props) => {
   const { t } = useTranslation();
 
   const logoutAndClose = async () => {
-    logout();
     onClose();
+    logout();
   };
 
   return (
     <div>
-      {/* Выбор темы */}
+      {/* Choose theme */}
       <RadioGroup<Theme>
         heading='theme'
         options={GROUP_THEME_OPTIONS}
@@ -50,7 +50,7 @@ export const SettingsModal = ({ onClose, logout }: Props) => {
         orientation="horizontal"
       />
 
-      {/* Выбор темы */}
+      {/* Choose language */}
       <RadioGroup<Language>
         heading='language'
         options={GROUP_LANGUAGE_OPTIONS}

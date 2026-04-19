@@ -23,7 +23,7 @@ export const StatsTable = ({ field, rows, totalCount, grandTotal }: Props) =>
 
   return (
     <div className="border border-(--input-border) rounded-lg"> 
-      <div className="flex sticky bottom-0 z-20 border-b border-(--input-border)">
+      <div className="flex sticky z-20 border-b border-(--input-border)">
         <span className={
           isSafari
             ? "first-column"

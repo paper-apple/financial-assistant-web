@@ -1,64 +1,86 @@
 // RadioGroup.test.tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { vi, describe, it, expect, beforeEach } from "vitest";
-import { RadioGroup } from "../../../components/ui/RadioGroup";
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import type { ElementType } from 'react';
+import { RadioGroup } from '../../../components/ui/RadioGroup';
 
-const MockIcon = (props: any) => <svg {...props}><circle /></svg>;
+const TestIcon1 = () => <svg data-testid="icon1" />;
+const TestIcon2 = () => <svg data-testid="icon2" />;
+const TestIcon3 = () => <svg data-testid="icon3" />;
 
-describe("RadioGroup", () => {
-  const options = [
-    { value: "opt1", label: "Option 1", icon: MockIcon },
-    { value: "opt2", label: "Option 2", icon: MockIcon },
-  ];
-  const onChange = vi.fn();
+type TestValue = 'option1' | 'option2' | 'option3';
+
+const testOptions = [
+  { value: 'option1' as const, label: 'Option 1', icon: TestIcon1 as ElementType },
+  { value: 'option2' as const, label: 'Option 2', icon: TestIcon2 as ElementType },
+  { value: 'option3' as const, label: 'Option 3', icon: TestIcon3 as ElementType },
+];
+
+describe('RadioGroup', () => {
+  const defaultProps = {
+    heading: 'sort' as const,
+    options: testOptions,
+    selected: 'option1' as TestValue,
+    onChange: vi.fn(),
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("рендер всех опций", () => {
-    render(<RadioGroup options={options} selected="opt1" onChange={onChange} />);
-    expect(screen.getByText("Option 1")).toBeInTheDocument();
-    expect(screen.getByText("Option 2")).toBeInTheDocument();
+  it('рендерит заголовок и все опции', () => {
+    render(<RadioGroup {...defaultProps} />);
+    
+    expect(screen.getByText('sort')).toBeInTheDocument();
+    
+    expect(screen.getByText('Option 1')).toBeInTheDocument();
+    expect(screen.getByText('Option 2')).toBeInTheDocument();
+    expect(screen.getByText('Option 3')).toBeInTheDocument();
+    
+    expect(screen.getByTestId('icon1')).toBeInTheDocument();
+    expect(screen.getByTestId('icon2')).toBeInTheDocument();
+    expect(screen.getByTestId('icon3')).toBeInTheDocument();
   });
 
-  it("подсветка выбранной опции", () => {
-    render(<RadioGroup options={options} selected="opt1" onChange={onChange} />);
-    const btn1 = screen.getByRole("button", { name: /Option 1/i });
-    const btn2 = screen.getByRole("button", { name: /Option 2/i });
-
-    expect(btn1).toHaveClass("bg-blue-100");
+  it('применяет активный стиль к выбранной опции', () => {
+    render(<RadioGroup {...defaultProps} selected="option2" />);
+    
+    const buttons = screen.getAllByRole('button');
+    const selectedButton = buttons[1];
+    
+    expect(selectedButton).toHaveClass('bg-(--checked-option)');
+    
+    expect(buttons[0]).not.toHaveClass('bg-(--checked-option)');
+    expect(buttons[2]).not.toHaveClass('bg-(--checked-option)');
   });
 
-  it("вызов onChange при клике на кнопку", async () => {
-    render(<RadioGroup options={options} selected="opt1" onChange={onChange} />);
-    const btn2 = screen.getByRole("button", { name: /Option 2/i });
-    await userEvent.click(btn2);
-    expect(onChange).toHaveBeenCalledWith("opt2");
+  it('вызывает onChange с правильным значением при клике на опцию', () => {
+    const mockOnChange = vi.fn();
+    render(<RadioGroup {...defaultProps} onChange={mockOnChange} />);
+    
+    const buttons = screen.getAllByRole('button');
+    
+    fireEvent.click(buttons[1]);
+    expect(mockOnChange).toHaveBeenCalledWith('option2');
+    
+    fireEvent.click(buttons[2]);
+    expect(mockOnChange).toHaveBeenCalledWith('option3');
+    
+    expect(mockOnChange).toHaveBeenCalledTimes(2);
   });
 
-  it("при ориентации horizontal применяется класс flex gap-6.5", () => {
-    const { container } = render(
-      <RadioGroup
-        options={options}
-        selected="opt1"
-        onChange={onChange}
-        orientation="horizontal"
-      />
-    );
-    expect(container.firstChild).toHaveClass("flex w-full gap-4.5");
-  });
-
-  it("при ориентации vertical применяется класс space-y-1", () => {
-    const { container } = render(
-      <RadioGroup
-        options={options}
-        selected="opt1"
-        onChange={onChange}
-        orientation="vertical"
-      />
-    );
-    expect(container.firstChild).toHaveClass("flex w-full flex-col");
+  it('применяет правильные CSS классы для вертикальной и горизонтальной ориентации', () => {
+    const { rerender } = render(<RadioGroup {...defaultProps} orientation="vertical" />);
+    
+    const container = document.querySelector('.options-container');
+    expect(container).toHaveClass('flex-col');
+    expect(container).toHaveClass('gap-0.5');
+    expect(container).not.toHaveClass('gap-2.5');
+    
+    rerender(<RadioGroup {...defaultProps} orientation="horizontal" />);
+    
+    expect(container).toHaveClass('gap-2.5');
+    expect(container).not.toHaveClass('flex-col');
+    expect(container).not.toHaveClass('gap-0.5');
   });
 });

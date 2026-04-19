@@ -1,7 +1,6 @@
 // RadioGroup.tsx
 import { TranslationKey, useTranslation } from '../../hooks/useTranslation';
 
-
 export const RadioGroup = <T extends string>({
   heading,
   options,
@@ -26,7 +25,7 @@ export const RadioGroup = <T extends string>({
       </label>
     <div className="w-full flex flex-wrap items-center rounded-lg p-2 mb-1 outline outline-(--input-border)">
  
-    <div className={`flex w-full ${orientation === "horizontal" ? "gap-2.5" : "flex-col gap-0.5"}`}>    
+    <div className={`options-container flex w-full ${orientation === "horizontal" ? "gap-2.5" : "flex-col gap-0.5"}`}>    
       {options.map(opt => {
         const isActive = selected === opt.value;
         const Icon = opt.icon;

@@ -58,7 +58,7 @@ describe("useAuth", () => {
     });
 
     expect(result.current.user).toEqual({ username: "dima" });
-    expect(result.current.authError).toBe("");
+    expect(result.current.authError).toBe(null);
   });
 
   it("loginUser устанавливает error при ошибке", async () => {    
@@ -70,7 +70,7 @@ describe("useAuth", () => {
 
     const { result } = renderHook(() => useAuth());
 
-    expect(result.current.authError).toBe("");
+    expect(result.current.authError).toBe(null);
 
     let caughtError;
     await act(async () => {

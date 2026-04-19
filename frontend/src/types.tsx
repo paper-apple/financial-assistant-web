@@ -83,9 +83,18 @@ export type SortState = {
   setSortDirection: React.Dispatch<React.SetStateAction<SortParams['direction']>>;
 };
 
+export type StatsState = {
+  statsField: GroupField;
+  applyStatsField: (field: GroupField) => void;
+  statsMode: StatsModeField;
+  applyStatsMode: (field: StatsModeField) => void
+};
+
 export type ThemeField = "light" | "dark";
 
 export type GroupField = "title" | "category" | "location";
+
+export type StatsModeField = 'table' | 'pie' | 'time';
 
 type SortField = GroupField | "price" | "datetime";
 

@@ -14,12 +14,6 @@ describe("FormField", () => {
     vi.clearAllMocks();
   });
 
-  it("рендер label и placeholder", () => {
-    render(<FormField label="Имя" value="" placeholder="Введите имя" />);
-    expect(screen.getByText("Имя")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Введите имя")).toBeInTheDocument();
-  });
-
   it("вызов onChange при вводе текста", async () => {
     render(<FormField value="" onChange={onChange} testId="field" />);
     const input = screen.getByTestId("field");

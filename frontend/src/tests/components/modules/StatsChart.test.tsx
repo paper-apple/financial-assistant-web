@@ -50,9 +50,9 @@ describe("StatsChart", () => {
 
     const result = labelFn(context);
     expect(result).toEqual([
-      "Сумма: 100",
-      "Кол-во: 2",
-      "Доля: 50 %",
+      "sum: 100",
+      "quantity: 2",
+      "proportion: 50 %",
     ]);
   });
 });

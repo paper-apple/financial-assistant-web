@@ -77,18 +77,18 @@ describe("FilterForm", () => {
 
   it("отображение сообщения, если список ключевых слов пуст", () => {
     setup();
-    expect(screen.getByText("Ключевые слова не добавлены")).toBeInTheDocument();
+    expect(screen.getByText("keywords_are_not_added")).toBeInTheDocument();
   });
 
   it("добавление ключевого слова через кнопку", () => {
     const { handleAddKeyword } = setup({ keywordInput: "еда" });
-    fireEvent.click(screen.getByText("Добавить слово"));
+    fireEvent.click(screen.getByText("add_word"));
     expect(handleAddKeyword).toHaveBeenCalledWith("еда");
   });
 
   it("очистка списка ключевых слов", () => {
     const { setKeywordsList } = setup({ keywordsList: ["еда", "такси"] });
-    fireEvent.click(screen.getByText("Очистить список"));
+    fireEvent.click(screen.getByText("clear_list"));
     expect(setKeywordsList).toHaveBeenCalledWith([]);
   });
 
@@ -107,20 +107,20 @@ describe("FilterForm", () => {
 
   it("вызов setMinPrice при изменении цены", () => {
     const { setMinPrice } = setup();
-    const inputs = screen.getAllByPlaceholderText("От");
+    const inputs = screen.getAllByPlaceholderText("from");
     fireEvent.change(inputs[1], { target: { value: "123" } });
     expect(setMinPrice).toHaveBeenCalled();
   });
 
   it("вызов handleResetFilters при клике на Сбросить", () => {
     const { handleResetFilters } = setup();
-    fireEvent.click(screen.getByText("Сбросить"));
+    fireEvent.click(screen.getByText("reset"));
     expect(handleResetFilters).toHaveBeenCalled();
   });
 
   it("вызов applyFilters и onClose при Применить", () => {
     const { applyFilters, onModalClose } = setup();
-    fireEvent.click(screen.getByText("Применить"));
+    fireEvent.click(screen.getByText("apply"));
     expect(applyFilters).toHaveBeenCalled();
     expect(onModalClose).toHaveBeenCalled();
   });
@@ -133,7 +133,7 @@ describe("FilterForm", () => {
       maxPrice: "100",
     });
 
-    const applyBtn = screen.getByText("Применить");
+    const applyBtn = screen.getByText("apply");
     expect(applyBtn).toHaveClass("btn-confirm");
 
     fireEvent.click(applyBtn);

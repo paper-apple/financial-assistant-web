@@ -9,7 +9,7 @@ describe("FloatingActionButtons", () => {
   const onFilter = vi.fn();
   const onSort = vi.fn();
   const onStats = vi.fn();
-  const onLogout = vi.fn();
+  const onSettings = vi.fn();
   const closeSelection = vi.fn();
 
   global.ResizeObserver = class ResizeObserver {
@@ -29,7 +29,7 @@ describe("FloatingActionButtons", () => {
         onFilter={onFilter}
         onSort={onSort}
         onStats={onStats}
-        onLogout={onLogout}
+        onSettings={onSettings}
         closeSelection={closeSelection}
       />
     );
@@ -39,20 +39,13 @@ describe("FloatingActionButtons", () => {
     buttons.forEach((btn) => {
       expect(btn).toHaveClass(
         `
-          bg-blue-300/40
-          hover:bg-blue-300
-          hover:opacity-100
-          active:bg-blue-400
-          active:opacity-100
-          text-white
           font-bold
           py-3.5 
           px-3.5
-          rounded-full
-          border
           transition-all
           duration-500
           ease-in-out
+          pointer-events-auto
         `
       );
     });
@@ -65,7 +58,7 @@ describe("FloatingActionButtons", () => {
         onFilter={onFilter}
         onSort={onSort}
         onStats={onStats}
-        onLogout={onLogout}
+        onSettings={onSettings}
         closeSelection={closeSelection}
       />
     );
@@ -84,7 +77,7 @@ describe("FloatingActionButtons", () => {
         onFilter={onFilter}
         onSort={onSort}
         onStats={onStats}
-        onLogout={onLogout}
+        onSettings={onSettings}
         closeSelection={closeSelection}
       />
     );
@@ -103,7 +96,7 @@ describe("FloatingActionButtons", () => {
         onFilter={onFilter}
         onSort={onSort}
         onStats={onStats}
-        onLogout={onLogout}
+        onSettings={onSettings}
         closeSelection={closeSelection}
       />
     );
@@ -122,7 +115,7 @@ describe("FloatingActionButtons", () => {
         onFilter={onFilter}
         onSort={onSort}
         onStats={onStats}
-        onLogout={onLogout}
+        onSettings={onSettings}
         closeSelection={closeSelection}
       />
     );
@@ -141,7 +134,7 @@ describe("FloatingActionButtons", () => {
         onFilter={onFilter}
         onSort={onSort}
         onStats={onStats}
-        onLogout={onLogout}
+        onSettings={onSettings}
         closeSelection={closeSelection}
       />
     );
@@ -150,6 +143,6 @@ describe("FloatingActionButtons", () => {
     await userEvent.click(buttons[0]);
 
     expect(closeSelection).toHaveBeenCalled();
-    expect(onLogout).toHaveBeenCalled();
+    expect(onSettings).toHaveBeenCalled();
   });
 });

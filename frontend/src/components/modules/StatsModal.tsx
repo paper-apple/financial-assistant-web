@@ -1,5 +1,5 @@
 // StatsModal.tsx
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -13,31 +13,31 @@ import {
   Legend,
   TimeScale,
 } from "chart.js";
-import type { Expense, GroupField } from "../../types";
+import type { Expense, GroupField, StatsState } from "../../types";
 import { groupExpenses } from "../../utils/groupExpenses";
 import { StatsChart } from "./StatsChart";
 import { StatsTable } from "./StatsTable";
-import { buildChartData } from "../../utils/buildChartData";
 import { TagIcon, RectangleStackIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { RadioGroup } from "../ui/RadioGroup";
 import { TimeSeriesChart } from "./TimeSeriesChart";
 import { TranslationKey, useTranslation } from "../../hooks/useTranslation";
+import { useChartData } from "../../hooks/useChartData";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
   BarElement,
+  TimeScale,
   Title,
   Tooltip,
   Legend,
-  TimeScale,
 );
 
 type Props = {
   onClose: () => void;
   expenses: Expense[];
-  initialField?: GroupField;
+  statsState: StatsState;
 };
 
 const GROUP_OPTIONS: { value: GroupField; label: TranslationKey; icon: React.ElementType }[] = [
@@ -46,30 +46,32 @@ const GROUP_OPTIONS: { value: GroupField; label: TranslationKey; icon: React.Ele
   { value: "location", label: "place", icon: MapPinIcon },
 ];
 
-export function StatsModal({ onClose, expenses, initialField = "category" }: Props) {
-  const [field, setField] = useState<GroupField>(initialField);
-  const [mode, setMode] = useState<"table" | "pie" | "time">("table");
+export function StatsModal({ onClose, expenses, statsState }: Props) {
+  const { t } = useTranslation()
 
-  const rows = useMemo(() => groupExpenses(expenses, field), [expenses, field]);
+  const { statsField, applyStatsField, statsMode, applyStatsMode } = statsState
+
+  const rows = useMemo(() => groupExpenses(expenses, statsField), [expenses, statsField]);
+
   const grandTotal = useMemo(
     () => Math.round(rows.reduce((s, r) => s + r.total, 0) * 100) / 100, [rows]);
+
   const totalCount = useMemo(() => rows.reduce((s, r) => s + r.count, 0), [rows]);
 
   const threshold = 0.015;
-  const chartData = useMemo(() => buildChartData(rows, grandTotal, threshold), [rows, grandTotal]);
 
-  const { t } = useTranslation()
+  const chartData = useChartData(rows, grandTotal, threshold)
 
   return (
     <div className="w-full bg-(--bg-secondary) rounded-lg ">
       <div className="relative mb-2 flex flex-wrap items-center">
-        {mode !== "time" ? (
+        {statsMode !== "time" ? (
           <>
             <RadioGroup<GroupField>
               heading="group_by"
               options={GROUP_OPTIONS}
-              selected={field}
-              onChange={setField}
+              selected={statsField}
+              onChange={applyStatsField}
               orientation="horizontal"
             />
           </>
@@ -79,13 +81,13 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
 
         <div
           className={`w-full ${
-            mode === "time" ? "h-106" : "h-84"
+            statsMode === "time" ? "h-106" : "h-84"
           }`}
         >
           {rows.length > 0 ? (
-            mode === "table" ? (
-              <StatsTable field={field} rows={rows} grandTotal={grandTotal} totalCount={totalCount} />
-            ) : mode === "pie" ? (
+            statsMode === "table" ? (
+              <StatsTable field={statsField} rows={rows} grandTotal={grandTotal} totalCount={totalCount} />
+            ) : statsMode === "pie" ? (
               <StatsChart chartData={chartData} />
             ) : (
               <TimeSeriesChart expenses={expenses} />
@@ -93,7 +95,7 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
           ) : (
             <div className={`w-full flex items-center justify-center
               ${
-                mode === "time" ? "h-108" : "h-64"
+                statsMode === "time" ? "h-108" : "h-64"
               }
             `}>
               <p className="upper-text">{t('no_data')}</p>
@@ -102,22 +104,22 @@ export function StatsModal({ onClose, expenses, initialField = "category" }: Pro
         </div>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-4">
         <button onClick={onClose} className="btn-base btn-cancel">
           {t('cancel')}
         </button>
-        {mode !== "table" && (
-          <button onClick={() => setMode("table")} className="btn-base btn-confirm">
+        {statsMode !== "table" && (
+          <button onClick={() => applyStatsMode("table")} className="btn-base btn-confirm">
             {t('table')}
           </button>
         )}
-        {mode !== "pie" && (
-          <button onClick={() => setMode("pie")} className="btn-base btn-confirm">
+        {statsMode !== "pie" && (
+          <button onClick={() => applyStatsMode("pie")} className="btn-base btn-confirm">
             {t('chart')}
           </button>
         )}
-        {mode !== "time" && (
-          <button onClick={() => setMode("time")} className="btn-base btn-confirm">
+        {statsMode !== "time" && (
+          <button onClick={() => applyStatsMode("time")} className="btn-base btn-confirm">
             {t('graph')}
           </button>
         )}

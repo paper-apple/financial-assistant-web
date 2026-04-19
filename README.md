@@ -2,13 +2,13 @@
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/paper-apple/financial-assistant-web/pulls)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0.2-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-blue)](https://www.postgresql.org/)
 [![NestJS](https://img.shields.io/badge/NestJS-11-red)](https://nestjs.com/)
 
 <p align="left">
-  <a href="README.ru.md">Русский</a>
+  <a href="README.ru.md">Переключиться на русский язык</a>
 </p>
 
 ## 📋 About the Project

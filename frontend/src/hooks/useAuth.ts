@@ -1,15 +1,13 @@
 // useAuth.ts
 import { useState } from "react";
 import { fetchExpenses, login, logout, register } from "../api";
-import { TranslationKey, useTranslation } from "./useTranslation";
+import { TranslationKey } from "./useTranslation";
 
 export function useAuth() {
   const [user, setUser] = useState<{ username: string } | null>(null);
-  const [authError, setAuthError] = useState<TranslationKey>("cancel");
+  const [authError, setAuthError] = useState< TranslationKey | null>(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
-
-  const { t } = useTranslation()
   
   const checkAuth = async () => {
     try {

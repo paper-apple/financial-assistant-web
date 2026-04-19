@@ -47,7 +47,7 @@ const mockForm: FormState = {
   category: 'Food',
   price: '100.5',
   location: 'Supermarket',
-  datetime: '2024-01-01T12:00:00Z',
+  datetime: '2026-01-01T12:00:00Z',
 };
 
 const mockExpense: Expense = {
@@ -56,7 +56,7 @@ const mockExpense: Expense = {
   category: { id: 1, name: 'Food' },
   price: 100.5,
   location: { id: 1, name: 'Supermarket' },
-  datetime: '2024-01-01T12:00:00Z',
+  datetime: '2026-01-01T12:00:00Z',
 };
 
 describe('ExpenseForm', () => {
@@ -134,7 +134,7 @@ describe('ExpenseForm', () => {
       />
     );
 
-    const submitButton = screen.getByText('Создать');
+    const submitButton = screen.getByText('create');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -159,7 +159,7 @@ describe('ExpenseForm', () => {
       />
     );
 
-    const submitButton = screen.getByText('Изменить');
+    const submitButton = screen.getByText('change');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -202,7 +202,7 @@ describe('ExpenseForm', () => {
       />
     );
 
-    const submitButton = screen.getByText('Создать');
+    const submitButton = screen.getByText('create');
     fireEvent.click(submitButton);
 
     await waitFor(() => {

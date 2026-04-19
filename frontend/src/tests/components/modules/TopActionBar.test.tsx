@@ -34,9 +34,9 @@ describe("TopActionBar", () => {
     );
 
     expect(screen.getByText("Выбрано 2")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Выбрать всё/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Удалить" })).toBeEnabled();
-    expect(screen.getByRole("button", { name: "Отмена" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /select_all/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "delete" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "cancel" })).toBeInTheDocument();
   });
 
   it("кнопка 'Выбрать всё' вызывает onSelectAll", async () => {
@@ -51,7 +51,7 @@ describe("TopActionBar", () => {
         setSelectionMode={setSelectionMode}
       />
     );
-    await userEvent.click(screen.getByRole("button", { name: /Выбрать всё/ }));
+    await userEvent.click(screen.getByRole("button", { name: /select_all/ }));
     expect(onSelectAll).toHaveBeenCalled();
   });
 
@@ -67,10 +67,10 @@ describe("TopActionBar", () => {
         setSelectionMode={setSelectionMode}
       />
     );
-    await userEvent.click(screen.getByRole("button", { name: "Удалить" }));
+    await userEvent.click(screen.getByRole("button", { name: "delete" }));
     expect(screen.getByText("Подтвердите удаление 2")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Да" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Нет" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "yes" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "no" })).toBeInTheDocument();
   });
 
   it("кнопка 'Да' вызывает onDelete и возвращает обычный режим", async () => {
@@ -85,8 +85,8 @@ describe("TopActionBar", () => {
         setSelectionMode={setSelectionMode}
       />
     );
-    await userEvent.click(screen.getByRole("button", { name: "Удалить" }));
-    await userEvent.click(screen.getByRole("button", { name: "Да" }));
+    await userEvent.click(screen.getByRole("button", { name: "delete" }));
+    await userEvent.click(screen.getByRole("button", { name: "yes" }));
     expect(onDelete).toHaveBeenCalled();
   });
 
@@ -102,8 +102,8 @@ describe("TopActionBar", () => {
         setSelectionMode={setSelectionMode}
       />
     );
-    await userEvent.click(screen.getByRole("button", { name: "Удалить" }));
-    await userEvent.click(screen.getByRole("button", { name: "Нет" }));
+    await userEvent.click(screen.getByRole("button", { name: "delete" }));
+    await userEvent.click(screen.getByRole("button", { name: "no" }));
     expect(onDelete).not.toHaveBeenCalled();
     expect(screen.getByText("Выбрано 2")).toBeInTheDocument();
   });
@@ -120,7 +120,7 @@ describe("TopActionBar", () => {
         setSelectionMode={setSelectionMode}
       />
     );
-    await userEvent.click(screen.getByRole("button", { name: "Отмена" }));
+    await userEvent.click(screen.getByRole("button", { name: "cancel" }));
     expect(onCancel).toHaveBeenCalled();
   });
 
@@ -153,7 +153,7 @@ describe("TopActionBar", () => {
         setSelectionMode={setSelectionMode}
       />
     );
-    expect(screen.getByRole("button", { name: "Удалить" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "delete" })).toBeDisabled();
   });
 
   it("при selectedCount=totalCount кнопка меняет текст на 'Снять всё'", () => {
@@ -168,6 +168,6 @@ describe("TopActionBar", () => {
         setSelectionMode={setSelectionMode}
       />
     );
-    expect(screen.getByRole("button", { name: "Снять всё" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "cancel_select" })).toBeInTheDocument();
   });
 });

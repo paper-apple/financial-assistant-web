@@ -10,13 +10,14 @@ vi.mock('react-datepicker', () => {
         <div data-testid="selected-date">{selected?.toString()}</div>
         <button 
           data-testid="change-date-button"
-          onClick={() => onChange(new Date('2025-01-15T12:00:00'))}
+          onClick={() => onChange(new Date('2026-01-15T12:00:00'))}
         >
           Изменить дату
         </button>
         {inline && <div data-testid="inline-calendar">Inline Calendar</div>}
       </div>
     )),
+    registerLocale: vi.fn(),
   };
 });
 
@@ -29,7 +30,7 @@ describe('CalendarModal', () => {
   });
 
   it('рендер компонента с переданной датой', () => {
-    const testDate = new Date('2025-01-01T10:00:00');
+    const testDate = new Date('2026-01-01T10:00:00');
     
     render(
       <CalendarModal 
@@ -52,14 +53,14 @@ describe('CalendarModal', () => {
       />
     );
 
-    const closeButton = screen.getByText('Закрыть');
+    const closeButton = screen.getByText('cancel');
     fireEvent.click(closeButton);
 
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
   it('вызов onSave с выбранной датой при клике на "Сохранить"', () => {
-    const testDate = new Date('2025-01-01T10:00:00');
+    const testDate = new Date('2026-01-01T10:00:00');
     
     render(
       <CalendarModal 
@@ -69,7 +70,7 @@ describe('CalendarModal', () => {
       />
     );
 
-    const saveButton = screen.getByText('Сохранить');
+    const saveButton = screen.getByText('apply');
     fireEvent.click(saveButton);
 
     expect(mockOnSave).toHaveBeenCalledTimes(1);
@@ -86,7 +87,7 @@ describe('CalendarModal', () => {
       />
     );
 
-    const saveButton = screen.getByText('Сохранить');
+    const saveButton = screen.getByText('apply');
     fireEvent.click(saveButton);
 
     expect(mockOnSave).not.toHaveBeenCalled();
@@ -105,10 +106,10 @@ describe('CalendarModal', () => {
     const changeDateButton = screen.getByTestId('change-date-button');
     fireEvent.click(changeDateButton);
 
-    const saveButton = screen.getByText('Сохранить');
+    const saveButton = screen.getByText('apply');
     fireEvent.click(saveButton);
 
     expect(mockOnSave).toHaveBeenCalledTimes(1);
-    expect(mockOnSave).toHaveBeenCalledWith(new Date('2025-01-15T12:00:00'));
+    expect(mockOnSave).toHaveBeenCalledWith(new Date('2026-01-15T12:00:00'));
   });
 });

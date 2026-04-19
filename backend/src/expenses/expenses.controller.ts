@@ -8,14 +8,14 @@ import { CurrentUser } from '@/auth/current-user.decorator';
 import { User } from '@/users/entities/user.entity';
 
 @Controller('expenses')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard) // Проверка токена и извлечение пользователя ({ id: 1, username: "name", ... })
 export class ExpensesController {
   constructor(private readonly expensesService: ExpensesService) {}
 
   @Post()
   create(
     @Body() createExpenseDto: CreateExpenseDto,
-    @CurrentUser() user: User
+    @CurrentUser() user: User // Вместо const user = request.user
   ) {
     return this.expensesService.create(createExpenseDto, user.id);
   }

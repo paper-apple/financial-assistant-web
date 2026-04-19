@@ -49,6 +49,7 @@ export const ExpensesPage = () => {
   const {
     filtersState,
     sortState,
+    statsState,
     suggestions,
     applyFilters,
     applySorts,
@@ -75,7 +76,7 @@ export const ExpensesPage = () => {
     endDate: false,
   });
 
-  // Первоначальная проверка, что пользователь в системе
+  // Initial check that the user is logged in
   useEffect(() => {
     checkAuth();
   }, []);
@@ -113,6 +114,7 @@ export const ExpensesPage = () => {
   };
 
   const handleCloseModal = async () => {
+    console.log('close!!!')
     setIsModalOpen(false)
   };
 
@@ -211,6 +213,7 @@ export const ExpensesPage = () => {
             sortedExpenses={expenses}
             filtersState={filtersState}
             sortState={sortState}
+            statsState={statsState}
             suggestions={suggestions}
             closeModal={closeModal}
             openModal={openModal}

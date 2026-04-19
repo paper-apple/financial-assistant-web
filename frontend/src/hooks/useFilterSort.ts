@@ -1,6 +1,6 @@
 // useFilterSort.ts
 import { useState, useCallback, useEffect, useRef } from "react";
-import type { FilterParams, SortParams } from "../types";
+import type { FilterParams, GroupField, SortParams, StatsModeField } from "../types";
 import { useKeywordSuggestions } from "./useKeywordSuggestions";
 
 export const useFilterSort = (
@@ -14,6 +14,10 @@ export const useFilterSort = (
   const [maxPrice, setMaxPrice] = useState('');
   const [dateError, setDateError] = useState(false);
   const [priceError, setPriceError] = useState(false);
+  const [sortField, setSortField] = useState<SortParams['field']>("datetime");
+  const [sortDirection, setSortDirection] = useState<SortParams['direction']>("DESC");
+  const [statsField, setStatsField] = useState<GroupField>('category');
+  const [statsMode, setStatsMode] = useState<StatsModeField>('table');
   const { suggestions, clearSuggestions } = useKeywordSuggestions({ input: keywordInput });
 
   const initialValuesRef = useRef<{
@@ -60,9 +64,6 @@ export const useFilterSort = (
     keywords: keywordsList,
   }), [startDate, endDate, minPrice, maxPrice, keywordsList]);
 
-  const [sortField, setSortField] = useState<SortParams['field']>("datetime");
-  const [sortDirection, setSortDirection] = useState<SortParams['direction']>("DESC");
-
   const getCurrentSorts = useCallback((): SortParams => ({
     field: sortField,
     direction: sortDirection
@@ -86,6 +87,14 @@ export const useFilterSort = (
     loadExpenses(getCurrentFilters(), getCurrentSorts());
   }, [getCurrentFilters, getCurrentSorts, loadExpenses]);
 
+  const applyStatsField = (field: GroupField) => {
+    setStatsField(field);
+  };
+
+  const applyStatsMode = (mode: StatsModeField) => {
+    setStatsMode(mode);
+  };
+
   const handleResetFilters = () => {
     setKeywordInput('');
     setKeywordsList([]);
@@ -93,6 +102,9 @@ export const useFilterSort = (
     setEndDate(null);
     setMinPrice('');
     setMaxPrice('');
+    setSortField('datetime')
+    setStatsField('category')
+    setStatsMode('table')
   };
 
   useEffect(() => {
@@ -122,6 +134,12 @@ export const useFilterSort = (
       backup,
       restoreInitialValues,
       handleResetFilters,
+    },
+    statsState: {
+      statsField,
+      applyStatsField,
+      statsMode,
+      applyStatsMode
     },
     suggestions,
     handleAddKeyword,

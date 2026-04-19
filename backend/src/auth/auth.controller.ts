@@ -20,7 +20,7 @@ export class AuthController {
   @Post('register')
   async register(@Body() body) {
     const user = await this.authService.register(body.username, body.password);
-    const result = await this.authService.login(user);
+    const result = await this.authService.login(user); // Сразу авторизация после создания
     
     return {
       success: true,

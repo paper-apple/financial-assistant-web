@@ -14,11 +14,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  // Вызывается автоматически при успешном выполнении предыдущего кода
   async validate(payload: any) {
     const user = await this.usersService.findById(payload.sub);
     if (!user) {
       throw new UnauthorizedException();
     }
-    return user;
+    return user; // request.user
   }
 }

@@ -33,41 +33,41 @@ describe("SortForm", () => {
   it("рендер всех опций сортировки", () => {
     setup();
 
-    expect(screen.getByText("Название")).toBeInTheDocument();
-    expect(screen.getByText("Категория")).toBeInTheDocument();
-    expect(screen.getByText("Стоимость")).toBeInTheDocument();
-    expect(screen.getByText("Место")).toBeInTheDocument();
-    expect(screen.getByText("Дата")).toBeInTheDocument();
+    expect(screen.getByText("title")).toBeInTheDocument();
+    expect(screen.getByText("category")).toBeInTheDocument();
+    expect(screen.getByText("cost")).toBeInTheDocument();
+    expect(screen.getByText("place")).toBeInTheDocument();
+    expect(screen.getByText("date")).toBeInTheDocument();
 
-    expect(screen.getByText("По возрастанию")).toBeInTheDocument();
-    expect(screen.getByText("По убыванию")).toBeInTheDocument();
+    expect(screen.getByText("ascending_order")).toBeInTheDocument();
+    expect(screen.getByText("descending_order")).toBeInTheDocument();
   });
 
   it("вызов setSortField при выборе поля", () => {
     const { setSortField } = setup();
 
-    fireEvent.click(screen.getByText("Категория"));
+    fireEvent.click(screen.getByText("category"));
     expect(setSortField).toHaveBeenCalledWith("category");
   });
 
   it("вызов setSortDirection при выборе направления", () => {
     const { setSortDirection } = setup();
 
-    fireEvent.click(screen.getByText("По убыванию"));
+    fireEvent.click(screen.getByText("descending_order"));
     expect(setSortDirection).toHaveBeenCalledWith("DESC");
   });
 
   it("кнопка Отменить вызывает onClose", () => {
     const { onClose } = setup();
 
-    fireEvent.click(screen.getByText("Отменить"));
+    fireEvent.click(screen.getByText("cancel"));
     expect(onClose).toHaveBeenCalled();
   });
 
   it("кнопка Применить вызывает applySorts и onClose", () => {
     const { applySorts, onClose } = setup();
 
-    fireEvent.click(screen.getByText("Применить"));
+    fireEvent.click(screen.getByText("apply"));
     expect(applySorts).toHaveBeenCalled();
     expect(onClose).toHaveBeenCalled();
   });
@@ -75,10 +75,10 @@ describe("SortForm", () => {
   it("подсветка выбранного поля и направления", () => {
     setup({ sortField: "price", sortDirection: "DESC" });
 
-    const priceBtn = screen.getByText("Стоимость").closest("button");
-    const descBtn = screen.getByText("По убыванию").closest("button");
+    const priceBtn = screen.getByText("cost").closest("button");
+    const descBtn = screen.getByText("descending_order").closest("button");
 
-    expect(priceBtn).toHaveClass("bg-blue-100");
-    expect(descBtn).toHaveClass("bg-blue-100");
+    expect(priceBtn).toHaveClass("outline-(--bg-secondary)");
+    expect(descBtn).toHaveClass("outline-(--bg-secondary)");
   });
 });

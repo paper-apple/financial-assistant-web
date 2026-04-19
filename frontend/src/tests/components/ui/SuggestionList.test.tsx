@@ -36,7 +36,7 @@ describe("SuggestionsList", () => {
       />
     );
     const banana = screen.getByText("banana");
-    expect(banana).toHaveClass("bg-blue-100");
+    expect(banana).toHaveClass("bg-(--checked-option)");
   });
 
   it("вызов onSelect при клике на элемент", async () => {

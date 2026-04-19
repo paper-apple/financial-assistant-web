@@ -16,7 +16,7 @@ const sampleExpense: Expense = {
 describe("ExpenseList", () => {
   it("отображение сообщения, если список пуст", () => {
     render(<ExpenseList expenses={[]} lastUpdatedId={null} />);
-    expect(screen.getByText("Записей нет")).toBeInTheDocument();
+    expect(screen.getByText("no_data")).toBeInTheDocument();
   });
 
   it("рендер карточки расходов", () => {
@@ -38,7 +38,7 @@ describe("ExpenseList", () => {
       />
     );
     const card = screen.getByTestId("expense-card-1");
-    expect(card).toHaveClass("bg-blue-50");
+    expect(card).toHaveClass("bg-(--bg-secondary)");
   });
 
   it("подсветка последнего обновлённого элемента", () => {

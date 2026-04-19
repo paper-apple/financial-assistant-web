@@ -10,7 +10,9 @@ import type {
   FiltersState,
   FormState,
   SortState,
-  Modals
+  Modals,
+  GroupField,
+  StatsState
 } from "../../types";
 import { SettingsModal } from "./SettingsModal";
 
@@ -21,6 +23,7 @@ type Props = {
   form: FormState;
   filtersState: FiltersState;
   sortState: SortState;
+  statsState: StatsState;
   suggestions: string[];
   applyFilters: () => void;
   applySorts: () => void;
@@ -44,6 +47,7 @@ export const ExpenseModals = ({
   editingExpense,
   filtersState,
   sortState,
+  statsState,
   sortedExpenses,
   closeModal,
   openModal,
@@ -142,9 +146,11 @@ export const ExpenseModals = ({
     {modals.stats && (
       <Modal onRemoveModal={() => closeModal("stats")} title="stats" isModalOpen={isModalOpen} onModalClose={handleCloseModal}>
         <StatsModal 
-          expenses={sortedExpenses} 
-          initialField="category" 
+          expenses={sortedExpenses}
+          statsState={statsState}
+          // statsField={statsField}
           onClose={handleCloseModal} 
+          // applyStatsField={applyStatsField}
         />
       </Modal>
     )}

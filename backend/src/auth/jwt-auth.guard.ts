@@ -5,13 +5,13 @@ import { AuthGuard } from '@nestjs/passport';
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
-    return super.canActivate(context);
+    return super.canActivate(context); // Проверка токенов
   }
 
   handleRequest(err: any, user: any, info: any) {
     if (err || !user) {
       throw new UnauthorizedException('Недействительный токен');
     }
-    return user;
+    return user; // request.user
   }
 }

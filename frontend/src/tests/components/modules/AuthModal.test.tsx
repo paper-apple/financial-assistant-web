@@ -1,61 +1,57 @@
 // AuthModal.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, vi, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthModal } from '../../../components/modules/AuthModal';
 
-describe('AuthModal', () => {
+describe('AuthModal Component', () => {
   const mockOnAuth = vi.fn();
-  const mockOnToggle = vi.fn();
+  const mockOnToggleMode = vi.fn();
 
-  it('рендер', () => {
-    render(
-      <AuthModal
-        isOpen={true}
-        isLoginMode={true}
-        error=""
-        onAuth={mockOnAuth}
-        onToggleMode={mockOnToggle}
-      />
-    );
-    
-    expect(screen.getByText('Вход')).toBeInTheDocument();
+  const defaultProps = {
+    isOpen: true,
+    isLoginMode: true,
+    error: null,
+    onAuth: mockOnAuth,
+    onToggleMode: mockOnToggleMode,
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  it('вызов onAuth при сабмите', () => {
-    render(
-      <AuthModal
-        isOpen={true}
-        isLoginMode={true}
-        error=""
-        onAuth={mockOnAuth}
-        onToggleMode={mockOnToggle}
-      />
-    );
-
-    fireEvent.change(screen.getByTestId('username'), {
-      target: { value: 'test' },
-    });
-    fireEvent.change(screen.getByTestId('password'), {
-      target: { value: 'Ab4321' },
-    });
-
-    fireEvent.click(screen.getByText('Войти'));
-    
-    expect(mockOnAuth).toHaveBeenCalledWith('test', 'Ab4321');
+  it('не рендерится, если isOpen === false', () => {
+    render(<AuthModal {...defaultProps} isOpen={false} />);
+    expect(screen.queryByTestId('auth-modal')).not.toBeInTheDocument();
   });
 
-  it('демо-вход', () => {
-    render(
-      <AuthModal
-        isOpen={true}
-        isLoginMode={true}
-        error=""
-        onAuth={mockOnAuth}
-        onToggleMode={mockOnToggle}
-      />
-    );
+  it('рендерит форму в режиме логина', () => {
+    render(<AuthModal {...defaultProps} />);
+    
+    expect(screen.getByRole('heading', { name: 'enter' })).toBeInTheDocument();
+    expect(screen.getByTestId('username')).toBeInTheDocument();
+    expect(screen.getByTestId('password')).toBeInTheDocument();
+  });
 
-    fireEvent.click(screen.getByText('Войти как демо-пользователь'));
+  it('вызывает onAuth при сабмите формы с введенными данными', async () => {
+    render(<AuthModal {...defaultProps} />);
+
+    const usernameInput = screen.getByTestId('username');
+    const passwordInput = screen.getByTestId('password');
+    const submitButton = screen.getByRole('button', { name: 'enter' });
+
+    fireEvent.change(usernameInput, { target: { value: 'myuser' } });
+    fireEvent.change(passwordInput, { target: { value: 'mypass' } });
+    
+    fireEvent.click(submitButton);
+
+    expect(mockOnAuth).toHaveBeenCalledWith('myuser', 'mypass');
+  });
+
+  it('вызывает onAuth с корректными демо-данными для RU языка', async () => {
+    render(<AuthModal {...defaultProps} />);
+    
+    const demoButton = screen.getByRole('button', { name: 'demo' });
+    fireEvent.click(demoButton);
 
     expect(mockOnAuth).toHaveBeenCalledWith('testuser', '1234Ab');
   });
